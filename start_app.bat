@@ -1,0 +1,1 @@
+START java -jar -Dspring.config.location=F:/Professional/TestIt/development/src/main/resources/application.properties  F:/Professional/TestIt/development/target/GetAutomationDone-0.0.2.jar

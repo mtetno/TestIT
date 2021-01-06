@@ -35,7 +35,8 @@ import com.dyteam.testApps.webserver.security.LoginUser;
 @RequestMapping("/environment")
 public class EnvironmentController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Environment env = null;
 	
     @Autowired
     EnvironmentRepository environmentRepo;
@@ -75,13 +76,15 @@ public class EnvironmentController {
     public Environment save(@RequestBody Environment environment,
     		@AuthenticationPrincipal final LoginUser loggedInUser) {
     	logger.info("save environment = "+environment);
-    	environment.setStatus(1);
+    	environment.setStatus(0);
     	environment.setAddedBy(loggedInUser.getUserId());
     	environment.setCompanyId(loggedInUser.getCompanyId());
-    	environment.setUserId(loggedInUser.getUserId());
-    	boolean isNew = null == environment.getEnvironmentId();
-        Environment env = environmentRepo.save(environment);
+    	//boolean isNew = null == environment.getEnvironmentId();
+        List<Environment> findByEnvironmentName = environmentRepo.findAllByEnvironmentName(loggedInUser.getUserId(), 
+        environment.getEnvironmentName());
+        boolean isNew = findByEnvironmentName.size() > 0 ? false : true;
         if(isNew) {
+            env = environmentRepo.save(environment);
         	String companyName = companyRepo.getName(loggedInUser.getCompanyId());
         	List<String> applicationNames = applicationRepo.findAllAppNamesByCompanyId(loggedInUser.getCompanyId());
 
@@ -97,19 +100,28 @@ public class EnvironmentController {
         			}
         		});
         	} 
+        }else{
+                environmentRepo.updateByEnvironmentName(loggedInUser.getUserId(), 
+                environment.getEnvironmentName());
+                env = findByEnvironmentName.get(0);
         }
 		return env;
     }
     
-    @DeleteMapping("/{environmentId}")
-    public Boolean delete(@PathVariable(value="environmentId") Long environmentId) {
-    	
+    @DeleteMapping("/{userId}/{environmentName}")
+    public Boolean delete(@PathVariable(value="userId") Long userId,
+    @PathVariable(value="environmentName") String environmentName) {
     	/*boolean envExists = executionResultsRepo.environmentExists(environmentId);
     	if(envExists) {
     		throw new ValidationException("There are Test cases Executed on this environment");
     	}*/
-    	
-    	environmentRepo.deleteById(environmentId);
+    	environmentRepo.deleteByEnvironmentName(userId,environmentName);
+		return true;
+    }
+
+    @DeleteMapping("/deleteAllEnvionments/{userId}")
+    public Boolean deleteAllEnvionments(@PathVariable(value="userId") Long userId) {
+    	environmentRepo.updateAll(userId);
 		return true;
     }
     

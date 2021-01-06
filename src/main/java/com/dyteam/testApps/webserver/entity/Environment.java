@@ -38,19 +38,15 @@ public class Environment {
 	@NotNull
 	private Long companyId;
 	
-	@Column(name="user_id")
-	@NotNull
-	private Long userId;
-	
 	@Column(name="added_by")
 	@NotNull
 	private Long addedBy;
 	
-	@Column(name="status")
+	@Column(name="is_delete")
 	@NotNull
 	private Integer status;
 	
-	@Column(name="createdat",insertable=false,updatable=false)
+	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
@@ -90,13 +86,7 @@ public class Environment {
 		this.companyId = companyId;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+	 
 
 	public Long getAddedBy() {
 		return addedBy;
@@ -125,7 +115,7 @@ public class Environment {
 	@Override
 	public String toString() {
 		return "Environment [environmentId=" + environmentId + ", environmentName=" + environmentName + ", companyId="
-				+ companyId + ", userId=" + userId + ", addedBy=" + addedBy + ", status=" + status + ", createdAt="
+				+ companyId + ", addedBy=" + addedBy + ", status=" + status + ", createdAt="
 				+ createdAt + "]";
 	}
 

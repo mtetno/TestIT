@@ -18,6 +18,21 @@
       margin-bottom: 15px;
     }
   </style>
+
+    <!--Scripts-->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/Libraries/jquery.dataTables.js"></script>
+  <script src="js/Libraries/dataTables.fixedHeader.js"></script>
+  <script src="js/Libraries/dataTables.tableTools.js"></script>
+  <script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+  <script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="js/pages/environment.js"  type="text/javascript"></script>
+  <script src="js/pages/companyEnvURL.js"></script>
+  <script src="js/pages/userrole.js"></script>
+
 </head>
 <body>
   <!--Header Start-->
@@ -436,19 +451,7 @@
 <!-- For sidebar toggle -->
 <a href="#" id="sidebarToggle"><i class="fa fa-caret-right fa-2x" aria-hidden="true"></i></a>
 
-<!--Scripts-->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/moment.js"></script>
-<script src="js/Libraries/jquery.dataTables.js"></script>
-<script src="js/Libraries/dataTables.fixedHeader.js"></script>
-<script src="js/Libraries/dataTables.tableTools.js"></script>
-<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
-<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
-<script src="js/custom.js"></script>
-<script src="js/pages/environment.js"></script>
-<script src="js/pages/companyEnvURL.js"></script>
-<script src="js/pages/userrole.js"></script>
+
 <script>
   $(function(){
     $("a.addRowBtn").click(function(e){
@@ -465,30 +468,62 @@
 
     $("button.addEnvBtn").click(function(){
         var dataVal = $("#execution_environment").val();
-        var dt = new Date();
-        var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
-        var time = dt.getHours()+":"+dt.getMinutes();
 
-        var str = `<tr>
-                      <td scope="col" class="bucketcheck">
-                        <label class="main subCB">
-                          <input type="checkbox"> 
-                          <span class="geekmark"></span> 
-                        </label>
-                      </td>
-                      <td >`+dataVal+`</td>
-                      <td >`+date+` `+time+`</td>
-                      <td >cbowen@partneritsm</td>
-                    </tr>`;
+        if(dataVal == ''){
+          alert("Please enter valid environment name");
+          return;
+        }
 
-        $("table.envTable tbody").prepend(str);
+        var dataObj = {};
+        dataObj["environmentName"]= dataVal;
+        dataObj["added_by"]= readCookie("TAuid");
 
-        $("a.addRowBtn").css("pointer-events", "");
-        $("a.addRowBtn").css("opacity", "");
-        $("#deleteRow").attr("disabled", false);
-        $("#deleteRow1").attr("disabled", false);
-        $("#deleteRow2").attr("disabled", false);
-        $(this).closest(".addRowData").slideUp();
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(dataObj),
+          contentType: 'application/json',
+          dataType: 'json',
+          url: base_url+"/environment/save",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+          },
+          success: function(msg){
+            $("a.addRowBtn").css("pointer-events", "");
+            $("a.addRowBtn").css("opacity", "");
+            $("#deleteRow").attr("disabled", false);
+            $("#deleteRow1").attr("disabled", false);
+            $("#deleteRow2").attr("disabled", false);
+            $("#execution_environment").val('');
+            $("button.addEnvBtn").closest(".addRowData").slideUp();
+            fetchAllEnvironment();
+          }
+        });
+
+
+        // var dt = new Date();
+        // var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
+        // var time = dt.getHours()+":"+dt.getMinutes();
+
+        // var str = `<tr>
+        //               <td scope="col" class="bucketcheck">
+        //                 <label class="main subCB">
+        //                   <input type="checkbox"> 
+        //                   <span class="geekmark"></span> 
+        //                 </label>
+        //               </td>
+        //               <td >`+dataVal+`</td>
+        //               <td >`+date+` `+time+`</td>
+        //               <td >cbowen@partneritsm</td>
+        //             </tr>`;
+
+        // $("table.envTable tbody").prepend(str);
+
+        // $("a.addRowBtn").css("pointer-events", "");
+        // $("a.addRowBtn").css("opacity", "");
+        // $("#deleteRow").attr("disabled", false);
+        // $("#deleteRow1").attr("disabled", false);
+        // $("#deleteRow2").attr("disabled", false);
+        // $(this).closest(".addRowData").slideUp();
     });
 
 
@@ -593,9 +628,37 @@
     });
 
     $(document).on("click", "#yesbtn", function(){
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-      });     
+          $("table tbody .subCB input:checked").each(function(){
+            var environmentName = $("#deletedItem").text();
+            if(environmentName.indexOf(",") != -1){
+                $.ajax({
+                  type: 'DELETE',
+                  contentType: 'application/json',
+                  dataType: 'json',
+                  url: base_url+"/environment/deleteAllEnvionments/"+readCookie("TAuid"),
+                  beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+                  },
+                  success: function(msg){
+                    $(this).closest("tr").remove();
+                    $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+                  }
+                });
+             }else{
+              $.ajax({
+                  type: 'DELETE',
+                  contentType: 'application/json',
+                  dataType: 'json',
+                  url: base_url+"/environment/"+readCookie("TAuid") + "/" + environmentName,
+                  beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+                  },
+                  success: function(msg){
+                    $(this).closest("tr").remove();
+                  }
+                });
+             }
+         });     
     });
 
     /*---Jquery for delete Environment URL's row---*/

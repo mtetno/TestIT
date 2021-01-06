@@ -1,6 +1,6 @@
-$(document).ready(function() {
-    $.ajax({
-		url: base_url+"/environment/all", 
+function fetchAllEnvironment(){
+	$.ajax({
+		url: base_url+"/environment/findAllByUserId", 
 		method: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
@@ -50,18 +50,24 @@ $(document).ready(function() {
 				payload += '</td>';
 				payload += '<td>'+value.environmentName+'</td>';
 				payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
-				payload += '<td>Added By</td>';
+				payload += '<td>'+readCookie("TAuname")+'</td>';
 				payload += '</tr>';
 			});
 			$(".envTable tbody").html(payload);
-			$('.envTable').DataTable({
-				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
-				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": true,
-			});
 		}
 	});
+}
+
+$(document).ready(function() {
+
+	$('.envTable').DataTable({
+		"lengthChange": false,
+		"searching": false,   // Search Box will Be Disabled
+		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+		"info": true,
+	});
+
+	fetchAllEnvironment();
 	
 	//serialize object function
 	$.fn.serializeObject = function() {
