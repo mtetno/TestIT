@@ -118,8 +118,4 @@ public class Environment {
 				+ companyId + ", addedBy=" + addedBy + ", status=" + status + ", createdAt="
 				+ createdAt + "]";
 	}
-
-	
-	
-	
 }

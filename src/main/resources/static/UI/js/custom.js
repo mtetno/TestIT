@@ -78,9 +78,9 @@ function eraseCookie(name) {
 	createCookie(name, "", -1);
 }
 $(document).ready(function() {
-	$("header.navbar").load(base_url+"/onlineExam1/includes/header.html", function(responseTxt, statusTxt, xhr){
-		$("aside.sidebar").load(base_url+"/onlineExam1/includes/leftNav.html", function(responseTxt, statusTxt, xhr){
-			$("footer#footer").load(base_url+"/onlineExam1/includes/footer.html", function(responseTxt, statusTxt, xhr){
+	$("header.navbar").load(base_url+"/UI/includes/header.html", function(responseTxt, statusTxt, xhr){
+		$("aside.sidebar").load(base_url+"/UI/includes/leftNav.html", function(responseTxt, statusTxt, xhr){
+			$("footer#footer").load(base_url+"/UI/includes/footer.html", function(responseTxt, statusTxt, xhr){
 				if(readCookie("TAurole")!=null){
 					$("."+ readCookie("TAurole").toLowerCase()).show();
 				}
@@ -134,7 +134,7 @@ $(document).ready(function() {
 			eraseCookie("TAuid");
 			eraseCookie("TAuname");
 			eraseCookie("TAurole");
-			window.location.href = base_url+"/onlineExam1/login.html";
+			window.location.href = base_url+"/UI/login.html";
 		});
 	});
 });

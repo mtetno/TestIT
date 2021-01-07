@@ -33,7 +33,7 @@ import com.dyteam.testApps.webserver.service.IEmailService;
  * @author deepak
  */
 @RestController
-@RequestMapping("/onlineExam1")
+@RequestMapping("/UI")
 final class LoginController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private IUserAuthenticationService authenticationService;

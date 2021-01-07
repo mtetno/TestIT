@@ -13,15 +13,6 @@ import com.dyteam.testApps.webserver.entity.Environment;
 @Repository
 public interface EnvironmentRepository extends CrudRepository<Environment, Long>{
 
-	@Query("select e "
-			+ "from Environment e where e.addedBy = :userId AND is_delete = 0")
-	List<Environment> findAllByUserId(Long userId);
-
-	@Query("select e from Environment e where e.companyId = :companyId")
-	Iterable<Environment> findAll(Long companyId);
-
-	void deleteByCompanyId(Long companyId);
-
 	@Transactional
   	@Modifying
 	@Query("update Environment set is_delete = 1 where added_by = :userId AND environment_name = :environmentName")
@@ -41,4 +32,13 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
   	@Modifying
 	@Query("update Environment set is_delete = 0 where added_by = :userId AND environment_name = :environmentName")
 	void updateByEnvironmentName(Long userId,String environmentName);
+
+	@Query("select e "
+	+ "from Environment e where e.addedBy = :userId AND is_delete = 0")
+	List<Environment> findAllByUserId(Long userId);
+
+	@Query("select e from Environment e where e.companyId = :companyId")
+	Iterable<Environment> findAll(Long companyId);
+
+	void deleteByCompanyId(Long companyId);
 }

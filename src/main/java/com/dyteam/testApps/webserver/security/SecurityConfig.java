@@ -33,7 +33,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String COMPANY = "/company/**";
 //	private static final String APPLICATION = "/application/**";
-	private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(new AntPathRequestMatcher("/onlineExam1/**"));
+	private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(new AntPathRequestMatcher("/UI/**"));
 	private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
 
 	private TokenAuthenticationProvider provider;

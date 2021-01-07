@@ -257,7 +257,7 @@ $(document).ready(function() {
 		url: base_url+"/user/allByCompany",
 		type: "get",
 		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			xhr.setRequestHeader('Authorization', "Bearer " + ("TAaccess"));
 		},
 		success: function(data)
 		{ 
@@ -470,7 +470,7 @@ $(document).ready(function() {
 		url: url,
 		type: 'DELETE',
 		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			xhr.setRequestHeader('Authorization', "Bearer " + ("TAaccess"));
 		},
 		success: callback,
 		data: data,

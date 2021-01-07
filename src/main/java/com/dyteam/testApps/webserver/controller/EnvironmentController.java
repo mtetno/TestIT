@@ -36,7 +36,7 @@ import com.dyteam.testApps.webserver.security.LoginUser;
 public class EnvironmentController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private Environment env = null;
+    private Environment savedEnvironment = null;
 	
     @Autowired
     EnvironmentRepository environmentRepo;
@@ -79,12 +79,11 @@ public class EnvironmentController {
     	environment.setStatus(0);
     	environment.setAddedBy(loggedInUser.getUserId());
     	environment.setCompanyId(loggedInUser.getCompanyId());
-    	//boolean isNew = null == environment.getEnvironmentId();
         List<Environment> findByEnvironmentName = environmentRepo.findAllByEnvironmentName(loggedInUser.getUserId(), 
         environment.getEnvironmentName());
         boolean isNew = findByEnvironmentName.size() > 0 ? false : true;
         if(isNew) {
-            env = environmentRepo.save(environment);
+            savedEnvironment = environmentRepo.save(environment);
         	String companyName = companyRepo.getName(loggedInUser.getCompanyId());
         	List<String> applicationNames = applicationRepo.findAllAppNamesByCompanyId(loggedInUser.getCompanyId());
 
@@ -94,27 +93,23 @@ public class EnvironmentController {
         				Util.createFolders(Paths.get(projectBasePath,Util.COMPANIES_BASE_FOLDER_NAME,
         						companyName,
         						appName,Util.TEST_DATA_FOLDER_NAME,
-        						loggedInUser.getUsername(),env.getEnvironmentName()));
+        						loggedInUser.getUsername(),savedEnvironment.getEnvironmentName()));
         			} catch (IOException e) {
         				logger.error("Error occure while creating dir structure for environment="+environment,e);
         			}
         		});
         	} 
         }else{
+                savedEnvironment = findByEnvironmentName.get(0);
                 environmentRepo.updateByEnvironmentName(loggedInUser.getUserId(), 
                 environment.getEnvironmentName());
-                env = findByEnvironmentName.get(0);
         }
-		return env;
+		return savedEnvironment;
     }
     
     @DeleteMapping("/{userId}/{environmentName}")
     public Boolean delete(@PathVariable(value="userId") Long userId,
     @PathVariable(value="environmentName") String environmentName) {
-    	/*boolean envExists = executionResultsRepo.environmentExists(environmentId);
-    	if(envExists) {
-    		throw new ValidationException("There are Test cases Executed on this environment");
-    	}*/
     	environmentRepo.deleteByEnvironmentName(userId,environmentName);
 		return true;
     }
@@ -135,5 +130,4 @@ public class EnvironmentController {
 		logger.info("get all environments");
         return environmentRepo.findAll();
 	}
-    
 }

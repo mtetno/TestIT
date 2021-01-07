@@ -171,6 +171,7 @@
 						$('#res').html("<h5><span style='color:green;text-transform:capitalize;font-size:14px'>Login Success..!</span><br><img width='20' src='Libraries/img/loader.GIF'><br><span style='font-size:14px'>Redirecting.....</span></h5>");				
 						createCookie("TAaccess", response.id, 60);
 						createCookie("TAuid", response.userId, 60);
+						createCookie("TAcid", response.companyId, 60);
 						createCookie("TAuname", response.username, 60);
 						createCookie("TAurole", response.authorities[0].authority, 60);
 						window.location.href = "./dashboard.html";

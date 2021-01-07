@@ -36,7 +36,7 @@ public class Application{
 	@JsonProperty("applicationName")
 	private String applicationName;
 	
-	@Column(name="user_id")
+	@Column(name="added_by")
 	@NotNull
 	private Long userId;
 	
@@ -44,11 +44,11 @@ public class Application{
 	@NotNull
 	private Long companyId;
 	
-	@Column(name="status")
+	@Column(name="is_delete")
 	@NotNull
 	private Integer status;
 	
-	@Column(name="createdat",insertable=false,updatable=false)
+	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	
