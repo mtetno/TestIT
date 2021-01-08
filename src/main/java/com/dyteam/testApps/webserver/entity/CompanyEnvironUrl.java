@@ -46,18 +46,18 @@ public class CompanyEnvironUrl {
     private Application application;
 	
 	@NotNull
-	@Column(name="user_id")
+	@Column(name="added_by")
 	private Long userId;
 	
 	@NotNull
 	@Column(name="company_id")
 	private Long companyId;
 	
-	@Column(name="status")
+	@Column(name="is_delete")
 	@NotNull
 	private Integer status;
 	
-	@Column(name="createdat",insertable=false,updatable=false)
+	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	

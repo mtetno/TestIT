@@ -185,14 +185,11 @@
               <div class="col-md-2 rowadjust">
                 <label>Application</label>
                 <select class="form-control border" name="application" id="application">
-                  
                 </select>
               </div>
               <div class="col-md-2 rowadjust">
                 <label>Environment</label>
                 <select class="form-control border" name="url_environment" id="url_environment">
-                  <option value="Select Environment">Select Environment</option>
-                  <option value="Production">Production</option>
                 </select>
               </div>
               <div class="col-md-4 rowadjust">
@@ -522,26 +519,26 @@
         var dataEnv = $("#url_environment").val();
         var dataUrl = $("#url").val();
 
-        var str = `<tr>
-                      <td scope="col" class="bucketcheck">
-                        <label class="main subCB">
-                          <input type="checkbox"> 
-                          <span class="geekmark"></span> 
-                        </label>
-                      </td>
-                      <td >`+ dataAppl + `</td>
-                      <td >`+ dataEnv + `</td>
-                      <td >`+ dataUrl + `</td>
-                    </tr>`;
+        // var str = `<tr>
+        //               <td scope="col" class="bucketcheck">
+        //                 <label class="main subCB">
+        //                   <input type="checkbox"> 
+        //                   <span class="geekmark"></span> 
+        //                 </label>
+        //               </td>
+        //               <td >`+ dataAppl + `</td>
+        //               <td >`+ dataEnv + `</td>
+        //               <td >`+ dataUrl + `</td>
+        //             </tr>`;
 
-        $("table.Urltable tbody").prepend(str);
+        // $("table.Urltable tbody").prepend(str);
 
-        $("a.addRowBtn").css("pointer-events", "");
-        $("a.addRowBtn").css("opacity", "");
-        $("#deleteRow").attr("disabled", false);
-        $("#deleteRow2").attr("disabled", false);
-        $("#deleteRow1").attr("disabled", false);
-        $(this).closest(".addRowData").slideUp();
+        // $("a.addRowBtn").css("pointer-events", "");
+        // $("a.addRowBtn").css("opacity", "");
+        // $("#deleteRow").attr("disabled", false);
+        // $("#deleteRow2").attr("disabled", false);
+        // $("#deleteRow1").attr("disabled", false);
+        // $(this).closest(".addRowData").slideUp();
       });
 
       $("button.addroleBtn").click(function () {
@@ -699,7 +696,7 @@
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
         },
-        success: function (msg) {
+        success: function () {
           $("a.addRowBtn").css("pointer-events", "");
           $("a.addRowBtn").css("opacity", "");
           $("#deleteRow").attr("disabled", false);
@@ -721,7 +718,7 @@
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
         },
-        success: function (msg) {
+        success: function () {
           $(this).closest("tr").remove();
           $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
         }
@@ -737,30 +734,48 @@
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
         },
-        success: function (msg) {
+        success: function () {
           $(this).closest("tr").remove();
         }
       });
     }
 
-    function fetchAllApplications(){
+    function fetchAllApplications() {
       $.ajax({
-        type: 'DELETE',
+        type: 'GET',
         contentType: 'application/json',
         dataType: 'json',
-        url: base_url + "/environment/deleteAllEnvionments/" + readCookie("TAuid"),
+        url: base_url + "/application/allByCompany",
         beforeSend: function (xhr) {
           xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
         },
-        success: function (msg) {
-          $(this).closest("tr").remove();
-          $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+        success: function (data) {
+          var options = '<option value="0">Select Application</option>';
+          data.map((item) => {
+            options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+          })
+          $("#application").append(options);
         }
       });
     }
 
-    function fetchAllEnvironments(){
-
+    function fetchAllEnvironments() {
+      $.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        url: base_url + "/environment/all",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+        },
+        success: function (data) {
+          var options = '<option value="0">Select Environment</option>';
+          data.map((item) => {
+            options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
+          })
+          $("#url_environment").append(options);
+        }
+      });
     }
 
   </script>
