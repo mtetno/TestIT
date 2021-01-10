@@ -1,108 +1,62 @@
 var comEnvURL, aldta = {}, envData = {};
-$(document).ready(function() {
-    $.ajax({
-		url: base_url+"/application/allByCompany", 
+$(document).ready(function () {
+
+	displayAllEnvironmentUrls();
+
+	$('.Urltable').DataTable({
+		"lengthChange": false,
+		"searching": false,   // Search Box will Be Disabled
+		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+		"info": true,
+	});
+
+	$.ajax({
+		url: base_url + "/application/allByCompany",
 		method: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success: function(data) {
+		success: function (data) {
 			var options = "";
-			$.each(data, function(key, value) {
-				options += '<option value="'+value.applicationId+'">'+value.applicationName+'</option>';
+			$.each(data, function (key, value) {
+				options += '<option value="' + value.applicationId + '">' + value.applicationName + '</option>';
 			});
 			$("select[name=application_id]").append(options);
 		}
 	});
+
 	$.ajax({
-		url: base_url+"/companyEnvironUrl/findAllByCompanyId", 
+		url: base_url + "/environment/all",
 		method: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success:function(data) {
-			var payload = "";
-			var appOptions = "";
-			comEnvURL = data.map;
-			$.each(data.map, function(key, value) {			
-				/*payload += '<tr>';
-				payload += '<td><h6>' + value.applicationName + '</h6></td>';	
-				payload += '<td>';
-				payload += '<a style="cursor:pointer" onclick="showViewModal('+key+');" class="table-link">';
-				payload += '<button  class="btn btn-primary"><i class="fa fa-eye"></i> View URL</button>';            
-				payload += '</a>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<a style="cursor:pointer" onclick="showUpdateModal('+key+');" class="table-link danger">';
-				payload += '<button  class="btn btn-warning"><i class="fa fa-pencil"></i> Edit URL</button>';
-				payload += '</a>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<a style="cursor:pointer" class="table-link danger">';
-				payload += '<button  class="btn btn-danger" onclick="return checkDelete('+key+');"><i class="fa fa-trash-o"></i> Delete</button>';
-				payload += '</a>';
-				payload += '</td>';
-				payload += '</tr>';*/
-				
-				$.each(value.environmentList, function(k, v) {	
-					payload += '<tr>';
-					payload += '<td scope="col" class="bucketcheck">';
-					payload += '<label class="main subCB">';
-					payload += '<input type="checkbox" data-value='+v.companyEnvironUrlId+'>';
-					payload += '<span class="geekmark"></span>';
-					payload += '</label>';
-					payload += '</td>';
-					payload += '<td>'+value.applicationName+'</td>';
-					payload += '<td>'+v.environment.environmentName+'</td>';
-					payload += '<td>'+v.envUrl+'</td>';
-					payload += '</tr>';
-				});
-				
-				//appOptions += '<option value="'+key+'">' + value.applicationName + '</option>';
-			});
-			//$("select[name=application_id]").append(appOptions);
-			$(".Urltable tbody").html(payload);
-			$('.Urltable').DataTable({
-				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
-				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": true,
-			});
-		}
-	});
-	
-	$.ajax({
-		url: base_url+"/environment/all", 
-		method: "get",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function(data) {
+		success: function (data) {
 			envData = data;
 			var payload = "";
-			$.each(data, function(key, value) {
+			$.each(data, function (key, value) {
 				payload += '<div class="form-group">';
-				payload += '<label for="exampleInputEmail1">'+value.environmentName+'</label>';
-				payload += '<input class="form-control" data-envurl-id="" data-env-id="'+value.environmentId+'" name="'+value.environmentName+'" placeholder="'+value.environmentName+'" type="text">';
+				payload += '<label for="exampleInputEmail1">' + value.environmentName + '</label>';
+				payload += '<input class="form-control" data-envurl-id="" data-env-id="' + value.environmentId + '" name="' + value.environmentName + '" placeholder="' + value.environmentName + '" type="text">';
 				payload += '</div>';
 			});
 			$('#modal_ajax .panel-body .modal-body .col-md-12').append(payload);
-			$("select[name=application_id]").on("change", function(){
+			$("select[name=application_id]").on("change", function () {
 				$('#modal_ajax input').val('');
 				$('#modal_ajax textarea').val('');
-				if(this.value!=""){
+				if (this.value != "") {
 					$.ajax({
-						url: base_url+"/companyEnvironUrl/getAllByCompanyId/"+$("select[name=application_id]").val(), 
+						url: base_url + "/companyEnvironUrl/getAllByCompanyId/" + $("select[name=application_id]").val(),
 						method: "get",
 						beforeSend: function (xhr) {
 							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 						},
-						success: function(data) {
+						success: function (data) {
 							aldta = data;
 							var payload = "";
-							$.each(data.companyEnvironUrls, function(key, value) {
-								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name='+value.environment.environmentName+']').val(value.envUrl);
-								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name='+value.environment.environmentName+']').attr("data-envurl-id", value.companyEnvironUrlId);
+							$.each(data.companyEnvironUrls, function (key, value) {
+								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').val(value.envUrl);
+								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').attr("data-envurl-id", value.companyEnvironUrlId);
 							});
 						}
 					});
@@ -110,13 +64,13 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
-	
+
+
 	//serialize object function
-	$.fn.serializeObject = function() {
+	$.fn.serializeObject = function () {
 		var o = {};
 		var a = this.serializeArray();
-		$.each(a, function() {
+		$.each(a, function () {
 			if (o[this.name]) {
 				if (!o[this.name].push) {
 					o[this.name] = [o[this.name]];
@@ -128,35 +82,35 @@ $(document).ready(function() {
 		});
 		return o;
 	};
-	
-	$.delete = function(url, data, callback, type){
-	 
-	  if ( $.isFunction(data) ){
-		type = type || callback,
-			callback = data,
-			data = {}
-	  }
-	 
-	  return $.ajax({
-		url: url,
-		type: 'DELETE',
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: callback,
-		data: data,
-		contentType: type
-	  });
-	}
-    var tableFixed = $('#table-example-fixed').dataTable({
-        'info': false,
-        'pageLength': 50
-    });
 
-    //new $.fn.dataTable.FixedHeader(tableFixed);
+	$.delete = function (url, data, callback, type) {
+
+		if ($.isFunction(data)) {
+			type = type || callback,
+				callback = data,
+				data = {}
+		}
+
+		return $.ajax({
+			url: url,
+			type: 'DELETE',
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: callback,
+			data: data,
+			contentType: type
+		});
+	}
+	var tableFixed = $('#table-example-fixed').dataTable({
+		'info': false,
+		'pageLength': 50
+	});
+
+	//new $.fn.dataTable.FixedHeader(tableFixed);
 });
-function addCompanyEnvironUrlId(companyEnvironUrlId=0){
-	if($("select[name=application_id]:visible").val() == ""){
+function addCompanyEnvironUrlId(companyEnvironUrlId = 0) {
+	if ($("select[name=application_id]:visible").val() == "") {
 		showError();
 		return false;
 	}
@@ -168,30 +122,30 @@ function addCompanyEnvironUrlId(companyEnvironUrlId=0){
 		});
 	}
 	else {*/
-		//data = envData;
-		//aldta.companyEnvironUrls = [];
-		$.each(envData, function(k,v){ 
-			if(aldta.companyEnvironUrls[k] == undefined) {
-				aldta.companyEnvironUrls[k] = {};
-			}																							
-			aldta.companyEnvironUrls[k].envUrl = $('input[name='+v.environmentName+']:visible').val();
-			aldta.companyEnvironUrls[k].environment = {};
-			aldta.companyEnvironUrls[k].environment.environmentId = $('input[name='+v.environmentName+']:visible').attr("data-env-id");
-		});
+	//data = envData;
+	//aldta.companyEnvironUrls = [];
+	$.each(envData, function (k, v) {
+		if (aldta.companyEnvironUrls[k] == undefined) {
+			aldta.companyEnvironUrls[k] = {};
+		}
+		aldta.companyEnvironUrls[k].envUrl = $('input[name=' + v.environmentName + ']:visible').val();
+		aldta.companyEnvironUrls[k].environment = {};
+		aldta.companyEnvironUrls[k].environment.environmentId = $('input[name=' + v.environmentName + ']:visible').attr("data-env-id");
+	});
 	//}
 	$.ajax({
 		type: 'POST',
 		data: JSON.stringify(aldta),
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url+"/companyEnvironUrl/saveAll",
+		url: base_url + "/companyEnvironUrl/saveAll",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success: function(msg){
+		success: function (msg) {
 			$('.modal').modal('hide');
-			if(!alert(successMsg)) {
-				window.location.href= window.location.href;
+			if (!alert(successMsg)) {
+				window.location.href = window.location.href;
 			}
 		}
 	});
@@ -230,95 +184,290 @@ function addCompanyEnvironUrlId(companyEnvironUrlId=0){
 	return false;
 }
 */
-function showViewModal(id)
-{
+function showViewModal(id) {
 	$.ajax({
-		url: base_url+"/companyEnvironUrl/getAllByCompanyId/"+id, 
+		url: base_url + "/companyEnvironUrl/getAllByCompanyId/" + id,
 		method: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success: function(data) {
+		success: function (data) {
 			var payload = "";
-			$.each(data.companyEnvironUrls, function(index, value) {
-				payload += 	'<tr>';
-				payload += 	'<td>'+(index+1)+'</td>';
-				payload += 	'<td>'+value.environment.environmentName+'</td>';
-				payload += 	'<td>'+value.envUrl+'</td>';
-				payload += 	'</tr>';
+			$.each(data.companyEnvironUrls, function (index, value) {
+				payload += '<tr>';
+				payload += '<td>' + (index + 1) + '</td>';
+				payload += '<td>' + value.environment.environmentName + '</td>';
+				payload += '<td>' + value.envUrl + '</td>';
+				payload += '</tr>';
 			});
-			$(".panel-title h5 b").html("Application Name : "+comEnvURL[id].applicationName);
+			$(".panel-title h5 b").html("Application Name : " + comEnvURL[id].applicationName);
 			$('#view_modal table#viewTabale tbody').html(payload);
-			$('#view_modal').modal('show', {backdrop: 'true'});
+			$('#view_modal').modal('show', { backdrop: 'true' });
 		}
 	});
 }
-function showUpdateModal(url)
-{	
-	$('#modal_ajax').modal('show', {backdrop: 'true'});
+function showUpdateModal(url) {
+	$('#modal_ajax').modal('show', { backdrop: 'true' });
 	$("select[name=application_id]").val(url).change();
 }
 function showAddModal(url) {
 	jQuery('#modal_ajax input').val('');
-    // LOADING THE AJAX MODAL
-    jQuery('#modal_ajax').modal('show', {
-        backdrop: 'true'
-    });
+	// LOADING THE AJAX MODAL
+	jQuery('#modal_ajax').modal('show', {
+		backdrop: 'true'
+	});
 
 }
 function showAjaxModal() {
-    // LOADING THE AJAX MODAL
-    jQuery('#modal_ajax').modal('show', {
-        backdrop: 'true'
-    });
+	// LOADING THE AJAX MODAL
+	jQuery('#modal_ajax').modal('show', {
+		backdrop: 'true'
+	});
 }
 
 function showTestImage(url) {
-    // SHOWING AJAX PRELOADER IMAGE
-    jQuery('#image_ajax .modal-body').html('<div style="text-align:center;margin-top:200px;"><img src="Libraries/img/loader.GIF" style="height:50px;" /></div>');
+	// SHOWING AJAX PRELOADER IMAGE
+	jQuery('#image_ajax .modal-body').html('<div style="text-align:center;margin-top:200px;"><img src="Libraries/img/loader.GIF" style="height:50px;" /></div>');
 
-    // LOADING THE AJAX MODAL
-    jQuery('#image_ajax').modal('show', {
-        backdrop: 'true'
-    });
+	// LOADING THE AJAX MODAL
+	jQuery('#image_ajax').modal('show', {
+		backdrop: 'true'
+	});
 
-    // SHOW AJAX RESPONSE ON REQUEST SUCCESS
-    $.ajax({
-        url: url,
+	// SHOW AJAX RESPONSE ON REQUEST SUCCESS
+	$.ajax({
+		url: url,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-        success: function(response) {
-            jQuery('#image_ajax .modal-body').html(response);
-        }
-    });
+		success: function (response) {
+			jQuery('#image_ajax .modal-body').html(response);
+		}
+	});
 }
 
 function confirm_modal(delete_url, post_refresh_url) {
-    $('#preloader-delete').html('');
-    jQuery('#modal_delete').modal('show', {
-        backdrop: 'static'
-    });
-    document.getElementById('delete_link').setAttribute("onClick", "delete_data('" + delete_url + "' , '" + post_refresh_url + "')");
-    document.getElementById('delete_link').focus();
+	$('#preloader-delete').html('');
+	jQuery('#modal_delete').modal('show', {
+		backdrop: 'static'
+	});
+	document.getElementById('delete_link').setAttribute("onClick", "delete_data('" + delete_url + "' , '" + post_refresh_url + "')");
+	document.getElementById('delete_link').focus();
 }
 
 function checkDelete(applicationId) {
-    var chk = confirm("Are You Sure To Delete This !");
-    if (chk) {
+	var chk = confirm("Are You Sure To Delete This !");
+	if (chk) {
 		$.ajax({
-			url: base_url+"/companyEnvironUrl/byApplication/"+applicationId,
+			url: base_url + "/companyEnvironUrl/byApplication/" + applicationId,
 			type: 'DELETE',
 			beforeSend: function (xhr) {
 				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 			},
-			success: function(response)
-			{
-				window.location.href= window.location.href;
+			success: function (response) {
+				window.location.href = window.location.href;
 			}
 		});
-        return true;
-    } else {
-        return false;
-    }
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function saveEnvironment(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/environment/save",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$("a.addRowBtn").css("pointer-events", "");
+			$("a.addRowBtn").css("opacity", "");
+			$("#deleteRow").attr("disabled", false);
+			$("#deleteRow1").attr("disabled", false);
+			$("#deleteRow2").attr("disabled", false);
+			$("#execution_environment").val('');
+			$("button.addEnvBtn").closest(".addRowData").slideUp();
+			fetchAllEnvironment();
+		}
+	});
+}
+
+function deleteAllEnvironment() {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/environment/deleteAllEnvionments/" + readCookie("TAuid"),
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+		}
+	});
+}
+
+function deleteSelectedEnvironment(environmentName) {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/environment/" + readCookie("TAuid") + "/" + environmentName,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+		}
+	});
+}
+
+function fetchAllApplications() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Application</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+			})
+			$("#application").html(options);
+		}
+	});
+}
+
+function fetchAllEnvironments() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/environment/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
+			})
+			$("#url_environment").html(options);
+		}
+	});
+}
+
+function saveEnvironmentUrl(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/companyEnvironUrl/save",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			showMessage("Environment url saved successfully!");
+			closeEnvironmentUrlInput();
+			displayAllEnvironmentUrls();
+		}
+	});
+}
+
+function showMessage(message) {
+	$("#valiationModel .model_body").html('<p>' + message + '</p>');
+}
+
+function closeEnvironmentUrlInput() {
+	$("#execution_environment").val("");
+	$("#url_environment").val("0");
+	$("#application").val("0");
+	$("#url").val("");
+	$("#username").val("");
+	$("#password").val("");
+	$("#confirm_password").val("");
+	$("#role").val("");
+
+	$("a.addRowBtn").css("pointer-events", "");
+	$("a.addRowBtn").css("opacity", "");
+	$("#deleteRow").attr("disabled", false);
+	$("#deleteRow1").attr("disabled", false);
+	$("#deleteRow2").attr("disabled", false);
+	$("button.cancelRow").closest(".addRowData").slideUp();
+}
+
+function displayAllEnvironmentUrls() {
+	$.ajax({
+		url: base_url + "/companyEnvironUrl/findAllByCompanyId",
+		method: "get",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var payload = "";
+			var appOptions = "";
+			comEnvURL = data.map;
+			$.each(data.map, function (key, value) {
+
+				$.each(value.environmentList, function (k, v) {
+					payload += '<tr>';
+					payload += '<td scope="col" class="bucketcheck">';
+					payload += '<label class="main subCB">';
+					payload += '<input type="checkbox" data-value=' + v.companyEnvironUrlId + '>';
+					payload += '<span class="geekmark"></span>';
+					payload += '</label>';
+					payload += '</td>';
+					payload += '<td>' + value.applicationName + '</td>';
+					payload += '<td>' + v.environment.environmentName + '</td>';
+					payload += '<td>' + v.envUrl + '</td>';
+					payload += '</tr>';
+				});
+
+				//appOptions += '<option value="'+key+'">' + value.applicationName + '</option>';
+			});
+			//$("select[name=application_id]").append(appOptions);
+			$(".Urltable tbody").html(payload);
+		}
+	});
+}
+
+function deleteAllEnvironmentUrls() {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/companyEnvironUrl/deleteAllEnvionmentUrls",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+		}
+	});
+}
+
+function deleteSelectedEnvironmentUrl(environmentURL) {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/companyEnvironUrl/" + environmentURL,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+		}
+	});
 }

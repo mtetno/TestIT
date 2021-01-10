@@ -197,7 +197,8 @@
                 <input type="text" class="form-control border" name="url" id="url" placeholder="Enter URL">
               </div>
               <div class="col-md-3 buttonlink1 btnpadding">
-                <button class="btn btn-primary buttonlink1 addUrlBtn"><img src="img/add-24-px-2.png">ADD</button>
+                <button class="btn btn-primary buttonlink1 addUrlBtn" data-toggle="modal" data-dismiss="modal"
+                  data-target="#valiationModel"><img src="img/add-24-px-2.png">ADD</button>
                 <button class="btn btn-primary buttonlink1 btn-dark cancelRow"><img
                     src="img/close-24-px.png">CANCEL</button>
               </div>
@@ -315,7 +316,7 @@
           <!-- Modal footer -->
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-            <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
+            <button type="button" id="environmentYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
               data-target="#myModalSucess">YES</button>
           </div>
 
@@ -372,7 +373,7 @@
           <!-- Modal footer -->
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-            <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
+            <button type="button" id="urlsYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
               data-target="#myModalSucess1">YES</button>
           </div>
 
@@ -428,7 +429,7 @@
           <!-- Modal footer -->
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-            <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
+            <button type="button" id="accessYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
               data-target="#myModalSucess2">YES</button>
           </div>
 
@@ -464,6 +465,32 @@
     </div>
     <!-- End of Row Delete Modal Success 1-->
 
+    <!-- Generic Model for showing validation -->
+    <div class="modal fade" id="valiationModel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header model_head">
+            <h4 class="modal-title"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body model_body">
+
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer btnfooter">
+            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Generic Model for showing validation -->
+
   </div>
   <!--Main Content End-->
 
@@ -482,7 +509,6 @@
 
   <script>
     $(function () {
-
       $("a.nav-link").click(function (e) {
         e.preventDefault();
         var allApplications = fetchAllApplications();
@@ -515,30 +541,24 @@
 
 
       $("button.addUrlBtn").click(function () {
-        var dataAppl = $("#application").val();
-        var dataEnv = $("#url_environment").val();
-        var dataUrl = $("#url").val();
+        var application = $("#application").val();
+        var environment = $("#url_environment").val();
+        var url = $("#url").val();
 
-        // var str = `<tr>
-        //               <td scope="col" class="bucketcheck">
-        //                 <label class="main subCB">
-        //                   <input type="checkbox"> 
-        //                   <span class="geekmark"></span> 
-        //                 </label>
-        //               </td>
-        //               <td >`+ dataAppl + `</td>
-        //               <td >`+ dataEnv + `</td>
-        //               <td >`+ dataUrl + `</td>
-        //             </tr>`;
-
-        // $("table.Urltable tbody").prepend(str);
-
-        // $("a.addRowBtn").css("pointer-events", "");
-        // $("a.addRowBtn").css("opacity", "");
-        // $("#deleteRow").attr("disabled", false);
-        // $("#deleteRow2").attr("disabled", false);
-        // $("#deleteRow1").attr("disabled", false);
-        // $(this).closest(".addRowData").slideUp();
+        if (application == 0) {
+          showMessage("Please select valid application name");
+        } else if (environment == 0) {
+          showMessage("Please select valid enviornment name");
+        } else if (url.trim().length == 0) {
+          showMessage("Please enter valid url");
+        } else {
+          var dataObj = {};
+          dataObj["application"] = {applicationId : application};
+          dataObj["environment"] = {environmentId : environment};
+          dataObj["envUrl"] = url;
+          dataObj["status"] = 0;
+          saveEnvironmentUrl(dataObj);
+        }
       });
 
       $("button.addroleBtn").click(function () {
@@ -569,21 +589,7 @@
       /*---Jquery for Cancel row---*/
 
       $("button.cancelRow").click(function () {
-        $("#execution_environment").val("");
-        $("#url_environment").val("");
-        $("#application").val("");
-        $("#url").val("");
-        $("#username").val("");
-        $("#password").val("");
-        $("#confirm_password").val("");
-        $("#role").val("");
-
-        $("a.addRowBtn").css("pointer-events", "");
-        $("a.addRowBtn").css("opacity", "");
-        $("#deleteRow").attr("disabled", false);
-        $("#deleteRow1").attr("disabled", false);
-        $("#deleteRow2").attr("disabled", false);
-        $(this).closest(".addRowData").slideUp();
+        closeEnvironmentUrlInput();
       });
 
 
@@ -608,7 +614,7 @@
         $("#myModal").modal();
       });
 
-      $(document).on("click", "#yesbtn", function () {
+      $(document).on("click", "#environmentYesbtn", function () {
         $("table tbody .subCB input:checked").each(function () {
           var environmentName = $("#deletedItem").text();
           if (environmentName.indexOf(",") != -1) {
@@ -626,18 +632,26 @@
         var str = '';
         $("table tbody .subCB input:checked").each(function () {
           if (str != '')
-            str += ", " + $(this).closest("tr").find("td:nth-child(2)").text();
+            str += ", " + $(this).closest("tr").find("td:nth-child(4)").text();
           else
-            str += $(this).closest("tr").find("td:nth-child(2)").text();
+            str += $(this).closest("tr").find("td:nth-child(4)").text();
         });
 
         $("#deletedItem1").text(str);
         $("#myModal1").modal();
       });
 
-      $(document).on("click", "#yesbtn", function () {
+      $(document).on("click", "#urlsYesbtn", function () {
         $("table tbody .subCB input:checked").each(function () {
           $(this).closest("tr").remove();
+          var deletedItem = $("#deletedItem1").text();
+          if (deletedItem.indexOf(",") != -1) {
+            deleteAllEnvironmentUrls();
+            debugger;
+          } else {
+            debugger;
+            deleteSelectedEnvironmentUrl(deletedItem);
+          }
         });
       });
 
@@ -657,7 +671,7 @@
         $("#myModal2").modal();
       });
 
-      $(document).on("click", "#yesbtn", function () {
+      $(document).on("click", "#accessYesbtn", function () {
         $("table tbody .subCB input:checked").each(function () {
           $(this).closest("tr").remove();
         });
@@ -685,98 +699,6 @@
         });
       }
     });
-
-    function saveEnvironment(dataObj) {
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(dataObj),
-        contentType: 'application/json',
-        dataType: 'json',
-        url: base_url + "/environment/save",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-        },
-        success: function () {
-          $("a.addRowBtn").css("pointer-events", "");
-          $("a.addRowBtn").css("opacity", "");
-          $("#deleteRow").attr("disabled", false);
-          $("#deleteRow1").attr("disabled", false);
-          $("#deleteRow2").attr("disabled", false);
-          $("#execution_environment").val('');
-          $("button.addEnvBtn").closest(".addRowData").slideUp();
-          fetchAllEnvironment();
-        }
-      });
-    }
-
-    function deleteAllEnvironment() {
-      $.ajax({
-        type: 'DELETE',
-        contentType: 'application/json',
-        dataType: 'json',
-        url: base_url + "/environment/deleteAllEnvionments/" + readCookie("TAuid"),
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-        },
-        success: function () {
-          $(this).closest("tr").remove();
-          $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-        }
-      });
-    }
-
-    function deleteSelectedEnvironment(environmentName) {
-      $.ajax({
-        type: 'DELETE',
-        contentType: 'application/json',
-        dataType: 'json',
-        url: base_url + "/environment/" + readCookie("TAuid") + "/" + environmentName,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-        },
-        success: function () {
-          $(this).closest("tr").remove();
-        }
-      });
-    }
-
-    function fetchAllApplications() {
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: 'json',
-        url: base_url + "/application/allByCompany",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-        },
-        success: function (data) {
-          var options = '<option value="0">Select Application</option>';
-          data.map((item) => {
-            options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
-          })
-          $("#application").append(options);
-        }
-      });
-    }
-
-    function fetchAllEnvironments() {
-      $.ajax({
-        type: 'GET',
-        contentType: 'application/json',
-        dataType: 'json',
-        url: base_url + "/environment/all",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-        },
-        success: function (data) {
-          var options = '<option value="0">Select Environment</option>';
-          data.map((item) => {
-            options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
-          })
-          $("#url_environment").append(options);
-        }
-      });
-    }
 
   </script>
 </body>

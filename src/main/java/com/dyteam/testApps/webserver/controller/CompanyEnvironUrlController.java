@@ -96,15 +96,17 @@ public class CompanyEnvironUrlController {
         return companyEnvironUrlRepo.saveAll(addCompanyEvnUrl.getCompanyEnvironUrls());
     }
     
-    @DeleteMapping("/{companyEnvironUrlId}")
-    public Boolean delete(@PathVariable(value="companyEnvironUrlId") Long companyEnvironUrlId) {
-    	companyEnvironUrlRepo.deleteById(companyEnvironUrlId);
+     
+    @DeleteMapping("/{environmentUrl}")
+    public Boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,
+    @PathVariable(value="environmentUrl") String environmentUrl) {
+    	companyEnvironUrlRepo.updateByEnvironmentURL(loggedInUser.getUserId(),environmentUrl);
 		return true;
     }
-    
-    @DeleteMapping("/byApplication/{applicationId}")
-    public Boolean deleteByApplication(@PathVariable(value="applicationId") Long applicationId) {
-    	companyEnvironUrlRepo.deleteByApplicationId(applicationId);
+
+    @DeleteMapping("/deleteAllEnvionmentUrls")
+    public Boolean deleteAllEnvionments(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    	companyEnvironUrlRepo.updateAll(loggedInUser.getUserId());
 		return true;
     }
     

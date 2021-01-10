@@ -23,7 +23,7 @@ public interface CompanyEnvironUrlRepository extends CrudRepository<CompanyEnvir
 			+ "ceu.application.applicationId,"
 			+ "ceu.application.applicationName) "
 			+ " from CompanyEnvironUrl ceu right join Environment e on ( ceu.environment.environmentId=e.environmentId or ceu is null) "
-			+ " where e.companyId = :companyId")
+			+ " where e.companyId = :companyId AND ceu.status=0")
 	public List<ApplicationCompanyUrl> findAllByUserId(@Param("companyId") Long companyId);
 	
 	@Query("select ceu,e "
@@ -41,5 +41,14 @@ public interface CompanyEnvironUrlRepository extends CrudRepository<CompanyEnvir
 
 	public void deleteByCompanyId(Long companyId);
 
+	@Transactional
+	@Modifying
+	@Query("update CompanyEnvironUrl set is_delete = 1 where added_by = :userId")
+	void updateAll(Long userId);
+
+	@Transactional
+  	@Modifying
+	@Query("update CompanyEnvironUrl set is_delete = 1 where added_by = :userId AND env_url = :environmentUrl")
+	void updateByEnvironmentURL(Long userId,String environmentUrl);
 	
 }
