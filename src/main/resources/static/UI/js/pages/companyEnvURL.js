@@ -471,3 +471,95 @@ function deleteSelectedEnvironmentUrl(environmentURL) {
 		}
 	});
 }
+
+function displayAllAccessRoles() {
+	$.ajax({
+		url: base_url + "/executionUser/allByCompany",
+		method: "GET",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var payload = "";
+
+			data.map((value) => {
+				console.log(value);
+				var Val = value.name;
+				debugger;
+				payload += '<tr>';
+				payload += '<td scope="col" class="bucketcheck">';
+				payload += '<label class="main subCB">';
+				payload += '<input type="checkbox" data-value=' + value.executionUserId + '>';
+				payload += '<span class="geekmark"></span>';
+				payload += '</label>';
+				payload += '</td>';
+				payload += '<td>' + Val + '</td>';
+				payload += '<td>' + value.role + '</td>';
+				payload += '</tr>';
+			});
+			$(".Roletable tbody").html(payload);
+		}
+	});
+}
+
+function saveAccessRoles(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionUser/save",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			showMessage("Roles saved successfully!");
+			closeAccessRoleInput();
+			displayAllAccessRoles();
+		}
+	});
+}
+
+function closeAccessRoleInput() {
+	$("a.addRowBtn").css("pointer-events", "");
+	$("a.addRowBtn").css("opacity", "");
+	$("#deleteRow").attr("disabled", false);
+	$("#deleteRow1").attr("disabled", false);
+	$("#deleteRow2").attr("disabled", false);
+	$("button.addroleBtn").closest(".addRowData").slideUp();
+
+	$("#username").val("");
+    $("#password").val("");
+    $("#confirm_password").val("");
+    $("#role").val("");
+}
+
+function deleteAllAccessRoles() {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionUser/deleteAll",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			 showMessage("Access Roles deleted successfully!")
+		}
+	});
+}
+
+function deleteSelectedAccessRole(id) {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionUser/" + id,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			showMessage("Access Role deleted successfully!")
+		}
+	});
+}

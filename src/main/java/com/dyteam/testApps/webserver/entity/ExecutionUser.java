@@ -23,21 +23,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "execution_user")
+@Table(name = "access_roles")
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)
 public class ExecutionUser {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="execution_user_id")
+	@Column(name="access_role_id")
 	private Long executionUserId;
 	
 	@Column(name="company_id")
 	@NotNull
 	private Long companyId;
 
-	@Column(name="name")
+	@Column(name="username")
 	@NotNull
 	private String name;
 	
@@ -49,13 +49,17 @@ public class ExecutionUser {
 	@NotNull
 	private String password;
 	
-	@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "added_by")
-	private User addedBy;
+	@Column(name="added_by")
+	@NotNull
+	private Long addedBy;
 	
-	@Column(name="created_at",insertable=false,updatable=false)
+	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+
+	@Column(name="is_delete")
+	@NotNull
+	private String isDelete;
 	
 	public ExecutionUser() {
 	}
@@ -100,11 +104,11 @@ public class ExecutionUser {
 		this.password = password;
 	}
 
-	public User getAddedBy() {
+	public Long getAddedBy() {
 		return addedBy;
 	}
 
-	public void setAddedBy(User addedBy) {
+	public void setAddedBy(Long addedBy) {
 		this.addedBy = addedBy;
 	}
 
@@ -115,5 +119,12 @@ public class ExecutionUser {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
+	public String getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}	
 }

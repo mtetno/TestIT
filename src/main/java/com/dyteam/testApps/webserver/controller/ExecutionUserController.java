@@ -13,93 +13,106 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.ExecutionUser;
-import com.dyteam.testApps.webserver.entity.User;
 import com.dyteam.testApps.webserver.repository.CompanyRepository;
 import com.dyteam.testApps.webserver.repository.ExecutionUserRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
+import com.google.common.collect.Lists;
 
 /**
- * This controller takes care of handling all operations related to Execution user
+ * This controller takes care of handling all operations related to Execution
+ * user
+ * 
  * @author deepak
  */
 @RestController
 @RequestMapping("/executionUser")
 public class ExecutionUserController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	private CompanyRepository companyRepo;
-	private String key;
-	
-	public ExecutionUserController(@Autowired CompanyRepository companyRepo,
-			@Value("${execution.user.pass.key}") String key) {
-		this.companyRepo=companyRepo;
-		this.key=key;
-	}
-	
-    @Autowired
-    ExecutionUserRepository executionUserRepo;
-    
-    @GetMapping("/{executionUserId}")
-    public ExecutionUser findById(@PathVariable(value="executionUserId") Long executionUserId) {
-    	logger.info("get ExecutionUser by id="+executionUserId);
-        ExecutionUser exeUser = executionUserRepo.findById(executionUserId).orElse(null);
-        String decodePassword = Util.getString(companyRepo.getDecodePassword(exeUser.getPassword(), key));
-        exeUser.setPassword(decodePassword);
-		return exeUser;
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private CompanyRepository companyRepo;
+  private String key;
+
+  public ExecutionUserController(@Autowired CompanyRepository companyRepo,
+      @Value("${execution.user.pass.key}") String key) {
+    this.companyRepo = companyRepo;
+    this.key = key;
+  }
+
+  @Autowired
+  ExecutionUserRepository executionUserRepo;
+
+  @GetMapping("/fetchAllAccessRoles")
+  public ExecutionUser findById(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    logger.info("get ExecutionUser by id=" + loggedInUser.getId());
+    ExecutionUser exeUser = executionUserRepo.findById(Long.parseLong(loggedInUser.getId())).orElse(null);
+    String decodePassword = Util.getString(companyRepo.getDecodePassword(exeUser.getPassword(), key));
+    exeUser.setPassword(decodePassword);
+    return exeUser;
+  }
+
+  @GetMapping("/all")
+  public Iterable<ExecutionUser> findAll() {
+    logger.info("get all executionUsers");
+    Iterable<ExecutionUser> findAll = executionUserRepo.findAll();
+    findAll.forEach(eu -> eu.setPassword(null));
+    return findAll;
+  }
+
+  /**
+   * Fetches list of all Execution user for a Company
+   * 
+   * @param loggedInUser
+   * @return
+   */
+  @GetMapping("/allByCompany")
+  public Iterable<ExecutionUser> findAllCompany(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    logger.info("get all executionUsers" + loggedInUser.getCompanyId());
+    Iterable<ExecutionUser> findAllByCompanyId = executionUserRepo.findAllByAddedBy(loggedInUser.getUserId());
+    findAllByCompanyId.forEach(eu -> eu.setPassword(null));
+    return findAllByCompanyId;
+  }
+
+  /**
+   * Create or update Execution user
+   * 
+   * @param executionUser
+   * @param loggedInUser
+   * @return
+   */
+  @PostMapping("/save")
+  public boolean save(@RequestBody ExecutionUser executionUser,
+      @AuthenticationPrincipal final LoginUser loggedInUser) {
+    logger.info("save executionUser = " + executionUser);
+    executionUser.setCompanyId(loggedInUser.getCompanyId());
+    executionUser.setAddedBy(loggedInUser.getUserId());
+    String rawPassword = executionUser.getPassword();
+    String encodedPassword = companyRepo.getEncodedPassword(rawPassword, key);
+    executionUser.setPassword(encodedPassword);
+    Iterable<ExecutionUser> executionUsers = executionUserRepo.findAllByName(loggedInUser.getUserId(), 
+        executionUser.getName());
+    boolean isNew = Lists.newArrayList(executionUsers).size() > 0 ? false : true;
+    if(isNew){
+      executionUserRepo.save(executionUser);
+    }else{
+      executionUserRepo.updateByName(loggedInUser.getUserId(),executionUser.getName());
     }
-    
-    @GetMapping("/all")
-    public Iterable<ExecutionUser> findAll() {
-    	logger.info("get all executionUsers");
-        Iterable<ExecutionUser> findAll = executionUserRepo.findAll();
-        findAll.forEach(eu -> eu.setPassword(null));
-		return findAll;
-    }
-    
-    /**
-     * Fetches list of all Execution user for a Company
-     * @param loggedInUser
-     * @return
-     */
-    @GetMapping("/allByCompany")
-    public Iterable<ExecutionUser> findAllCompany(@AuthenticationPrincipal final LoginUser loggedInUser) {
-    	logger.info("get all executionUsers");
-        Iterable<ExecutionUser> findAllByCompanyId = executionUserRepo.findAllByCompanyId(loggedInUser.getCompanyId());
-        findAllByCompanyId.forEach(eu -> eu.setPassword(null));
-		return findAllByCompanyId;
-    }
-    
-    /**
-     * Create or update Execution user 
-     * @param executionUser
-     * @param loggedInUser
-     * @return
-     */
-    @PostMapping("/save")
-    public ExecutionUser save(@RequestBody ExecutionUser executionUser,@AuthenticationPrincipal final LoginUser loggedInUser) {
-    	logger.info("save executionUser = "+executionUser);
-    	executionUser.setCompanyId(loggedInUser.getCompanyId());
-    	executionUser.setAddedBy(new User(loggedInUser.getUserId()));
-    	if(null != executionUser.getExecutionUserId()) {
-    		ExecutionUser executionUser2 = executionUserRepo.findById(executionUser.getExecutionUserId()).get();
-    		executionUser2.setName(executionUser.getName());
-    		executionUser2.setRole(executionUser.getRole());
-    		executionUser2.setPassword(executionUser.getPassword());
-    		executionUser = executionUser2;
-    	} 
-    		String rawPassword = executionUser.getPassword();
-        	String encodedPassword = companyRepo.getEncodedPassword(rawPassword, key);
-        	executionUser.setPassword(encodedPassword);
-    	
-        return executionUserRepo.save(executionUser);
-    }
-    
-    @DeleteMapping("/{executionUserId}")
-    public Boolean delete(@PathVariable(value="executionUserId") Long executionUserId) {
-    	executionUserRepo.deleteById(executionUserId);
-		return true;
-    }
-    
+    return true;
+  }
+
+  @DeleteMapping("/{executionId}")
+  public Boolean delete(@PathVariable(value = "executionId") Long executionId,
+      @AuthenticationPrincipal final LoginUser loggedInUser) {
+    executionUserRepo.updateById(loggedInUser.getUserId(), executionId);
+    return true;
+  }
+
+  @DeleteMapping("/deleteAll")
+  public Boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    executionUserRepo.updateAll(loggedInUser.getUserId());
+    return true;
+  }
 }

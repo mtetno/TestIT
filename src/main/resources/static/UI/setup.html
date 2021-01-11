@@ -103,11 +103,11 @@
     <div class="card border_card">
       <div class="card-body tabs">
         <ul id="tabs" class="nav nav-tabs">
-          <li class="nav-item"><a href="" data-target="#environment" data-toggle="tab"
+          <li id="environmentTab" class="nav-item"><a href="" data-target="#environment" data-toggle="tab"
               class="nav-link small text-uppercase active">Execution Environment</a></li>
-          <li class="nav-item"><a href="" data-target="#urls" data-toggle="tab"
+          <li id="environmentUrlTab" class="nav-item"><a href="" data-target="#urls" data-toggle="tab"
               class="nav-link small text-uppercase">Environment URL's</a></li>
-          <li class="nav-item"><a href="" data-target="#roles" data-toggle="tab"
+          <li id="accessRolesTab" class="nav-item"><a href="" data-target="#roles" data-toggle="tab"
               class="nav-link small text-uppercase">Access Role</a></li>
         </ul>
       </div>
@@ -509,10 +509,15 @@
 
   <script>
     $(function () {
-      $("a.nav-link").click(function (e) {
+      $("#environmentUrlTab").click(function (e) {
         e.preventDefault();
-        var allApplications = fetchAllApplications();
-        var allEnvironments = fetchAllEnvironments();
+         fetchAllApplications();
+         fetchAllEnvironments();
+      });
+
+      $("#accessRolesTab").click(function (e) {
+        e.preventDefault();
+        displayAllAccessRoles();
       });
 
       $("a.addRowBtn").click(function (e) {
@@ -563,27 +568,20 @@
 
       $("button.addroleBtn").click(function () {
         var dataUsername = $("#username").val();
+        var password = $("#password").val();
+        var confirmPassword = $("#confirm_password").val();
         var dataRole = $("#role").val();
 
-        var str = `<tr>
-                      <td scope="col" class="bucketcheck">
-                        <label class="main subCB">
-                          <input type="checkbox"> 
-                          <span class="geekmark"></span> 
-                        </label>
-                      </td>
-                      <td >`+ dataUsername + `</td>
-                      <td >`+ dataRole + `</td>
-                    </tr>`;
-
-        $("table.Roletable tbody").prepend(str);
-
-        $("a.addRowBtn").css("pointer-events", "");
-        $("a.addRowBtn").css("opacity", "");
-        $("#deleteRow").attr("disabled", false);
-        $("#deleteRow1").attr("disabled", false);
-        $("#deleteRow2").attr("disabled", false);
-        $(this).closest(".addRowData").slideUp();
+        if(password.localeCompare(confirmPassword) == 0){
+          var dataObj = {};
+          dataObj["name"] = dataUsername;
+          dataObj["role"] = dataRole;
+          dataObj["password"] = password;
+          dataObj["isDelete"] = 0;
+          saveAccessRoles(dataObj);
+        }else{
+          showMessage("Password enter does not match")
+        }
       });
 
       /*---Jquery for Cancel row---*/
@@ -647,9 +645,7 @@
           var deletedItem = $("#deletedItem1").text();
           if (deletedItem.indexOf(",") != -1) {
             deleteAllEnvironmentUrls();
-            debugger;
           } else {
-            debugger;
             deleteSelectedEnvironmentUrl(deletedItem);
           }
         });
@@ -673,7 +669,14 @@
 
       $(document).on("click", "#accessYesbtn", function () {
         $("table tbody .subCB input:checked").each(function () {
+          var roleId = $(this).attr('data-value');
           $(this).closest("tr").remove();
+          var accessRoles = $("#deletedItem2").text();
+          if (accessRoles.indexOf(",") != -1) {
+            deleteAllAccessRoles();
+          } else {
+            deleteSelectedAccessRole(roleId);
+          }
         });
       });
 
