@@ -33,10 +33,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dyteam.testApps.webserver.model.EXECUTION_RESULT;
-import com.dyteam.testApps.webserver.model.ExecutionResultRunnerInfo;
-import com.dyteam.testApps.webserver.model.LatestExecutionExtraSummary;
-import com.dyteam.testApps.webserver.model.LatestExecutionSummary;
+ 
 
 
 public class Util {
@@ -300,71 +297,71 @@ public class Util {
 
 	public static final String TEST_DATA_FOLDER_NAME = "TestData";
 
-	public static void populateResults(List<ExecutionResultRunnerInfo> findAllRunner, Map<Long, LatestExecutionSummary> map,
-			boolean isFull) {
-		findAllRunner.forEach(er -> {
-			if (!map.containsKey(er.getRunnerId())) {
-				LatestExecutionSummary value = null;
-				if (isFull) {
-					value = new LatestExecutionSummary(er.getRunnerId(), er.getRunName(), er.getExecutedBy(),
-							er.getExecutedOn(), 0l, 0l, 0l);
-				} else {
-					value = new LatestExecutionSummary(er.getRunnerId(), 0l, 0l, 0l);
-				}
-				map.put(er.getRunnerId(), value);
-			}
-			LatestExecutionSummary latestExecutionSummary = map.get(er.getRunnerId());
-			EXECUTION_RESULT valueOf = EXECUTION_RESULT.valueOf(er.getResult().toUpperCase());
-			switch (valueOf) {
-			case QUEUED:
-				latestExecutionSummary.setQueuedTestCasesCount(er.getCompletionPercentage());
-				break;
-			case PASSED:
-				latestExecutionSummary.setPassedTestCasesCount(er.getCompletionPercentage());
-				break;
-			case FAILED:
-				latestExecutionSummary.setFailedTestCasesCount(er.getCompletionPercentage());
-				break;
-			default:
-				break;
-			}
+	// public static void populateResults(List<ExecutionResultRunnerInfo> findAllRunner, Map<Long, LatestExecutionSummary> map,
+	// 		boolean isFull) {
+	// 	findAllRunner.forEach(er -> {
+	// 		if (!map.containsKey(er.getRunnerId())) {
+	// 			LatestExecutionSummary value = null;
+	// 			if (isFull) {
+	// 				value = new LatestExecutionSummary(er.getRunnerId(), er.getRunName(), er.getExecutedBy(),
+	// 						er.getExecutedOn(), 0l, 0l, 0l);
+	// 			} else {
+	// 				value = new LatestExecutionSummary(er.getRunnerId(), 0l, 0l, 0l);
+	// 			}
+	// 			map.put(er.getRunnerId(), value);
+	// 		}
+	// 		LatestExecutionSummary latestExecutionSummary = map.get(er.getRunnerId());
+	// 		EXECUTION_RESULT valueOf = EXECUTION_RESULT.valueOf(er.getResult().toUpperCase());
+	// 		switch (valueOf) {
+	// 		case QUEUED:
+	// 			latestExecutionSummary.setQueuedTestCasesCount(er.getCompletionPercentage());
+	// 			break;
+	// 		case PASSED:
+	// 			latestExecutionSummary.setPassedTestCasesCount(er.getCompletionPercentage());
+	// 			break;
+	// 		case FAILED:
+	// 			latestExecutionSummary.setFailedTestCasesCount(er.getCompletionPercentage());
+	// 			break;
+	// 		default:
+	// 			break;
+	// 		}
 	
-		});
-	}
+	// 	});
+	// }
 
-	public static String getTestCaseResultHtml(LatestExecutionExtraSummary expandedER, Iterable<Object[]> testCaseInfo) {
-		StringBuffer sf = new StringBuffer();
-		sf.append("Dear ").append(expandedER.getExecutedBy()).append(",").append(HTML_NEXT_LINE_STR).
-		append("Execution Name : ").append(expandedER.getRunName()).append(HTML_NEXT_LINE_STR).
-		append("Environment Name : ").append(expandedER.getEnvName()).append(HTML_NEXT_LINE_STR).
-		append("Browser Name : ").append(expandedER.getBrowserName()).append(HTML_NEXT_LINE_STR).
-		append("Triggered By : ").append(expandedER.getExecutedBy()).append(HTML_NEXT_LINE_STR).
-		append("Triggered At : ").append(expandedER.getExecutedOn()).append(HTML_NEXT_LINE_STR).
-		append("<html>").
-		append("<table border='1'>").
-		append(" <thead>").
-		append(" <tr>").
-		append(" <th>Sr.No.</th>").
-		append(" <th>Test Name</th>").
-		append(" <th>Result</th>").
-		append(" </tr>").
-		append(" </thead>").
-		append(" <tbody>");
-		AtomicInteger srNo = new AtomicInteger(0);
-		testCaseInfo.forEach(tc -> {
-			String color = EXECUTION_RESULT.PASSED.toString().equalsIgnoreCase((String) tc[1])?"green":"red";
-			sf.append(" <tr>").
-			append("<td>").append(srNo.incrementAndGet()).append("</td>").
-			append("<td>").append(tc[0]).append("</td>").
-			append("<td style='color:").append(color).append("'><b>").append(tc[1]).append("</td>").
-			append(" </tr>");
-		});
-		sf.append(" </tbody>").
-		append(" </table>").
-		append("<html>").append(HTML_NEXT_LINE_STR).append(HTML_NEXT_LINE_STR).
-		append("Thanks").append(HTML_NEXT_LINE_STR).
-		append("Team GetAutomationDone");
-		return sf.toString();
-	}
+	// public static String getTestCaseResultHtml(LatestExecutionExtraSummary expandedER, Iterable<Object[]> testCaseInfo) {
+	// 	StringBuffer sf = new StringBuffer();
+	// 	sf.append("Dear ").append(expandedER.getExecutedBy()).append(",").append(HTML_NEXT_LINE_STR).
+	// 	append("Execution Name : ").append(expandedER.getRunName()).append(HTML_NEXT_LINE_STR).
+	// 	append("Environment Name : ").append(expandedER.getEnvName()).append(HTML_NEXT_LINE_STR).
+	// 	append("Browser Name : ").append(expandedER.getBrowserName()).append(HTML_NEXT_LINE_STR).
+	// 	append("Triggered By : ").append(expandedER.getExecutedBy()).append(HTML_NEXT_LINE_STR).
+	// 	append("Triggered At : ").append(expandedER.getExecutedOn()).append(HTML_NEXT_LINE_STR).
+	// 	append("<html>").
+	// 	append("<table border='1'>").
+	// 	append(" <thead>").
+	// 	append(" <tr>").
+	// 	append(" <th>Sr.No.</th>").
+	// 	append(" <th>Test Name</th>").
+	// 	append(" <th>Result</th>").
+	// 	append(" </tr>").
+	// 	append(" </thead>").
+	// 	append(" <tbody>");
+	// 	AtomicInteger srNo = new AtomicInteger(0);
+	// 	testCaseInfo.forEach(tc -> {
+	// 		String color = EXECUTION_RESULT.PASSED.toString().equalsIgnoreCase((String) tc[1])?"green":"red";
+	// 		sf.append(" <tr>").
+	// 		append("<td>").append(srNo.incrementAndGet()).append("</td>").
+	// 		append("<td>").append(tc[0]).append("</td>").
+	// 		append("<td style='color:").append(color).append("'><b>").append(tc[1]).append("</td>").
+	// 		append(" </tr>");
+	// 	});
+	// 	sf.append(" </tbody>").
+	// 	append(" </table>").
+	// 	append("<html>").append(HTML_NEXT_LINE_STR).append(HTML_NEXT_LINE_STR).
+	// 	append("Thanks").append(HTML_NEXT_LINE_STR).
+	// 	append("Team GetAutomationDone");
+	// 	return sf.toString();
+	// }
 
 }

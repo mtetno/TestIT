@@ -22,7 +22,6 @@ import com.dyteam.testApps.webserver.entity.Environment;
 import com.dyteam.testApps.webserver.repository.ApplicationRepository;
 import com.dyteam.testApps.webserver.repository.CompanyRepository;
 import com.dyteam.testApps.webserver.repository.EnvironmentRepository;
-import com.dyteam.testApps.webserver.repository.ExecutionResultsRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 /**
@@ -40,10 +39,7 @@ public class EnvironmentController {
 	
     @Autowired
     EnvironmentRepository environmentRepo;
-    
-    @Autowired
-	ExecutionResultsRepository executionResultsRepo;
-    
+        
     @Autowired
     CompanyRepository companyRepo;
     

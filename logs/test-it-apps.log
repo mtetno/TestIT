@@ -4437,3 +4437,6 @@ Caused by: org.hibernate.QueryException: could not resolve property: is_delete o
 2021-01-11 10:59:43,006 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-3] Closing JPA EntityManagerFactory for persistence unit 'default'
 2021-01-11 10:59:43,009 INFO com.zaxxer.hikari.HikariDataSource [Thread-3] HikariPool-1 - Shutdown initiated...
 2021-01-11 10:59:43,048 INFO com.zaxxer.hikari.HikariDataSource [Thread-3] HikariPool-1 - Shutdown completed.
+2021-01-14 11:26:11,774 INFO org.springframework.boot.StartupInfoLogger [main] Starting RestServer v0.0.3 on INTEL-PC with PID 2400 (F:\Professional\TestIt\development\target\GetAutomationDone-0.0.3.jar started by INTEL in F:\Professional\TestIt\development)
+2021-01-14 11:26:11,789 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-01-14 11:26:11,886 INFO org.springframework.context.support.AbstractApplicationContext [main] Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@d70c109: startup date [Thu Jan 14 11:26:11 IST 2021]; root of context hierarchy
