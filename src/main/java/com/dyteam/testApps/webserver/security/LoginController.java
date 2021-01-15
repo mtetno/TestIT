@@ -26,7 +26,7 @@ import com.dyteam.testApps.webserver.entity.Company;
 import com.dyteam.testApps.webserver.entity.User;
 import com.dyteam.testApps.webserver.repository.CompanyRepository;
 import com.dyteam.testApps.webserver.repository.UserRepository;
-import com.dyteam.testApps.webserver.service.IEmailService;
+ 
 
 /**
  * Handles the actions like Login,Logout and forgot password
@@ -49,11 +49,7 @@ final class LoginController {
 	
 	@Autowired
     UserRepository userRepo;
-	
-	@Autowired
-    IEmailService emailService;
-	
-	
+ 
 	@Value("${email.password.key}") 
     String key;
 	
@@ -147,7 +143,7 @@ final class LoginController {
     		append("Thanks,").append(Util.HTML_NEXT_LINE_STR).
     		append(" Team GetAutomationDone");
     		
-    		emailService.sendSimpleMessage(user.getEmail(), "Password reset", strbf.toString(), userCompany);
+    		//emailService.sendSimpleMessage(user.getEmail(), "Password reset", strbf.toString(), userCompany);
     		
     		return true;
     	} catch(NoSuchElementException nse) {
