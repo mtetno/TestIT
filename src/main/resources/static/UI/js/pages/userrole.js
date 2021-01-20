@@ -146,7 +146,7 @@ function addUserRole(executionUserId=0){
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		url: base_url+"/executionUser/save",
+		url: base_url+"/accessrole/save",
 			success: function(msg){
 				$('#modal_ajax').modal('hide');
 				if(!alert(successMsg)) {
@@ -158,7 +158,7 @@ function addUserRole(executionUserId=0){
 
 $(document).ready(function() {	
 	$.ajax({
-		url: base_url+"/executionUser/allByCompany",
+		url: base_url+"/accessrole/allByCompany",
 		type: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
@@ -173,13 +173,13 @@ $(document).ready(function() {
 				payload += '<td>'+value.role+'</td>';
 				payload += '<td>'+value.addedBy.userName+'</td>';
 				payload += '<td>';
-				payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'/executionUser/'+value.executionUserId+'\');" class="table-link">';
+				payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'/accessrole/'+value.executionUserId+'\');" class="table-link">';
 				payload += '<span class="fa-stack">';
 				payload += '<i class="fa fa-square fa-stack-2x"></i>';
 				payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
 				payload += '</span>';
 				payload += '</a>';
-				payload += '<a style="cursor:pointer" onclick="checkDelete(\'/executionUser/'+value.executionUserId+'\');" class="table-link danger">';
+				payload += '<a style="cursor:pointer" onclick="checkDelete(\'/accessrole/'+value.executionUserId+'\');" class="table-link danger">';
 				payload += '<span class="fa-stack">';
 				payload += '<i class="fa fa-square fa-stack-2x"></i>';
 				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';

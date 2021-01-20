@@ -474,7 +474,7 @@ function deleteSelectedEnvironmentUrl(environmentURL) {
 
 function displayAllAccessRoles() {
 	$.ajax({
-		url: base_url + "/executionUser/allByCompany",
+		url: base_url + "/accessrole/allByCompany",
 		method: "GET",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
@@ -508,7 +508,7 @@ function saveAccessRoles(dataObj) {
 		data: JSON.stringify(dataObj),
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/executionUser/save",
+		url: base_url + "/accessrole/save",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -539,7 +539,7 @@ function deleteAllAccessRoles() {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/executionUser/deleteAll",
+		url: base_url + "/accessrole/deleteAll",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -554,7 +554,7 @@ function deleteSelectedAccessRole(id) {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/executionUser/" + id,
+		url: base_url + "/accessrole/" + id,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},

@@ -95,7 +95,7 @@ $(document).ready(function() {
 			$("div.sel-content").append(appOptions);
 			//User Role
 			/*$.ajax({
-				url: base_url+"/executionUser/allByCompany",
+				url: base_url+"/accessrole/allByCompany",
 				type: "get",
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));

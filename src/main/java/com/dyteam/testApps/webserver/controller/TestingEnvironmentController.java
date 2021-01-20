@@ -19,9 +19,9 @@ public class TestingEnvironmentController {
     @Autowired
     TestingEnvironmentRepository testingEnvironmentRepository;
      
-    @GetMapping(value = "/getTestCases")
+    @GetMapping(value = "/all")
     public Iterable<TestingEnvironment> getTestingEnvironment()  {
-        logger.info("Inside getTestCases");
+        logger.info("Inside getTestingEnvironment");
     	Iterable<TestingEnvironment> testcaseResults = testingEnvironmentRepository.findAll();
     	return testcaseResults;
     }
