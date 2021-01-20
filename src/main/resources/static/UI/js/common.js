@@ -153,3 +153,99 @@ function statusError(statusCode, responseText="") {
 		//return false;
 	}
 }
+
+
+function fetchAllApplications() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Application</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+			})
+			$("#application").html(options);
+		}
+	});
+}
+
+function fetchAllEnvironments() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/environment/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
+			})
+			$("#environment").html(options);
+		}
+	});
+}
+
+function fetchTestType() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/testtype/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Type</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.type + '</option>';
+			})
+			$("#type").html(options);
+		}
+	});
+}
+
+function fetchAutomationStatus() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/automationStatus/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.status + '</option>';
+			})
+			$("#automation_status").html(options);
+		}
+	});
+}
+
+function fetchAutomationProgress() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/automationProgress/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.value + '</option>';
+			})
+			$("#automation_progress").html(options);
+		}
+	});
+}

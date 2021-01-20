@@ -1,0 +1,71 @@
+package com.dyteam.testApps.webserver.controller;
+
+import java.util.Map;
+
+import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.repository.TestcasesRepository;
+import com.dyteam.testApps.webserver.security.LoginUser;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/testcases")
+public class TestcasesController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    TestcasesRepository testcasesRepo;
+
+    @PostMapping("/save")
+    public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("save testcases = " + testcases);
+        Testcases testcasesDB = new Testcases();
+        testcasesDB.setTestcaseName(testcases.getTestcaseName());
+        testcasesDB.setCompanyId(loggedInUser.getCompanyId());
+        testcasesDB.setDescription(testcases.getDescription());
+        testcasesDB.setClassName(testcases.getClassName());
+        testcasesDB.setTestMethod(testcases.getTestMethod());
+        testcasesDB.setEnvironmentId(testcases.getEnvironmentId());
+        testcasesDB.setApplicationId(testcases.getApplicationId());
+        testcasesDB.setTestTypeId(testcases.getTestTypeId());
+        testcasesDB.setFoundInBuild(testcases.getFoundInBuild());
+        testcasesDB.setAutoStatusId(testcases.getAutoStatusId());
+        testcasesDB.setAutoProgressId(testcases.getAutoProgressId());
+        testcasesDB.setAddedBy(loggedInUser.getUserId());
+        testcasesDB.setIsDelete(testcases.getIsDelete());
+        testcases = testcasesDB;
+        Testcases save = testcasesRepo.save(testcases);
+        return save;
+    }
+
+    @GetMapping(value = "/all")
+    public Iterable<Map<String, Object>> getAllTestcases() {
+        logger.info("Inside getAllTestcases");
+        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll();
+    	return testtypes;
+    }
+
+    @DeleteMapping(value = "/deleteAll")
+    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+        testcasesRepo.updateAll(loggedInUser.getUserId());
+        return true;
+    }
+
+    @DeleteMapping(value = "/delete/{testcaseId}")
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "testcaseId") Long testcaseId) {
+        logger.info("testcaseId"+testcaseId);
+        testcasesRepo.updateByTestcaseId(loggedInUser.getUserId(),testcaseId);
+        return true;
+    }
+}

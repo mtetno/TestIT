@@ -111,42 +111,7 @@
 							<td></td>
 							<td></td>
 							</tr>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td  data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">ITSM_CreateIncidentWithoutCI</td>
-						      <td >ITSM</td>
-						      <td >Production</td>
-						      <td >In Progress</td>
-						    </tr>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td  data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">ITSM_CreateIncidentWithoutCI</td>
-						      <td >ITSM</td>
-						      <td >Production</td>
-						      <td >In Progress</td>
-						    </tr>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td  data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">ITSM_CreateIncidentWithoutCI</td>
-						      <td >ITSM</td>
-						      <td >Production</td>
-						      <td >In Progress</td>
-						    </tr>
+						    
 						  </tbody>
 						</table>
 					</div>
@@ -232,7 +197,7 @@
 								</div>
 								<div class="col-md-6 mb-2">
 									<label>Found In Build</label>
-									<input type="text" class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here">
+									<input type="number" class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here">
 								</div>
 							</div>
 							<div class="row">
@@ -491,9 +456,19 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/testcases.js"></script>
 	<script src="js/custom.js"></script>
+	
 	<script>
 		$(function(){
+
+			fetchAllApplications();
+			fetchAllEnvironments();
+			fetchAutomationProgress();
+			fetchAutomationStatus();
+			fetchTestType();
+			displayTestcases();
 
 			/*---Jquery for search table column---*/
 
@@ -511,20 +486,31 @@
 
 			/*---Jquery for save row---*/
 			$(document).on("click", "#saveRec", function(){
-				var savestr = `<tr>
-			      <td scope="col" class="bucketcheck">
-			      	<label class="main subCB">
-				        <input type="checkbox"> 
-				        <span class="geekmark"></span> 
-				    </label>
-		          </td>
-			      <td>`+$("#test_case_name").val()+`</td>
-			      <td>`+$("#application").val()+`</td>
-			      <td>`+$("#environment").val()+`</td>
-			      <td>`+$("#automation_status").val()+`</td>
-			    </tr>`;
-			    // $("#bucketList tbody tr:first-child").before();
-			    $("#bucketList tbody tr:first-child").before(savestr);				    
+				var testcaseName = $("#test_case_name").val();
+				var description = $("#description").val();
+				var className = $("#classname").val();
+				var testMethod = $("#test_method").val();
+				var environmentId = $("#environment").val();
+				var applicationId = $("#application").val()
+				var testTypeId = $("#type").val();
+				var foundInBuild = $("#found_in_build").val();
+				var autoStatusId = $("#automation_status").val();
+				var autoProgressId = $("#automation_progress").val();
+				var isDelete = 0
+
+				var dataObj = {};
+				dataObj["testcaseName"] = testcaseName;
+				dataObj["description"] = description;
+				dataObj["className"] = className;
+				dataObj["testMethod"] = testMethod;
+				dataObj["environmentId"] = environmentId;
+				dataObj["applicationId"] = applicationId;
+				dataObj["testTypeId"] = testTypeId;
+				dataObj["foundInBuild"] = foundInBuild;
+				dataObj["autoStatusId"] = autoStatusId;
+				dataObj["autoProgressId"] = autoProgressId;
+				dataObj["isDelete"] = isDelete;
+				saveTestcases(dataObj);			    
 			});
             
             /*---Jquery for Update row---*/
@@ -562,7 +548,9 @@
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
 				var str = '';
+				var testcaseId = 0;
 				$("table tbody .subCB input:checked").each(function(){
+				testcaseId = $(this).attr('data-value');
 				if(str!='')
 					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
 				else
@@ -570,7 +558,12 @@
 				});
 
 				$("#deletedItem").text(str);
-				$("#myModal").modal();
+
+				if(str.indexOf(",") > 0){
+					deleteAllTestcases();
+				}else{
+					deleteTestcase(testcaseId);
+				}
 			});
 
 			$(document).on("click", "#yesbtn", function(){
@@ -602,6 +595,9 @@
 				});
 			}
 		});
+
+	 
+
 	</script>
 </body>
 </html>
