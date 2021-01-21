@@ -15,12 +15,14 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "test_buckets")
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)

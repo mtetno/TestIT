@@ -1,7 +1,6 @@
 package com.dyteam.testApps.webserver.controller;
 
 import com.dyteam.testApps.webserver.entity.ExecutionDetails;
-import com.dyteam.testApps.webserver.entity.Testcases;
 import com.dyteam.testApps.webserver.repository.ExecutionDetailsRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
