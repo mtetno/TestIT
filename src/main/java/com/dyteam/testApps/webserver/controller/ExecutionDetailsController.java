@@ -26,7 +26,6 @@ public class ExecutionDetailsController {
     public ExecutionDetails saveExecutionDetails(@RequestBody ExecutionDetails executionDetailsParam, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("inside saveExecutionDetails");
         ExecutionDetails executionDetails = new ExecutionDetails();
-        executionDetails.setId(loggedInUser.getUserId());
         executionDetails.setCompanyId(loggedInUser.getCompanyId());
         executionDetails.setExecutionName(executionDetailsParam.getExecutionName());
         executionDetails.setEnvironmentId(executionDetailsParam.getEnvironmentId());
@@ -36,12 +35,8 @@ public class ExecutionDetailsController {
         executionDetails.setScheduleDate(executionDetailsParam.getScheduleDate());
         executionDetails.setScheduleTime(executionDetailsParam.getScheduleTime());
         executionDetails.setTestcasesId(executionDetailsParam.getTestcasesId());
-        executionDetails.setTriggeredBy(executionDetailsParam.getTriggeredBy());
-        executionDetails.setTriggeredWhen(executionDetailsParam.getTriggeredWhen());
-        executionDetails.setTestResult(executionDetailsParam.getTestResult());
-        executionDetails.setOutput(executionDetailsParam.getOutput());
-        executionDetails.setReason(executionDetailsParam.getReason());
-        executionDetails.setIsDelete(executionDetailsParam.getIsDelete());
+        executionDetails.setTriggeredBy(loggedInUser.getUserId());
+        executionDetails.setIsDelete(0);
        return executionDetailsRepository.save(executionDetails);
     }
     

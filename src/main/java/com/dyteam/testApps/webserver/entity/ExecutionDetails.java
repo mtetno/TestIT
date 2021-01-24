@@ -61,9 +61,9 @@ public class ExecutionDetails {
 	@NotNull
 	private Long threads;
 
-	@Column(name="schedule_date",insertable=false,updatable=false)
+	@Column(name="schedule_date")
 	@NotNull
-	private Date scheduleDate;
+	private String scheduleDate;
 
 	@Column(name="schedule_time")
 	@NotNull
@@ -71,26 +71,23 @@ public class ExecutionDetails {
 
 	@Column(name="testcases_id")
 	@NotNull
-	private Long testcasesId;
+	private String testcasesId;
 
 	@Column(name="triggered_by")
 	@NotNull
-	private String triggeredBy;
+	private Long triggeredBy;
 
 	@Column(name="triggered_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date triggeredWhen;
 
 	@Column(name="test_result")
-	@NotNull
 	private String testResult;
 
 	@Column(name="output")
-	@NotNull
 	private String output;
 
 	@Column(name="reason")
-	@NotNull
 	private String reason;
 
 	@Column(name="is_delete")
@@ -153,11 +150,11 @@ public class ExecutionDetails {
 		this.threads = threads;
 	}
 
-	public Date getScheduleDate() {
+	public String getScheduleDate() {
 		return scheduleDate;
 	}
 
-	public void setScheduleDate(Date scheduleDate) {
+	public void setScheduleDate(String scheduleDate) {
 		this.scheduleDate = scheduleDate;
 	}
 
@@ -169,19 +166,19 @@ public class ExecutionDetails {
 		this.scheduleTime = scheduleTime;
 	}
 
-	public Long getTestcasesId() {
+	public String getTestcasesId() {
 		return testcasesId;
 	}
 
-	public void setTestcasesId(Long testcasesId) {
+	public void setTestcasesId(String testcasesId) {
 		this.testcasesId = testcasesId;
 	}
 
-	public String getTriggeredBy() {
+	public Long getTriggeredBy() {
 		return triggeredBy;
 	}
 
-	public void setTriggeredBy(String triggeredBy) {
+	public void setTriggeredBy(Long triggeredBy) {
 		this.triggeredBy = triggeredBy;
 	}
 

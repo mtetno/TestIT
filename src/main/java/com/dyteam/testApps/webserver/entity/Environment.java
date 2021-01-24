@@ -35,7 +35,7 @@ public class Environment {
 	private String environmentName;
 	
 	@Column(name="company_id")
-	@NotNull
+	@NotNull	
 	private Long companyId;
 	
 	@Column(name="added_by")

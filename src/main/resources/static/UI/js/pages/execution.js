@@ -3,7 +3,60 @@ var appId = new Array();
 var tcId = new Array(); 
 var tcNames = new Array(); 
 var appNames = new Array(); 
+var selectedTestCases = new Array();
+var selectedApplications = new Array();
+var selectedTestCasesName = new Array();
+var selectedApplicationsName = new Array();
 var comEnvURL;
+
+
+function attachClickListenersOnDropDown(){
+	$(".subCB input[type=checkbox]").click(function(e){
+		console.log("inside attachClickListenersOnDropDown");
+		if($(this).prop("checked")==true)
+		{	
+			selectedTestCases.push($(this).attr('data-id'));
+			selectedTestCasesName.push($(this).attr('data-value'));
+			console.log(selectedTestCases);
+		}
+		else{	
+			_.remove(selectedTestCases, (e)=>e == $(this).attr('data-id'));
+			_.remove(selectedTestCasesName, (e)=>e == $(this).attr('data-value'));
+			console.log(selectedTestCases);
+		}
+	});
+
+	$(".mainCB input[type=checkbox]").click(function(e){
+		e.stopPropagation();
+		if($(this).prop("checked")==true)
+		{
+			console.log("selected")	;
+			selectedApplications.push($(this).attr('data-id'));
+			selectedApplicationsName.push($(this).attr('data-value'));
+			$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	
+			$(this).closest(".selectdiv1").find(".submaindiv input[type=checkbox]").each((i,obj)=> {
+				selectedTestCases.push($(obj).attr('data-id'));
+				selectedTestCasesName.push($(obj).attr('data-value'));
+				}
+			);
+
+		}
+		else
+		{	
+			console.log("not selected")	;
+			_.remove(selectedApplications, (e)=>e == $(this).attr('data-id'));
+			_.remove(selectedApplicationsName, (e)=>e == $(this).attr('data-value'));
+			$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	
+			$(this).closest(".selectdiv1").find(".submaindiv input[type=checkbox]").each((i,obj)=> {
+				_.remove(selectedTestCases, (e)=>e == $(obj).attr('data-id'));
+				_.remove(selectedTestCasesName, (e)=>e == $(obj).attr('data-value'));
+				}
+			);
+		}
+	});
+}
+
+
 $(document).ready(function() {
 	var today = new Date().toLocaleString();
 	today = today.substring(0,today.length-3).replace("/","_").replace("/","_").replace(", ","_");
@@ -11,20 +64,20 @@ $(document).ready(function() {
 	today = replaceAll(today, ":", "_");
 	today = readCookie("TAuname")+"_"+today;
 	$("input[name=execution_name]").val(today);
-	$.ajax({
-		url: base_url+"/browser/allByCompany", 
-		method: "get",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function(dataBrowser) {
-			var appOptions = "";
-			$.each(dataBrowser, function(key, value) {	
-				appOptions += '<option value="'+value.browserId+'">'+value.browserName+'</option>';
-			});
-			$("select[name=browser_id]").append(appOptions);			
-		}
-	});	
+	// $.ajax({
+	// 	url: base_url+"/browser/allByCompany", 
+	// 	method: "get",
+	// 	beforeSend: function (xhr) {
+	// 		xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+	// 	},
+	// 	success: function(dataBrowser) {
+	// 		var appOptions = "";
+	// 		$.each(dataBrowser, function(key, value) {	
+	// 			appOptions += '<option value="'+value.browserId+'">'+value.browserName+'</option>';
+	// 		});
+	// 		$("select[name=browser_id]").append(appOptions);			
+	// 	}
+	// });	
 	$.ajax({
 		url: base_url+"/environment/all", 
 		method: "get",
@@ -93,48 +146,23 @@ $(document).ready(function() {
 			});
 			
 			$("div.sel-content").append(appOptions);
-			//User Role
-			/*$.ajax({
-				url: base_url+"/accessrole/allByCompany",
-				type: "get",
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-				},
-				success: function(data)
-				{ 
-					var payload = "";
-					$.each(data, function(index, value) {
-						payload += '<option value="'+value.executionUserId+'">'+value.name+'- '+value.role+'</option>';
-					});
-					$("select[name=userrole]").append(payload);
-				}
-			});*/
 			
-			// Test Cases
 			$.ajax({
-				url: base_url+"/testcases/allByCompany", 
+				url: base_url+"/testcases/allByComapny", 
 				method: "get",
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 				},
 				success: function(data) {
+
+					console.log("execution data",data);
+
+
 					$.each(data, function(key, value) {
 						var tcData = "";
 						if(optiontc.length == 0){
 							optiontc[String(value.applicationId)] = "";
 						}
-						/*if(value.isPerfSuite) {
-							tcData += '<p title="'+value.description+'">';
-							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testcaseName+'" value="'+value.className+'" type="checkbox"> <label>'+value.testcaseName+'</label>';
-							tcData += '</p>';
-							$("div.panel-group.accordion div#collapseOne0 .panel-body .form-group").append(tcData);
-							if($("div.panel-group.accordion div#collapseOne0").parent().hasClass("hide")){
-								$("div.panel-group.accordion div#collapseOne0").parent().removeClass("hide");
-							}
-						}
-						else {*/
-						
-						// IMPLEMENTED AS PER NEW DESIGN
 						
 						
 							tcData +='<li>'
@@ -148,294 +176,30 @@ $(document).ready(function() {
 							tcData += '</div>';
 							tcData += '</li>';
 							$(".selectdiv.app"+value.applicationId+" .selectdiv1 .submaindiv ul").append(tcData)
-							
-							/*tcData += '<p title="'+value.description+'">';
-							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testcaseName+'" value="'+value.className+'" type="checkbox"> <label>'+value.testcaseName+'</label>';
-							tcData += '</p>';
-							$("div.panel-group.accordion div#collapseOne"+value.applicationId+" .panel-body .form-group").append(tcData);
-							if($("div.panel-group.accordion div#collapseOne"+value.applicationId).parent().hasClass("hide")){
-								$("div.panel-group.accordion div#collapseOne"+value.applicationId).parent().removeClass("hide");
-							}
-						}*/
-						//optiontc[String(value.applicationId)] += '<option value="'+value.testcasesId+'">'+value.testcaseName+'</option>';
 						
 					});
-					/*$('.checkes').on("change", function(){
-						if ($(this).is(':checked')== true) {	
-							tcId.push($(this).attr("data-id"));
-							tcNames.push($(this).attr("data-value"));					
-						}
-						else {
-							tcId.pop($(this).attr("data-id"));
-							tcNames.pop($(this).attr("data-value"));
-						}
-						if (tcId.length == 0 && appId.length == 0) {
-							$("#submit_btn").attr("disabled", "disabled");
-						} else {
-							$("#submit_btn").removeAttr("disabled");
-						}
-					});*/
+
+
+					attachClickListenersOnDropDown();
+					
 				}
 			});
 		},
 		complete: function(data) {
 			
-			/*$('.selectcheck').on("change", function(){
-				$id = $(this).attr("data-id");
-				//alert($id);
-				if ($(this).is(':checked')== true) {		
-					$("#collapseOne"+$id+" input[type=checkbox]").prop('checked', true).trigger("change");
-					appId.push($(this).attr("data-id"));
-					appNames.push($(this).attr("data-value"));
-				} else {
-					$("#collapseOne"+$id+" input[type=checkbox]").prop('checked', false).trigger("change");
-					appId.pop($(this).attr("data-id"));
-					appNames.pop($(this).attr("data-value"));
-					elems=[];
-				}
-				if (appId.length == 0 || tcId.length==0) {
-					$("#submit_btn").attr("disabled", "disabled");
-				} else {
-				  $("#submit_btn").removeAttr("disabled");
-				}
-			});
-			*/
-			
-			
-			
-			
-			
-			
-			
-			/*
-			$("#get_group").click(function(){
-				if ($(this).is(':checked')== true) {
-						$("#msg").hide();
-						$("#show_group_content").show();
-				} else {
-						$("#show_group_content").hide();
-				}	
-			});
-			$("#get_schedule").click(function(){		
-				if ($(this).is(':checked')== true) {
-						//$("#msg").hide();
-						$("#show_schedule_content").show();
-				} else {
-						$("#show_schedule_content").hide();
-				}	
-			});
-			
-			$("#submit_group").click(function(){
-				$group_name = $("#logical_group_name").val();
-				$environment_id = $("#environment_id").val();
-				$myCheckboxes = new Array();
-				$(".checkes:checked").each(function() {
-				   $myCheckboxes.push($(this).attr('data-id'));
-				});
-				if($("select[name=userrole] option:selected").val() == "") {
-					$("select[name=userrole] option:selected").parent().parent().find("span.errmsg").html(errMsg).show();
-				}
-				if($("select[name=environment_id] option:selected").val() == "") {
-					$("select[name=environment_id] option:selected").parent().parent().find("span.errmsg").html(errMsg).show();
-				}
-				if($myCheckboxes.length == 0) {
-					$("#accordion").parent().find("span.errmsg").html(errMsg).show();
-				}
-				if($("select[name=userrole] option:selected").val() == "" || $("select[name=environment_id] option:selected").val() == "" || $(".checkes:checked").length == 0) {
-					return false;
-				}
-				var dataObj = {};
-				var arr = new Array();
-				$.each(appNames, function(key, val){
-					arr.push({"applicationId": appId[key], "applicationName": val});
-				});
-				dataObj["logicalGroupName"] = $group_name;
-				dataObj["environment"] = {};
-				dataObj["environment"]["environmentId"] = $("select[name=environment_id] option:selected").val();
-				//dataObj["browser"] = {};
-				//dataObj["browser"]["browserId"] = $("select[name=browser_id] option:selected").val();
-				dataObj["executionUserId"] = $("select[name=userrole] option:selected").val();
-				tcId = [];
-				tcLogicalObj = []
-				$(".checkes:checked").each(function() {
-					tcId.push($(this).attr("data-id"));
-					tcNames.push($(this).attr("data-value"));
-					var obj = {};
-					obj["testcasesId"] = $(this).attr("data-id");
-					tcLogicalObj.push(obj);
-				});
-				dataObj["testCaseList"] = tcLogicalObj;
-				$.ajax({
-					url: base_url+"/logicalGroup/save/false", 
-					method: "post",
-					contentType: "application/json",
-					data: JSON.stringify(dataObj),
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-					},
-					success: function(data) {
-						$("#show_group_content").hide();
-						$("#msg").html('<p id="mssg" style="margin-bottom:-10px;margin-top:5px;color: green;text-align: center;background-color: #f5f5f5; width: 80%;margin-left: 50px;padding: 7px; border: 1px solid #8bc34a;border-radius: 2px;">Test Set Created Successfully.</p>');
-						$("#msg").fadeIn().fadeOut(3000);
-						$('#get_group').prop('checked', false);
-						$("#logical_group_name").val('');
-					},
-					complete: function(){
-						$('#get_group').prop('checked', false);
-						$("#logical_group_name").val('');
-					}
-				});
-			});
-			
-			$("#submit_btn").on("click", function(){
-				$("#submit_btn").attr("disabled", "disabled");
-				var dataObj = {};
-				var arr = new Array();
-				$.each(appNames, function(key, val){
-					arr.push({"applicationId": appId[key], "applicationName": val});
-				});				
-				dataObj["browserName"] = $("select[name=browser_id] option:selected").text();
-				dataObj["browserId"] = $("select[name=browser_id] option:selected").val();
-				dataObj["environmentName"] = $("select[name=environment_id] option:selected").text();
-				dataObj["environmentId"] = $("select[name=environment_id] option:selected").val();
-				dataObj["executionName"] = $("input[name=execution_name]").val();
-				dataObj["executionUserId"] = $("select[name=userrole] option:selected").val();
-				tcId = [];
-				tcNames = [];
-				$myCheckboxes = new Array();
-				tcSchdldObj = []
-				$(".checkes:checked").each(function() {
-					tcId.push($(this).attr("data-id"));
-					tcNames.push($(this).attr("data-value"));
-					var obj = {};
-					obj["testcasesId"] = $(this).attr("data-id");
-					tcSchdldObj.push(obj);
-				});
-				dataObj["testcaseIds"] = tcId;
-				dataObj["testcaseNames"] = tcNames;
-				dataObj["scheduled"] = false;
-				dataObj["applications"] = arr;
-				if($("#show_schedule_content").is(":visible")) {
-					if($("input#time").val() == "" || $("input#date").val() == "")
-					{
-						alert("Please select scheduled execution date and time");
-						return false;
-					}
-					var schObj = {};
-					schObj["scheduledExecutionName"] = $("input[name=execution_name]").val();
-					schObj["executionUserId"] = $("select[name=userrole] option:selected").val();
-					schObj["browserId"] = $("select[name=browser_id] option:selected").val();
-					schObj["testCaseList"] = tcSchdldObj;
-					schObj["environment"] = {};
-					schObj["environment"]["environmentId"] = $("select[name=environment_id] option:selected").val();
-					$(".checkes:checked").each(function() {
-					   $myCheckboxes.push($(this).attr('data-id'));
-					});
-					if($("select[name=userrole] option:selected").val() == "") {
-						$("select[name=userrole] option:selected").parent().parent().find("span.errmsg").html(errMsg).show();
-					}
-					if($("select[name=environment_id] option:selected").val() == "") {
-						$("select[name=environment_id] option:selected").parent().parent().find("span.errmsg").html(errMsg).show();
-					}
-					if(tcSchdldObj.length == 0) {
-						$("#accordion").parent().find("span.errmsg").html(errMsg).show();
-					}
-					if($("select[name=browser_id] option:selected").val() == "") {
-						$("select[name=browser_id] option:selected").parent().parent().find("span.errmsg").html(errMsg).show();
-					}
-					if($("select[name=userrole] option:selected").val() == "" || $("select[name=environment_id] option:selected").val() == "" || tcSchdldObj.length == 0 || $("select[name=browser_id] option:selected").val() == "") {
-						return false;
-					}
-					//var a = new Date($("input#date").val()+"T"+$("input#time").val());
-					//var schdDate = new Date(a.getTime() + (a.getTimezoneOffset() * 60000));
-					//schObj["scheduledDate"] = schdDate.toJSON();
 					
-					
-					//schObj["scheduledDate"] = $("input#date").val()+"T"+$("input#time").val();
-					
-					
-					var timezone_offset_min = new Date().getTimezoneOffset(),
-					offset_hrs = parseInt(Math.abs(timezone_offset_min/60)),
-					offset_min = Math.abs(timezone_offset_min%60),
-					timezone_standard;
 
-					if(offset_hrs < 10)
-					offset_hrs = '0' + offset_hrs;
-
-					if(offset_min < 10)
-					offset_min = '0' + offset_min;
-
-					// Add an opposite sign to the offset
-					// If offset is 0, it means timezone is UTC
-					if(timezone_offset_min < 0)
-					timezone_standard = '+' + offset_hrs + offset_min;
-					else if(timezone_offset_min > 0)
-					timezone_standard = '-' + offset_hrs + offset_min;
-					else if(timezone_offset_min == 0)
-					timezone_standard = 'Z';
-
-					
-					// Timezone difference in hours and minutes
-					// String such as +5:30 or -6:00 or Z
-					schObj["scheduledDate"] = $("input#date").val()+"T"+$("input#time").val()+":00.000"+timezone_standard;
-					
-					
-					$.ajax({
-						url: base_url+"/scheduledExecution/save", 
-						method: "post",
-						contentType: "application/json",
-						data: JSON.stringify(schObj),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-						},
-						success: function(data) {
-							$("#submit_btn").removeAttr("disabled", "disabled");
-						},
-						complete: function(){
-							$("#show_schedule_content input").val("");
-							$('#get_schedule').click();
-							$("#submit_btn").removeAttr("disabled", "disabled");
-							window.location.href = "scheduled.html";
-						}
-					});
-				}
-				else {
-					$.ajax({
-						url: base_url+"/executionResults/saveAll", 
-						method: "post",
-						contentType: "application/json",
-						data: JSON.stringify(dataObj),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-						},
-						success: function(data) {
-							$("#submit_btn").removeAttr("disabled", "disabled");
-						},
-						complete: function(){
-							$("#submit_btn").removeAttr("disabled", "disabled");
-							window.location.href = "reports.html";
-						}
-					});
-				}
-			});
-			*/
+			$('.buttonlink').click(()=>{
+				console.log(selectedTestCases);
+				saveItem(RUNTESTS_SELECTED_TESTCASES_ID,JSON.stringify(selectedTestCases));
+				saveItem(RUNTESTS_SELECTED_APPLICATIONS_ID,JSON.stringify(selectedApplications));
+				saveItem(RUNTESTS_SELECTED_TESTCASES_NAME,JSON.stringify(selectedTestCasesName));
+				saveItem(RUNTESTS_SELECTED_APPLICATIONS_NAME,JSON.stringify(selectedApplicationsName));
+				window.open("finalizeexecution.html","_self");
+			})
 
 
-
-			// COPIED FROM SELECT TEST SET HTML FILE
-			
-			$(".mainCB input[type=checkbox]").click(function(e){
-				e.stopPropagation();
-
-				if($(this).prop("checked")==true)
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-				else
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-			});
-			$(".mainCB, .subCB").click(function(e){
-				e.stopPropagation();
-			});
-
+			 
 			/*---Jquery for section display none/block on click icon file-text---*/
 			
 			$(".filetest").click(function(e){
@@ -547,8 +311,8 @@ $(document).ready(function() {
         'pageLength': 50
     });
 
-    new $.fn.dataTable.FixedHeader(tableFixed);
-	$(".icons span").tooltip();
+    //new $.fn.dataTable.FixedHeader(tableFixed);
+	//$(".icons span").tooltip();
 });
 function onCheckSelect(appId)
 {

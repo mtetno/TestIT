@@ -9,7 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -51,15 +52,15 @@ public class TestBucket {
 
 	@Column(name="testcases_id")
 	@NotNull
-	private Long testcasesId;
+	private String testcasesId;
 
 	@Column(name="added_when",insertable=false,updatable=false)
-	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date addedWhen;
 
 	@Column(name="added_by")
 	@NotNull
-	private String addedBy;
+	private Long addedBy;
 
 	@Column(name="is_delete")
 	@NotNull
@@ -105,11 +106,11 @@ public class TestBucket {
 		this.userRoleId = userRoleId;
 	}
 
-	public Long getTestcasesId() {
+	public String getTestcasesId() {
 		return testcasesId;
 	}
 
-	public void setTestcasesId(Long testcasesId) {
+	public void setTestcasesId(String testcasesId) {
 		this.testcasesId = testcasesId;
 	}
 
@@ -121,11 +122,11 @@ public class TestBucket {
 		this.addedWhen = addedWhen;
 	}
 
-	public String getAddedBy() {
+	public Long getAddedBy() {
 		return addedBy;
 	}
 
-	public void setAddedBy(String addedBy) {
+	public void setAddedBy(Long addedBy) {
 		this.addedBy = addedBy;
 	}
 

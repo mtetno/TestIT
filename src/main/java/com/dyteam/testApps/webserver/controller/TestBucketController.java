@@ -31,9 +31,8 @@ public class TestBucketController {
         testBucket.setTestcasesId(testBucketParam.getTestcasesId());
         testBucket.setUserRoleId(testBucketParam.getUserRoleId());
         testBucket.setName(testBucketParam.getName());
-        testBucket.setIsDelete(testBucketParam.getIsDelete());
-        testBucket.setAddedBy(testBucketParam.getAddedBy());
-        testBucket.setAddedWhen(testBucketParam.getAddedWhen());
+        testBucket.setIsDelete(0);
+        testBucket.setAddedBy(loggedInUser.getUserId());
         return testBucketRepository.save(testBucket);
     }
     

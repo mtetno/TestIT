@@ -31,4 +31,7 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long>{
   	@Modifying
 	@Query("update Testcases set is_delete = 1 where added_by = :userId AND testcase_id = :id")
 	void updateByTestcaseId(Long userId,Long id);
+
+	@Query("select e from Testcases e where e.companyId = :companyId AND isDelete = 0")
+	List<Testcases> findAllByCompanyId(Long companyId);
 }

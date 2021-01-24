@@ -193,6 +193,44 @@ function fetchAllEnvironments() {
 	});
 }
 
+function fetchAllTestingEnvironments() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/testingEnvironment/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Testing Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.name + '</option>';
+			})
+			$("#testing_environment").html(options);
+		}
+	});
+}
+
+function fetchAllUsersRoles() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/accessRole/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Roles</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.executionUserId + '">' + item.name + '</option>';
+			})
+			$("#user_role").html(options);
+		}
+	});
+}
+
 function fetchTestType() {
 	$.ajax({
 		type: 'GET',

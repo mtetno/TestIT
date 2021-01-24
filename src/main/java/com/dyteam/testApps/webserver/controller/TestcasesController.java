@@ -1,5 +1,6 @@
 package com.dyteam.testApps.webserver.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.Testcases;
@@ -53,6 +54,14 @@ public class TestcasesController {
     public Iterable<Map<String, Object>> getAllTestcases() {
         logger.info("Inside getAllTestcases");
         Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll();
+        return testtypes;
+    }
+
+    @GetMapping(value = "/allByComapny")
+    public  List<Testcases> getAllByCompanyTestcases(
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("Inside getAllByCompanyTestcases");
+        List<Testcases> testtypes = testcasesRepo.findAllByCompanyId(loggedInUser.getCompanyId());
     	return testtypes;
     }
 

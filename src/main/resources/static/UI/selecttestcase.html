@@ -55,7 +55,7 @@
 				<!--Back Button for go to previous page-->
 				<a href="runtest.html"><button class="btn btn-dark buttonlink">BACK</button></a>
 				<!--Next Button for go to next page-->
-				<a href="finalizeexecution.html"><button class="btn btn-primary buttonlink">NEXT</button></a>
+				<a><button class="btn btn-primary buttonlink">NEXT</button></a>
 			</div>
 		</div>
 	</div>
@@ -76,8 +76,11 @@
     <script src="js/Libraries/dataTables.tableTools.js"></script>
 	<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
 	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
-	<script src="js/custom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+	<script src="js/pages/localstorage.js"></script>
+	<script src="js/pages/constants.js"></script>
 	<script src="js/pages/execution.js"></script>
+	<script src="js/custom.js"></script>
 	<script>
 		$(function(){
 			$(".mainCB input[type=checkbox]").click(function(e){
@@ -88,9 +91,7 @@
 				else
 				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
 			});
-			$(".mainCB, .subCB").click(function(e){
-				e.stopPropagation();
-			});
+			
 
             /*---Jquery for section display none/block on click icon file-text---*/
             
@@ -144,6 +145,8 @@
 					$(this).toggleClass("toggleIcon");
 				});
 			}
+
+			
 		});
 	</script>
 </body>
