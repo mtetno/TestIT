@@ -49,7 +49,7 @@ public interface CompanyEnvironUrlRepository extends CrudRepository<CompanyEnvir
 
 	@Transactional
   	@Modifying
-	@Query("update CompanyEnvironUrl set is_delete = 1 where added_by = :userId AND env_url = :environmentUrl")
-	void updateByEnvironmentURL(Long userId,String environmentUrl);
+	@Query("update CompanyEnvironUrl set is_delete = 1 where added_by = :userId AND company_environ_url_id = :environmentUrlId")
+	void updateByEnvironmentURLId(Long userId,Long environmentUrlId);
 	
 }

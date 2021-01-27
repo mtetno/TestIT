@@ -97,10 +97,10 @@ public class CompanyEnvironUrlController {
     }
     
      
-    @DeleteMapping("/{environmentUrl}")
+    @DeleteMapping("/{environmentUrlId}")
     public Boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,
-    @PathVariable(value="environmentUrl") String environmentUrl) {
-    	companyEnvironUrlRepo.updateByEnvironmentURL(loggedInUser.getUserId(),environmentUrl);
+    @PathVariable(value="environmentUrlId") Long environmentUrlId) {
+    	companyEnvironUrlRepo.updateByEnvironmentURLId(loggedInUser.getUserId(),environmentUrlId);
 		return true;
     }
 

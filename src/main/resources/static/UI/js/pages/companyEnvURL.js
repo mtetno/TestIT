@@ -454,23 +454,23 @@ function deleteAllEnvironmentUrls() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+			displayAllEnvironmentUrls();
 		}
 	});
 }
 
-function deleteSelectedEnvironmentUrl(environmentURL) {
+function deleteSelectedEnvironmentUrl(environmentURLId) {
 	$.ajax({
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/companyEnvironUrl/" + environmentURL,
+		url: base_url + "/companyEnvironUrl/" + environmentURLId,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
 			$(this).closest("tr").remove();
+			displayAllEnvironmentUrls();
 		}
 	});
 }

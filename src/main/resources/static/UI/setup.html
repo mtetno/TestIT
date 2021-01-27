@@ -509,16 +509,19 @@
 
   <script>
     $(function () {
+
       $(".dataTables_wrapper").css("width","100%");
 
       $("#environmentUrlTab").click(function (e) {
         e.preventDefault();
+        $(".dataTables_wrapper").css("width","100%");
          fetchAllApplications();
          fetchAllEnvironments();
       });
 
       $("#accessRolesTab").click(function (e) {
         e.preventDefault();
+        $(".dataTables_wrapper").css("width","100%");
         displayAllAccessRoles();
       });
 
@@ -569,21 +572,35 @@
       });
 
       $("button.addroleBtn").click(function () {
-        var dataUsername = $("#username").val();
-        var password = $("#password").val();
-        var confirmPassword = $("#confirm_password").val();
-        var dataRole = $("#role").val();
+        var dataUsername = $("#username").val().trim();
+        var password = $("#password").val().trim();
+        var confirmPassword = $("#confirm_password").val().trim();
+        var dataRole = $("#role").val().trim();
 
-        if(password.localeCompare(confirmPassword) == 0){
+        if(dataUsername.length == 0){
+          alert("Please select valid application name");
+          return false;
+        }else if(password.length == 0){
+          alert("Please select valid password");
+          return false;
+        }else if(confirmPassword.length == 0){
+          alert("Please select valid confirm password");
+          return false;
+        }else if(password.localeCompare(confirmPassword) != 0){
+          alert("Password enter does not match");
+          return false;
+        }else if(dataRole.length == 0){
+          alert("Please select valid role");
+          return false;
+        }
+
           var dataObj = {};
           dataObj["name"] = dataUsername;
           dataObj["role"] = dataRole;
           dataObj["password"] = password;
           dataObj["isDelete"] = 0;
           saveAccessRoles(dataObj);
-        }else{
-          showMessage("Password enter does not match")
-        }
+        
       });
 
       /*---Jquery for Cancel row---*/
@@ -642,9 +659,9 @@
       });
 
       $(document).on("click", "#urlsYesbtn", function () {
+        $(".Urltable").find(".mainCB input[type=checkbox]").prop("checked", false);
         $("table tbody .subCB input:checked").each(function () {
-          $(this).closest("tr").remove();
-          var deletedItem = $("#deletedItem1").text();
+          var deletedItem = $(this).attr('data-value');
           if (deletedItem.indexOf(",") != -1) {
             deleteAllEnvironmentUrls();
           } else {
@@ -670,6 +687,7 @@
       });
 
       $(document).on("click", "#accessYesbtn", function () {
+        $(".Roletable").find(".mainCB input[type=checkbox]").prop("checked", false);
         $("table tbody .subCB input:checked").each(function () {
           var roleId = $(this).attr('data-value');
           $(this).closest("tr").remove();
