@@ -84,7 +84,7 @@
 					<div class="col-md-12 col-sm-12 col-xs-12 selectdiv2">
 						<label class="main">Create Test Bucket 
 							<!--For checkbox select-->
-					        <input type="checkbox"> 
+					        <input id="isCreateTestBucket" type="checkbox"> 
 					        <span class="geekmark"></span> 
 					    </label>
 					 <!-- <input type="checkbox" value="" id="checked">
@@ -156,7 +156,7 @@
 				        <div class="modal-footer btnfooter">
 				        	<button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
                             <!-- Show view text bucket button on this yes button click -->
-				            <button type="button" id="testButcketYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
+				            <button type="button" id="executionYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
 				        </div>
 				        
 				      </div>
@@ -183,7 +183,7 @@
 				        
 				        <!-- Modal footer -->
 				        <div class="modal-footer btnfooter">
-				          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+				          <button id="closeSuccessModel" type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
 				        </div>
 				        
 				      </div>
@@ -613,11 +613,18 @@
 		});
 
 		$('#scheduleExecution').click(function(){
-			$('#testBucketName').text(": "+$('#inputbox').val())
+			var testBucketName = $('#inputbox').val().trim();
+			var isCheked =  $('#isCreateTestBucket').is(':checked')
+			if(isCheked && testBucketName.length == 0){
+				alert(MESSAGE_ENTER_VALID_TEST_BUCKET_NAME);
+				return false;
+			}
+
+				$('#testBucketName').text(": "+testBucketName)
 				$('#executioName').text(": "+getItem(RUNTESTS_NAME))
-				$('#environment').text(": "+getItem(RUNTESTS_ENVIRONMENT))
-				$('#testingEnvironment').text(": "+getItem(RUNTESTS_TESTING_ENVIRONMENT))
-				$('#userRole').text(": "+getItem(RUNTESTS_USER_ROLE))
+				$('#environment').text(": "+getItem(RUNTESTS_ENVIRONMENT_NAME))
+				$('#testingEnvironment').text(": "+getItem(RUNTESTS_TESTING_ENVIRONMENT_NAME))
+				$('#userRole').text(": "+getItem(RUNTESTS_USER_ROLE_NAME))
 				$('#runInThreads').text(": "+getItem(RUNTESTS_THREAD))
 		});
 
@@ -625,22 +632,26 @@
 
 			var payload = {};
 			payload['name'] = $('#inputbox').val();
-			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT);
-			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE);
+			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
+			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
 			payload['testcasesId'] = getItem(RUNTESTS_SELECTED_TESTCASES_ID);
 			creatTestBucket(payload);
 
 			var payload = {};
 			payload['name'] = $('#inputbox').val();
 			payload['executionName'] = getItem(RUNTESTS_NAME);
-			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT);
-			payload['testingEnvironmentId'] = getItem(RUNTESTS_TESTING_ENVIRONMENT);
-			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE);
+			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
+			payload['testingEnvironmentId'] = getItem(RUNTESTS_TESTING_ENVIRONMENT_ID);
+			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
 			payload['threads'] = getItem(RUNTESTS_THREAD);
 			payload['scheduleDate'] = getItem(RUNTESTS_DATE);
 			payload['scheduleTime'] = getItem(RUNTESTS_TIME);
 			payload['testcasesId'] = getItem(RUNTESTS_SELECTED_TESTCASES_ID);
 			createExecution(payload);
+		});
+
+		$('#closeSuccessModel').click(function() {
+			window.open("runtest.html","_self");
 		});
 	</script>
 </body>

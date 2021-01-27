@@ -64,7 +64,16 @@ $(document).ready(function() {
 		"lengthChange": false,
 		"searching": false,   // Search Box will Be Disabled
 		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-		"info": true,
+		"info": false,
+		"paging":   false
+	});
+
+	$('.Roletable').DataTable({
+		"lengthChange": false,
+		"searching": false,   // Search Box will Be Disabled
+		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+		"info": false,
+		"paging":   false
 	});
 
 	fetchAllEnvironment();

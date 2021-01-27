@@ -24,6 +24,8 @@ function displayTestcases(){
 		success: function (data) {
 			console.log(data);
 			$("#bucketList tbody").html("");
+
+			var rows = "";
 			data.map((value) => {
 				console.log("value"+value);
 				var savestr = `<tr>
@@ -38,8 +40,10 @@ function displayTestcases(){
 				<td>`+value.environment_name+`</td>
 				<td>`+value.status+`</td>
 			  </tr>`
-			  $("#bucketList tbody").html(savestr);
+			 rows = rows + savestr;
 			});			 
+
+			$("#bucketList tbody").html(rows);
 		}
 	});
 }

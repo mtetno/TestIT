@@ -5,3 +5,7 @@ function saveItem(key,value){
 function getItem(key){
     return localStorage.getItem(key);
 }
+
+function removeItem(key){
+    localStorage.removeItem(key);
+}

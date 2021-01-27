@@ -45,8 +45,8 @@ public class TestcasesController {
         testcasesDB.setAutoProgressId(testcases.getAutoProgressId());
         testcasesDB.setAddedBy(loggedInUser.getUserId());
         testcasesDB.setIsDelete(testcases.getIsDelete());
-        testcases = testcasesDB;
-        Testcases save = testcasesRepo.save(testcases);
+     
+        Testcases save = testcasesRepo.save(testcasesDB);
         return save;
     }
 

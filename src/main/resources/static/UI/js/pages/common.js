@@ -66,16 +66,16 @@ function eraseCookie(name) {
 	createCookie(name, "", -1);
 }
 $(document).ready(function() {
-	$("header.navbar").load(base_url+"/ui/includes/header.html", function(responseTxt, statusTxt, xhr){
-		$("div#nav-col").load(base_url+"/ui/includes/leftNav.html", function(responseTxt, statusTxt, xhr){
-			$("footer#footer-bar").load(base_url+"/ui/includes/footer.html", function(responseTxt, statusTxt, xhr){
-				if(readCookie("TAurole")!=null){
-					$("."+ readCookie("TAurole").toLowerCase()).show();
-				}
-				$("span.hidden-xs").html(readCookie("TAuname").toUpperCase());
-			});
-		});
-	});
+	// $("header.navbar").load(base_url+"/ui/includes/header.html", function(responseTxt, statusTxt, xhr){
+	// 	$("div#nav-col").load(base_url+"/ui/includes/leftNav.html", function(responseTxt, statusTxt, xhr){
+	// 		$("footer#footer-bar").load(base_url+"/ui/includes/footer.html", function(responseTxt, statusTxt, xhr){
+	// 			if(readCookie("TAurole")!=null){
+	// 				$("."+ readCookie("TAurole").toLowerCase()).show();
+	// 			}
+	// 			$("span.hidden-xs").html(readCookie("TAuname").toUpperCase());
+	// 		});
+	// 	});
+	// });
 	$.ajaxSetup({
 		cache: false,
         error: function (x, status, error) {

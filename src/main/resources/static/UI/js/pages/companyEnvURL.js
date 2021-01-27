@@ -7,7 +7,8 @@ $(document).ready(function () {
 		"lengthChange": false,
 		"searching": false,   // Search Box will Be Disabled
 		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-		"info": true,
+		"info": false,
+		"paging":   false
 	});
 
 	$.ajax({
@@ -309,6 +310,7 @@ function deleteAllEnvironment() {
 		success: function () {
 			$(this).closest("tr").remove();
 			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+			fetchAllEnvironment();
 		}
 	});
 }
@@ -324,6 +326,7 @@ function deleteSelectedEnvironment(environmentName) {
 		},
 		success: function () {
 			$(this).closest("tr").remove();
+			fetchAllEnvironment();
 		}
 	});
 }
@@ -474,7 +477,7 @@ function deleteSelectedEnvironmentUrl(environmentURL) {
 
 function displayAllAccessRoles() {
 	$.ajax({
-		url: base_url + "/accessrole/allByCompany",
+		url: base_url + "/accessRole/allByCompany",
 		method: "GET",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
@@ -508,7 +511,7 @@ function saveAccessRoles(dataObj) {
 		data: JSON.stringify(dataObj),
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/accessrole/save",
+		url: base_url + "/accessRole/save",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -539,7 +542,7 @@ function deleteAllAccessRoles() {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/accessrole/deleteAll",
+		url: base_url + "/accessRole/deleteAll",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -554,7 +557,7 @@ function deleteSelectedAccessRole(id) {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/accessrole/" + id,
+		url: base_url + "/accessRole/" + id,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},

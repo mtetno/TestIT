@@ -10,6 +10,38 @@ var selectedApplicationsName = new Array();
 var comEnvURL;
 
 
+function addApplicationId(obj){
+	var allCheckedBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]:checked');
+	var allBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]');
+	var selectedApp = obj.closest('.selectdiv ').find('input[type=checkbox]')[0];
+	var applicationId = $(selectedApp).attr('data-id');
+	var applicationName = $(selectedApp).attr('data-value');
+	if(selectedApplications.includes(applicationId) == false){
+		selectedApplications.push(applicationId);
+		selectedApplicationsName.push(applicationName);
+	}
+
+	if(allCheckedBoxesInGroup.length == allBoxesInGroup.length){
+		$(selectedApp).attr("checked","checked");
+	}
+}
+
+function removeApplicationId(obj){
+	var allCheckedBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]:checked');
+	var selectedApp = obj.closest('.selectdiv ').find('input[type=checkbox]')[0];
+	var applicationId = $(selectedApp).attr('data-id');
+	var applicationName = $(selectedApp).attr('data-value');
+
+	if(allCheckedBoxesInGroup.length == 0){
+		$(selectedApp).prop("checked",false)
+		if(selectedApplications.includes(applicationId)){
+			_.remove(selectedApplications, (e)=>e == applicationId);
+			_.remove(selectedApplicationsName, (e)=>e == applicationName);
+		}
+	}
+}
+
+
 function attachClickListenersOnDropDown(){
 	$(".subCB input[type=checkbox]").click(function(e){
 		console.log("inside attachClickListenersOnDropDown");
@@ -18,11 +50,13 @@ function attachClickListenersOnDropDown(){
 			selectedTestCases.push($(this).attr('data-id'));
 			selectedTestCasesName.push($(this).attr('data-value'));
 			console.log(selectedTestCases);
+			addApplicationId($(this));
 		}
 		else{	
 			_.remove(selectedTestCases, (e)=>e == $(this).attr('data-id'));
 			_.remove(selectedTestCasesName, (e)=>e == $(this).attr('data-value'));
 			console.log(selectedTestCases);
+			removeApplicationId($(this));
 		}
 	});
 
@@ -187,9 +221,11 @@ $(document).ready(function() {
 		},
 		complete: function(data) {
 			
-					
-
 			$('.buttonlink').click(()=>{
+				if(selectedTestCases.length == 0){
+					alert(MESSAGE_ENTER_VALID_TESTCASES);
+					return false;
+				}
 				console.log(selectedTestCases);
 				saveItem(RUNTESTS_SELECTED_TESTCASES_ID,JSON.stringify(selectedTestCases));
 				saveItem(RUNTESTS_SELECTED_APPLICATIONS_ID,JSON.stringify(selectedApplications));

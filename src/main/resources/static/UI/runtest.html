@@ -118,7 +118,7 @@
 						<div class="col-md-6 mb-4">
 							<label>Run in Threads</label>
 							<select class="form-control border" name="run_in_thread" id="run_in_thread">
-								<option value="Select Threads">Select Threads</option>
+								<option value="0">Select Threads</option>
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
@@ -179,6 +179,7 @@
 	<script>
 		$(function(){
 
+			clearRunTestPageData();
 			fetchAllEnvironments();
 			fetchAllTestingEnvironments();
 			fetchAllUsersRoles();
@@ -221,15 +222,56 @@
 		});
 
 		$("#submitRunTestStep1").click(function(){
-			saveItem(RUNTESTS_NAME,$("#execution_name").val());
-			saveItem(RUNTESTS_ENVIRONMENT,$("#environment").val());
-			saveItem(RUNTESTS_TESTING_ENVIRONMENT,$("#testing_environment").val());
-			saveItem(RUNTESTS_USER_ROLE,$("#user_role").val());
-			saveItem(RUNTESTS_THREAD,$("#run_in_thread").val());
-			saveItem(RUNTESTS_DATE,$("#date").val());
-			saveItem(RUNTESTS_TIME,$("#time").val());
-			window.open("selecttestcase.html","_self");
+			validateInputs();
 		}); 
+
+		function validateInputs(){
+			var exeName = $("#execution_name").val().trim();
+			var environmentId = $("#environment").val().trim();
+			var environmentName = $('#environment').find(":selected").text().trim();
+			var testingenvironmentId = $("#testing_environment").val().trim();
+			var testingEnvironmentName = $('#testing_environment').find(":selected").text().trim();
+			var userRoleId = $("#user_role").val().trim();
+			var userRoleName = $('#user_role').find(":selected").text().trim();
+			var thread = $("#run_in_thread").val().trim();
+			var date = $("#date").val().trim();
+			var time = $("#time").val().trim();
+
+			if(exeName.length == 0){
+				alert(MESSAGE_ENTER_VALID_EXECUTION_NAME);
+				return false;
+			}else if (environmentId == "0"){
+				alert(MESSAGE_ENTER_VALID_ENVIRONMENT);
+				return false;
+			}else if (testingenvironmentId == "0"){
+				alert(MESSAGE_ENTER_VALID_TESTING_ENVIRONMENT);
+				return false;
+			}else if (userRoleId == "0"){
+				alert(MESSAGE_ENTER_VALID_USERROLE);
+				return false;
+			}else if (thread == "0"){
+				alert(MESSAGE_ENTER_VALID_THREAD);
+				return false;
+			}else if (date.length == 0){
+				alert(MESSAGE_ENTER_VALID_DATE);
+				return false;
+			}else if (time.length == 0){
+				alert(MESSAGE_ENTER_VALID_TIME);
+				return false;
+			}
+
+			saveItem(RUNTESTS_NAME,exeName);
+			saveItem(RUNTESTS_ENVIRONMENT_ID,environmentId);
+			saveItem(RUNTESTS_ENVIRONMENT_NAME,environmentName);
+			saveItem(RUNTESTS_TESTING_ENVIRONMENT_ID,testingenvironmentId);
+			saveItem(RUNTESTS_TESTING_ENVIRONMENT_NAME,testingEnvironmentName);
+			saveItem(RUNTESTS_USER_ROLE_ID,userRoleId);
+			saveItem(RUNTESTS_USER_ROLE_NAME,userRoleName);
+			saveItem(RUNTESTS_THREAD,thread);
+			saveItem(RUNTESTS_DATE,date);
+			saveItem(RUNTESTS_TIME,time);
+			window.open("selecttestcase.html","_self");
+		}
 	</script>
 </body>
 </html>
