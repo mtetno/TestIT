@@ -60,7 +60,9 @@ function deleteAllTestcases() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			 displayTestcases();	
+			$("#bucketList").find(".mainCB input[type=checkbox]").prop("checked", false);
+			showMessage("Testcases deleted successfully");
+			displayTestcases();	
 		}
 	});
 }
@@ -75,7 +77,13 @@ function deleteTestcase(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showMessage("Testcase deleted successfully")
 			displayTestcases();
 		}
 	});
+}
+
+function showMessage(message) {
+	$("#valiationModel .model_body").html('<p>' + message + '</p>');
+	$("#valiationModel").modal('toggle');
 }
