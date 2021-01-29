@@ -237,7 +237,7 @@
 			var date = $("#date").val().trim();
 			var time = $("#time").val().trim();
 
-			if(exeName.length == 0){
+			if(exeName.length == 0 || exeName.indexOf(' ') > 0){
 				alert(MESSAGE_ENTER_VALID_EXECUTION_NAME);
 				return false;
 			}else if (environmentId == "0"){
@@ -251,12 +251,6 @@
 				return false;
 			}else if (thread == "0"){
 				alert(MESSAGE_ENTER_VALID_THREAD);
-				return false;
-			}else if (date.length == 0){
-				alert(MESSAGE_ENTER_VALID_DATE);
-				return false;
-			}else if (time.length == 0){
-				alert(MESSAGE_ENTER_VALID_TIME);
 				return false;
 			}
 

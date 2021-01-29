@@ -17,6 +17,7 @@ function addApplicationId(obj){
 	var applicationId = $(selectedApp).attr('data-id');
 	var applicationName = $(selectedApp).attr('data-value');
 	if(selectedApplications.includes(applicationId) == false){
+		$(selectedApp).prop("checked",true);
 		selectedApplications.push(applicationId);
 		selectedApplicationsName.push(applicationName);
 	}
@@ -42,9 +43,9 @@ function removeApplicationId(obj){
 }
 
 
-function attachClickListenersOnDropDown(){
+function attachClickListeners(){
 	$(".subCB input[type=checkbox]").click(function(e){
-		console.log("inside attachClickListenersOnDropDown");
+		console.log("inside attachClickListeners");
 		if($(this).prop("checked")==true)
 		{	
 			selectedTestCases.push($(this).attr('data-id'));
@@ -88,6 +89,63 @@ function attachClickListenersOnDropDown(){
 			);
 		}
 	});
+
+	$(".filetest").click(function(e){
+		e.stopPropagation();
+		$('.subdiv').hide();
+		$(this).closest(".selectdiv1").find(".subdiv").show();
+		$(this).closest(".selectdiv").find(".submaindiv").slideUp();
+	});
+   
+   /*---Jquery for section display none on click icon cancel---*/
+
+	$('.btncancel').click(function(e){
+		e.stopPropagation();
+	  $(this).closest('.subdiv').hide();
+	});
+	
+	/*---Jquery for toggle section on click angle-down icon---*/
+
+	$(".selectdiv i.showdet").click(function(e){
+		e.stopPropagation();
+		$(this).closest(".selectdiv").find(".submaindiv").slideToggle();
+		$(this).toggleClass("caret-rev");
+	});
+
+	// $(".selectdiv1").click(function(){
+	// 	$(this).find(".submaindiv").slideToggle();
+	// 	$(this).find("i.showdet").toggleClass("caret-rev");
+	// });
+
+	$(".selectdiv").click(function(){
+		$(this).find(".submaindiv").slideToggle();
+		$(this).find("i.showdet").toggleClass("caret-rev");
+	});
+	
+	/*---Jquery for toggle section on click caret-down icon---*/
+
+	$(".submaindiv i.showbtndiv").click(function(e){
+		e.stopPropagation();
+		$(this).closest("li").find(".hidediv").slideToggle();
+		$(this).toggleClass("caret-rev");
+	});
+
+	$("aside.sidebar").height($("#main-content").height() + $("#footer").height() + 30);
+
+	$(window).resize(function(){
+		$("aside.sidebar").height($("#main-content").height() + $("#footer").height() + 30);
+	});
+
+	// For sidebar toggle
+	if($(window).width() < 730)
+	{
+		$("#sidebarToggle").click(function(e){
+			e.preventDefault();
+			$("aside.sidebar").toggleClass("showSB");
+			$(this).toggleClass("toggleIcon");
+		});
+	}
+
 }
 
 
@@ -143,43 +201,11 @@ $(document).ready(function() {
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success: function(data) {
+		success: function(applicationData) {
 			var appOptions = "";
 			var options = "";
 			var appData = [];
-			$.each(data, function(key, value) {
-				var applicationId = value.applicationId;
-				var applicationName = value.applicationName;
-				options += '<option value="'+applicationId+'">'+applicationName+'</option>';
-				appData[applicationId] = applicationName;
-				
-				
-				// IMPLEMENTED AS PER NEW DESIGN
-				
-				
-				appOptions += '<div class="row selectdiv app'+applicationId+'">';
-				appOptions += '<div class="col-md-12 col-sm-12 col-xs-12 selectdiv1">';
-				appOptions += '<label class="main mainCB">'+applicationName;
-				appOptions += '<input type="checkbox" value="0" class="selectcheck" onclick="onCheckSelect('+applicationId+')" data-id="'+applicationId+'" data-value="'+applicationName+'" name="_'+applicationId+'">'; 
-				appOptions += '<span class="geekmark"></span>';
-				appOptions += '</label>';
-				appOptions += '<i class="fa fa-angle-down showdet" aria-hidden="true"></i>';
-				appOptions += '<i class="fa fa-file-text filetest" aria-hidden="true"></i>';
-				
-				
-				appOptions += '<div class="subdiv">';
-				appOptions += '<p><i class="fa fa-times btncancel"></i></p>';
-				appOptions += '<p>https://cdn.zeplin.io/5e2aef5289c3b99a5f0ac5eb/screens/FD35F34D-5F0E-444F-98EA-72594957D9B3.png</p>';
-				appOptions += '<i class="fa fa-download" aria-hidden="true"></i>';
-				appOptions += '<a href="#">Download Master Plan</a>';
-				appOptions += '<a href="#">User Test Plan</a>';
-				appOptions += '<a href="#" class="btncancel">Cancel</a>';
-				appOptions += '</div>';
-				appOptions += '<div class="col-md-12 col-sm-12 col-xs-12 submaindiv"><ul></ul></div></div></div>';
-				
-			});
 			
-			$("div.sel-content").append(appOptions);
 			
 			$.ajax({
 				url: base_url+"/testcases/allByComapny", 
@@ -191,14 +217,46 @@ $(document).ready(function() {
 
 					console.log("execution data",data);
 
+					$.each(applicationData, function(key, value) {
+						var applicationId = value.applicationId;
+						var filteredApps = _.filter(data,(i)=>i.applicationId == applicationId)
+						if(filteredApps.length > 0){
+						
+						var applicationName = value.applicationName;
+						options += '<option value="'+applicationId+'">'+applicationName+'</option>';
+						appData[applicationId] = applicationName;
+						
+						appOptions += '<div class="row selectdiv app'+applicationId+'">';
+						appOptions += '<div class="col-md-12 col-sm-12 col-xs-12 selectdiv1">';
+						appOptions += '<label class="main mainCB">'+applicationName;
+						appOptions += '<input type="checkbox" value="0" class="selectcheck" onclick="onCheckSelect('+applicationId+')" data-id="'+applicationId+'" data-value="'+applicationName+'" name="_'+applicationId+'">'; 
+						appOptions += '<span class="geekmark"></span>';
+						appOptions += '</label>';
+						appOptions += '<i class="fa fa-angle-down showdet" aria-hidden="true"></i>';
+						appOptions += '<i class="fa fa-file-text filetest" aria-hidden="true"></i>';
+						
+						
+						appOptions += '<div class="subdiv">';
+						appOptions += '<p><i class="fa fa-times btncancel"></i></p>';
+						appOptions += '<p>https://cdn.zeplin.io/5e2aef5289c3b99a5f0ac5eb/screens/FD35F34D-5F0E-444F-98EA-72594957D9B3.png</p>';
+						appOptions += '<i class="fa fa-download" aria-hidden="true"></i>';
+						appOptions += '<a href="#">Download Master Plan</a>';
+						appOptions += '<a href="#">User Test Plan</a>';
+						appOptions += '<a href="#" class="btncancel">Cancel</a>';
+						appOptions += '</div>';
+						appOptions += '<div class="col-md-12 col-sm-12 col-xs-12 submaindiv"><ul></ul></div></div></div>';
+						}
+					});
+					
+					$("div.sel-content").append(appOptions);
+
 
 					$.each(data, function(key, value) {
 						var tcData = "";
 						if(optiontc.length == 0){
 							optiontc[String(value.applicationId)] = "";
 						}
-						
-						
+
 							tcData +='<li>'
 							tcData += '<label class="main subCB">'+value.testcaseName;
 							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testcaseName+'" value="'+value.className+'" type="checkbox">';
@@ -213,15 +271,13 @@ $(document).ready(function() {
 						
 					});
 
-
-					attachClickListenersOnDropDown();
-					
+					attachClickListeners();					
 				}
 			});
 		},
 		complete: function(data) {
 			
-			$('.buttonlink').click(()=>{
+			$('#btNext').click(()=>{
 				if(selectedTestCases.length == 0){
 					alert(MESSAGE_ENTER_VALID_TESTCASES);
 					return false;
@@ -237,61 +293,6 @@ $(document).ready(function() {
 
 			 
 			/*---Jquery for section display none/block on click icon file-text---*/
-			
-			$(".filetest").click(function(e){
-				e.stopPropagation();
-				$('.subdiv').hide();
-				$(this).closest(".selectdiv1").find(".subdiv").show();
-				$(this).closest(".selectdiv").find(".submaindiv").slideUp();
-			});
-		   
-		   /*---Jquery for section display none on click icon cancel---*/
-
-			$('.btncancel').click(function(e){
-				e.stopPropagation();
-			  $(this).closest('.subdiv').hide();
-			});
-			
-			/*---Jquery for toggle section on click angle-down icon---*/
-
-			$(".selectdiv i.showdet").click(function(e){
-				e.stopPropagation();
-				$(this).closest(".selectdiv").find(".submaindiv").slideToggle();
-				$(this).toggleClass("caret-rev");
-			});
-
-			$(".selectdiv1").click(function(){
-				$(this).find(".submaindiv").slideToggle();
-				$(this).find("i.showdet").toggleClass("caret-rev");
-			});
-			
-			/*---Jquery for toggle section on click caret-down icon---*/
-
-			$(".submaindiv i.showbtndiv").click(function(e){
-				e.stopPropagation();
-				$(this).closest("li").find(".hidediv").slideToggle();
-				$(this).toggleClass("caret-rev");
-			});
-
-			$("aside.sidebar").height($("#main-content").height() + $("#footer").height() + 30);
-
-			$(window).resize(function(){
-				$("aside.sidebar").height($("#main-content").height() + $("#footer").height() + 30);
-			});
-
-			// For sidebar toggle
-			if($(window).width() < 730)
-			{
-				$("#sidebarToggle").click(function(e){
-					e.preventDefault();
-					$("aside.sidebar").toggleClass("showSB");
-					$(this).toggleClass("toggleIcon");
-				});
-			}
-			
-
-
-			
 		}
 		
 		

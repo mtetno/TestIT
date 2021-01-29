@@ -124,7 +124,7 @@
 				          	<div class="col-md-12">
 				          		<div class="row">
 						          	<div class="col-md-5">
-						          		<label class="col-md-12">Test Bucket Name</label>
+						          		<label id="testBucketNameCol" class="col-md-12">Test Bucket Name</label>
 						          		<label class="col-md-12">Execution Name</label>
 						          		<label class="col-md-12">Environment</label>
 						          		<label class="col-md-12">Testing Environment</label>
@@ -554,9 +554,11 @@
 	<script>
 		$(function(){
 
-			fetchCompany();
+			if(getItem(RUNTESTS_DATE) ==''){
+				$("#scheduleExecution").text("Execute")
+			}
 
-           
+			fetchCompany();     
 
 			$(".main, .subCB").click(function(e){
 				e.stopPropagation();
@@ -620,7 +622,11 @@
 				return false;
 			}
 
-				$('#testBucketName').text(": "+testBucketName)
+				$('#testBucketName').text(": "+testBucketName);
+				if(testBucketName.length == 0){
+					$('#testBucketName').hide();
+					$('#testBucketNameCol').hide();
+				}
 				$('#executioName').text(": "+getItem(RUNTESTS_NAME))
 				$('#environment').text(": "+getItem(RUNTESTS_ENVIRONMENT_NAME))
 				$('#testingEnvironment').text(": "+getItem(RUNTESTS_TESTING_ENVIRONMENT_NAME))
@@ -629,7 +635,6 @@
 		});
 
 		$('#executionYesbtn').click(function(){
-
 			var payload = {};
 			payload['name'] = $('#inputbox').val();
 			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
