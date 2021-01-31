@@ -154,6 +154,44 @@ function statusError(statusCode, responseText="") {
 	}
 }
 
+function fetchAllCompany() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Application</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.companyId + '">' + item.companyName + '</option>';
+			})
+			$("#company_name").html(options);
+		}
+	});
+}
+
+function fetchAllApplicationsByCompanyId(id) {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allByCompany/"+id,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Application</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+			})
+			$("#application").html(options);
+		}
+	});
+}
+
 
 function fetchAllApplications() {
 	$.ajax({

@@ -67,6 +67,16 @@ public class ApplicationController {
     @GetMapping("/allByCompany")
     public Iterable<Application> findAllByCompany(@AuthenticationPrincipal final LoginUser loggedInUser) {
         return applicationRepo.findAllByCompanyId(loggedInUser.getCompanyId());
+	}
+
+	@GetMapping("/allByCompany/{companyId}")
+	public Iterable<Application> findAllByCompany(@PathVariable(value="companyId") Long companyId) {
+        return applicationRepo.findAllByCompanyId(companyId);
+	}
+	
+	@GetMapping("/allCompany")
+    public Iterable<Company> findAllCompany() {
+        return companyRepo.findAll();
     }
     
     @GetMapping("/mapByCompany")

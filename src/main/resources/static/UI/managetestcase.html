@@ -98,18 +98,14 @@
                 <label>Company</label>
                 <select class="form-control border" name="company_name" id="company_name">
                   <option value="Select Company Name">Select Company Name</option>
-                  <option value="SocioMotif LLC">SocioMotif LLC</option>
-                  <option value="Sagitech Solution">Sagitech Solution</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Test Pvt Ltd">Test Pvt Ltd</option>
+                   
                 </select>
               </div>
               <div class="col-md-4 rowadjust">
                 <label>Application</label>
                 <select class="form-control border" name="application" id="application">
                   <option value="Select Application">Select Application</option>
-                  <option value="SmartIT">SmartIT</option>
-                  <option value="IYSM">IYSM</option>
+                  
                 </select>
               </div>
               <div class="col-md-4 mb-2 rowadjust">
@@ -135,19 +131,13 @@
               <div class="col-md-4 rowadjust">
                 <label>Company</label>
                 <select class="form-control border" name="company_name1" id="company_name1">
-                  <option value="Select Company Name">Select Company Name</option>
-                  <option value="SocioMotif LLC">SocioMotif LLC</option>
-                  <option value="Sagitech Solution">Sagitech Solution</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Test Pvt Ltd">Test Pvt Ltd</option>
+                  
                 </select>
               </div>
               <div class="col-md-4 rowadjust">
                 <label>Application</label>
                 <select class="form-control border" name="application1" id="application1">
-                  <option value="Select Application">Select Application</option>
-                  <option value="SmartIT">SmartIT</option>
-                  <option value="IYSM">IYSM</option>
+                   
                 </select>
               </div>
               <div class="col-md-4 mb-2 rowadjust">
@@ -185,42 +175,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td >Sagitech Solution</td>
-                    <td >IYSM</td>
-                    <td ><span class="updtRow">testmethod-01</span></td>
-                    <td class="complete">Complete</td>
-                  </tr>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td >Infosys</td>
-                    <td >SmartIT</td>
-                    <td ><span class="updtRow">testmethod-02</span></td>
-                    <td class="running">Running</td>
-                  </tr>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td >Test Pvt Ltd</td>
-                    <td >IYSM</td>
-                    <td ><span class="updtRow">testmethod-03</span></td>
-                    <td class="running">Running</td>
-                  </tr>
+                 
                 </tbody>
               </table>
             </div>
@@ -354,8 +309,19 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment.js"></script>
 <script src="js/custom.js"></script>
+<script src="js/pages/common.js"></script>
+<script src="js/pages/managetestcase.js"></script>
 <script>
   $(function(){
+
+     
+    fetchAllCompany();
+    fetchAllTestMethod();
+
+    $('#company_name').on('change', function (e) {
+    var valueSelected = this.value;
+    fetchAllApplicationsByCompanyId(valueSelected);
+    });
 
     /*---Jquery for Add row---*/
 
@@ -388,29 +354,33 @@
     /*---Jquery for Save Test Method---*/
 
     $("button.addtestmethodBtn").click(function(){
-      var dataCompany_name = $("#company_name").val();
-      var dataApplication = $("#application").val();
-      var dataTest_method = $("#test_method").val();
+      var dataCompany_name = $("#company_name").val().trim();
+      var dataApplication = $("#application").val().trim();
+      var dataTest_method = $("#test_method").val().trim();
+      var class_name = $("#class_name").val().trim();
+      var description = $("#description").val().trim();
 
-      var str = `<tr>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td >`+dataCompany_name+`</td>
-      <td >`+dataApplication+`</td>
-      <td >`+dataTest_method+`</td>
-      <td class="running">Running</td>
-      </tr>`;
-
-      $("table.Testmethodtable tbody").prepend(str);
-
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
-      $("#deleteRow").attr("disabled", false);
-      $(this).closest(".addRowData").slideUp();
+      if(dataCompany_name.length == 0){
+        alert("Please select valid company")
+      }else if(dataApplication.length == 0){
+        alert("Please select valid application")
+      }else if(dataTest_method.length == 0){
+        alert("Please select valid test method")
+      }else if(class_name.length == 0){
+        alert("Please select valid classname")
+      }else if(description.length == 0){
+        alert("Please select valid description")
+      }else{
+        var payload = {};
+        payload['companyId'] = dataCompany_name;
+        payload['applicationId'] = dataApplication;
+        payload['testMethod'] = dataTest_method;
+        payload['classname'] = class_name;
+        payload['description'] = description;
+        payload['status'] = '';
+        payload['isDelete'] = 0;
+        saveTestMethods(payload);
+      }      
     });
     
     /*---Jquery for Update Test Method---*/

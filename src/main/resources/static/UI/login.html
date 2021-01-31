@@ -173,7 +173,12 @@
 						createCookie("TAuid", response.userId, 60);
 						createCookie("TAuname", response.username, 60);
 						createCookie("TAurole", response.authorities[0].authority, 60);
-						window.location.href = "./dashboard.html";
+						if(response.companyId == 0){
+							window.location.href = "./dashboard1.html";
+						}else{
+							window.location.href = "./dashboard.html";
+						}
+						
 					}
 				});
 			});
