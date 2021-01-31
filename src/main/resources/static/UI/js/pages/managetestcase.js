@@ -30,7 +30,7 @@ function deleteAllTestMethods() {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/testMethod/deleteAll/" + readCookie("TAuid"),
+		url: base_url + "/testMethod/deleteAll",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},

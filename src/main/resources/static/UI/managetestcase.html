@@ -179,23 +179,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="row paginate">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="pagination">
-                  <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                  <a href="#"><strong>Previous</strong></a>
-                  <a href="#" class="active">1</a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-                  <a href="#">5</a>
-                  <a href="#">...</a>
-                  <a href="#">10</a>
-                  <a href="#"><strong>Next</strong></a>
-                  <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-                </div>
-              </div>
-            </div>
+ 
           </div>
         </div>
       </div>
@@ -380,8 +364,17 @@
         payload['status'] = '';
         payload['isDelete'] = 0;
         saveTestMethods(payload);
+        clearForm();
       }      
     });
+
+    function clearForm(){
+      $("#company_name").val(0);
+      $("#application").val(0);
+      $("#test_method").val("");
+      $("#class_name").val("");
+      $("#description").val("");
+    }
     
     /*---Jquery for Update Test Method---*/
     
@@ -441,10 +434,12 @@
 
     /*---Jquery for delete Test Methods row---*/
 
+    var testMethodId = 0;
     $("#deleteRow").click(function(e){
       e.preventDefault();
       var str = '';
       $("table tbody .subCB input:checked").each(function(){
+        testMethodId = $(this).attr('data-value');
         if(str!='')
           str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
         else
@@ -453,12 +448,21 @@
 
       $("#deletedItem").text(str);
       $("#myModal").modal();
+
+    
     });
 
     $(document).on("click", "#yesbtn", function(){
+      $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
-      });     
+      });
+
+      if(str.indexOf(",") > 0){
+        deleteAllTestMethods();
+			}else{
+				deleteTestMethod(testMethodId);
+      }     
     });
 
     /*---Jquery for toggle section on click caret-down icon---*/
