@@ -86,8 +86,7 @@
 		<div class="card">
 			<div class="card-body tabsHeader">
 				<span class="active activetab"><i class="fa fa-check"></i> Select Environment</span>
-				<span class="active activetab"><i>2</i> Select Test Bucket</span>
-				<span><i>3</i> Finalize</span>
+				<span class="active activetab"><i>2</i> Select Test Bucket & Finalize</span>
 			</div>
 		</div>
         
@@ -104,7 +103,7 @@
 						</div>
 					</div>
 					<div class="row selectdiv" style="overflow-x: auto;">
-						<table id="bucketList" class="table selectdiv1">
+						<table id="bucketList" class="table selectdiv1 bucketListTable">
 						  <thead>
 						    <tr>
 						      <th scope="col" class="bucketcheck">
@@ -120,63 +119,12 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td>Test Bucket - 1</td>
-						      <td>DEV</td>
-						      <td>Test_Automation2-StanderedStaff</td>
-						      <td><img src="img/flip.png" alt="1" class="addrow" title="Clone"> <img src="img/visibility-24-px.png" alt="1" data-toggle="modal" data-target="#myModal1" title="View"></td>
-						    </tr>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td>Test Bucket - 1</td>
-						      <td>DEV</td>
-						      <td>Test_Automation2-StanderedStaff</td>
-						      <td><img src="img/flip.png" alt="2" class="addrow" title="Clone"> <img src="img/visibility-24-px.png" alt="2" data-toggle="modal" data-target="#myModal1" title="View"></td>
-						    </tr>
-						    <tr>
-						      <td scope="col" class="bucketcheck">
-						      	<label class="main subCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </td>
-						      <td>Test Bucket - 1</td>
-						      <td>DEV</td>
-						      <td>Test_Automation2-StanderedStaff</td>
-						      <td><img src="img/flip.png" class="addrow" alt="3" title="Clone"> <img src="img/visibility-24-px.png" alt="3" data-toggle="modal" data-target="#myModal1" title="View"></td>
-						    </tr>
+						
 						  </tbody>
 						</table>
 					</div>
 				</form>
-				<div class="row paginate">
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="pagination">
-							  <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-							  <a href="#"><strong>Previous</strong></a>
-							  <a href="#" class="active">1</a>
-							  <a href="#">2</a>
-							  <a href="#">3</a>
-							  <a href="#">4</a>
-							  <a href="#">5</a>
-							  <a href="#">...</a>
-							  <a href="#">10</a>
-							  <a href="#"><strong>Next</strong></a>
-							  <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-							</div>
-					</div>
-				</div>
+
 			</div>
 		</div>
         
@@ -394,42 +342,7 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-							    <tr>
-							      <td scope="col" class="bucketcheck">
-							      	<label class="main subCB">
-								        <input type="checkbox"> 
-								        <span class="geekmark"></span> 
-								    </label>
-						          </td>
-							      <td>Test Bucket - 1</td>
-							      <td>DEV</td>
-							      <td>Test_Automation2-StanderedStaff</td>
-							      <td><img src="img/visibility-24-px.png" alt="1" data-toggle="modal" data-target="#myModal1" title="View"></td>
-							    </tr>
-							    <tr>
-							      <td scope="col" class="bucketcheck">
-							      	<label class="main subCB">
-								        <input type="checkbox"> 
-								        <span class="geekmark"></span> 
-								    </label>
-						          </td>
-							      <td>Test Bucket - 1</td>
-							      <td>DEV</td>
-							      <td>Test_Automation2-StanderedStaff</td>
-							      <td><img src="img/visibility-24-px.png" alt="2" data-toggle="modal" data-target="#myModal1" title="View"></td>
-							    </tr>
-							    <tr>
-							      <td scope="col" class="bucketcheck">
-							      	<label class="main subCB">
-								        <input type="checkbox"> 
-								        <span class="geekmark"></span> 
-								    </label>
-						          </td>
-							      <td>Test Bucket - 1</td>
-							      <td>DEV</td>
-							      <td>Test_Automation2-StanderedStaff</td>
-							      <td><img src="img/visibility-24-px.png" alt="3" data-toggle="modal" data-target="#myModal1" title="View"></td>
-							    </tr>
+							   
 							  </tbody>
 							</table>
 		          		</div>
@@ -480,7 +393,7 @@
 				<!--Back Button for go to previous page-->
 				<a href="testbucketenviroment.html"><button class="btn btn-dark buttonlink">BACK</button></a>
 				<!--Next Button for go to next page-->
-				<a href="#"><button class="btn btn-primary buttonlink" data-toggle="modal" data-target="#myModal2">NEXT</button></a>
+				<a href="#"><button id="submitButton" class="btn btn-primary buttonlink" data-toggle="modal" data-target="#myModal2">FINISH</button></a>
 			</div>
 		</div>
 	</div>
@@ -503,8 +416,18 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/custom.js"></script>
+	<script src="js/pages/selecttestbucket.js"></script>
+	<script src="js/pages/localstorage.js"></script>
+	<script src="js/pages/constants.js"></script>
 	<script>
 		$(function(){
+
+			fetchAllTestBucket();
+
+			if(getItem(TESTBUCKET_SCHEDULE_DATE) == ''){
+				$("#submitButton").text("EXECUTE");
+			} 
+
 			$(".test_cases").click(function(){
 				$(this).find(".submaindiv").slideToggle();
 				$(this).find("i.testDetBtn").toggleClass("caret-rev");
@@ -575,10 +498,13 @@
             
             /*---Jquery for delete row---*/
 
+			var testBucketId = 0;
+			var str = '';
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
-				var str = '';
+				
 				$("table tbody .subCB input:checked").each(function(){
+				testBucketId = $(this).attr('data-value');
 				if(str!='')
 					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
 				else
@@ -592,7 +518,13 @@
 			$(document).on("click", "#yesbtn", function(){
 				$("table tbody .subCB input:checked").each(function(){
 					$(this).closest("tr").remove();
-				});	    
+				});	 
+				
+				if(str.indexOf(",") > 0){
+        			deleteAllTestBuckets();
+				}else{
+					deleteTestBucket(testBucketId);
+				}     
 			});
 
 			$("#redirect").click(function(){
