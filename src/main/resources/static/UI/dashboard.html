@@ -797,83 +797,111 @@
 	</script>
 	<script>
       google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
+	  google.charts.setOnLoadCallback(drawChart);
+	  
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Will not be Automated - 25%',  25],
-          ['Not Yet Automated - 25%',   25],
-          ['Automated - 50%',   50]
-        ]);
+        $.ajax({
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			url: base_url + "/testcases/getAutoStatusStats",
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: function (data) {
+				var chartArray = [['Task', 'Hours per Day']];
+				data.map((i)=>{
+					var obj = [i.name,i.count];
+					chartArray.push(obj)
+				})
+				var data = google.visualization.arrayToDataTable(chartArray);
 
-        var options = {
-          // title: 'TOTAL : 102',
-          pieHole: 0.4,
-          slices: {
-            0: { color: '#ffc637' },
-            1: { color: '#7933af' },
-            2: { color: '#3ebbf6' }
-          }
-        };
+				var options = {
+				// title: 'TOTAL : 102',
+				pieHole: 0.4,
+				slices: {
+					0: { color: '#ffc637' },
+					1: { color: '#7933af' },
+					2: { color: '#3ebbf6' }
+				}
+				};
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart1'));
-        chart.draw(data, options);
+				var chart = new google.visualization.PieChart(document.getElementById('donutchart1'));
+				chart.draw(data, options);
+			}});
       }
 	</script>
 	<script>
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['In Progress - 20%',   20],
-          ['Completed - 20%',   20],
-          ['Check In - 20%',   20],
-          ['Backlog - 40%',  40]
-        ]);
+        $.ajax({
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			url: base_url + "/testcases/getAutoProgressStats",
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: function (data) {
+				var chartArray = [['Task', 'Hours per Day']];
+				data.map((i)=>{
+					var obj = [i.name,i.count];
+					chartArray.push(obj)
+				})
+				var data = google.visualization.arrayToDataTable(chartArray);
 
-        var options = {
-          // title: 'TOTAL : 102',
-          pieHole: 0.4,
-          slices: {
-            0: { color: '#2a8102' },
-            1: { color: '#007bff' },
-            2: { color: '#3ebbf6' },
-            3: { color: '#ffc637' }
-          }
-        };
+				var options = {
+				  // title: 'TOTAL : 102',
+				  pieHole: 0.4,
+				  slices: {
+					0: { color: '#2a8102' },
+					1: { color: '#007bff' },
+					2: { color: '#3ebbf6' },
+					3: { color: '#ffc637' }
+				  }
+				};
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
-        chart.draw(data, options);
+				var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
+				chart.draw(data, options);
+			}});
       }
 	</script>
 	<script>
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['IT - 50',  15],
-          ['ITSM - 50',  15],
-          ['IT - 54',  20],
-          ['QA - 45',   35],
-          ['PRODUCTION - 45',   15]
-        ]);
+        $.ajax({
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			url: base_url + "/testcases/getApplicationCoverageStats",
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: function (data) {
+				var chartArray = [['Task', 'Hours per Day']];
+				data.map((i)=>{
+					var obj = [i.name,i.count];
+					chartArray.push(obj)
+				})
+				var data = google.visualization.arrayToDataTable(chartArray);
 
-        var options = {
-          // title: 'TOTAL : 102',
-          pieHole: 0.4,
-          slices: {
-            0: { color: '#7933af' },
-            1: { color: '#277dc8' },
-            2: { color: '#ffc637' },
-            3: { color: '#59a9ff' },
-            4: { color: '#2a8102' }
-          }
-        };
+				var options = {
+				  // title: 'TOTAL : 102',
+				  pieHole: 0.4,
+				  slices: {
+					0: { color: '#7933af' },
+					1: { color: '#277dc8' },
+					2: { color: '#ffc637' },
+					3: { color: '#59a9ff' },
+					4: { color: '#2a8102' }
+				  }
+				};
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
-        chart.draw(data, options);
+				var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
+				chart.draw(data, options);
+			}});
       }
 </script>
 <script type="text/javascript">
