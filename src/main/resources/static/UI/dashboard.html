@@ -143,7 +143,7 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<label class="subtitle">Available Test Buckets:</label>
 					</div>
-                    <table id="" class="table tabledash">
+                    <table id="testBucketSummary" class="table tabledash">
 		                <thead>
 		                  <tr>
 		                    <th scope="col">BUCKET NAME</th>
@@ -151,22 +151,7 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-		                  <tr>
-		                    <td >cbowenals_12_27_bucket_1</td>
-		                    <td ><img src="img/visibility-24-px.png"  data-toggle="modal" data-target="#myModal2" alt="1"></td>
-		                  </tr>
-		                  <tr>
-		                    <td >cbowenals_12_27_bucket_2</td>
-		                    <td ><img src="img/visibility-24-px.png"  data-toggle="modal" data-target="#myModal2" alt="1"></td>
-		                  </tr>
-		                  <tr>
-		                    <td >cbowenals_12_27_bucket_3</td>
-		                    <td ><img src="img/visibility-24-px.png"  data-toggle="modal" data-target="#myModal2" alt="1"></td>
-		                  </tr>
-		                  <tr>
-		                    <td >cbowenals_12_27_bucket_4</td>
-		                    <td ><img src="img/visibility-24-px.png"  data-toggle="modal" data-target="#myModal2" alt="1"></td>
-		                  </tr>
+		                  
 		                </tbody>
 		              </table>
 					</div>
@@ -596,9 +581,9 @@
 				          		<label class="col-md-12">User Role</label>
 				          	</div>
 				          	<div class="col-md-7">
-				          		<label class="col-md-12">: Test-Bucket-1</label>
-				          		<label class="col-md-12">: QA</label>
-				          		<label class="col-md-12">: Test_Automation2-StandardSupportStaff</label>
+				          		<label id="modalBucketName" class="col-md-12">: Test-Bucket-1</label>
+				          		<label id="modalEnvironment" class="col-md-12">: QA</label>
+				          		<label id="modalRole" class="col-md-12">: Test_Automation2-StandardSupportStaff</label>
 				          	</div>
 		          		</div>
 		          		<div class="Testcasemodel">
@@ -767,9 +752,12 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/custom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+	<script src="js/pages/dashboard.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
+		fetchAllTestBucket();
 		new Chart(document.getElementById("pie-chart"), {
 		    type: 'pie',
 		    data: {
@@ -889,80 +877,80 @@
       }
 </script>
 <script type="text/javascript">
-  window.onload = function () {
+//   window.onload = function () {
 
-    var chart = new CanvasJS.Chart("chartContainer",
-    {
-      title:{
-      // text: "Coal Reserves of Countries"
-      },
-      axisY:{
-		title:"Test Case number",
-		valueFormatString: " ",
-	  },
-	  toolTip:{
-	  	shared: true
-	   // content:"{label},<br> x: {city},</br> y: {y}" ,
-	 },
-	  dataPointWidth: 50,
-      data: [
-      {
-        type: "stackedColumn",
-        indexLabel: "{y}",
-        name: "Chicago",
-        dataPoints: [
-        {  y: 40, label: "Company A", color: "#3ebbf6"},
-        {  y: 45, label: "Company B", color: "#3ebbf6" },
-        {  y: 85, label: "Company C", color: "#3ebbf6" },
-        {  y: 50, label: "Company D", color: "#3ebbf6" },
-        {  y: 30, label: "Company E", color: "#3ebbf6"},
-        {  y: 30, label: "Company F", color: "#3ebbf6"},
-        {  y: 35, label: "Company G", color: "#3ebbf6" },
-        {  y: 25, label: "Company H", color: "#3ebbf6" },
-        {  y: 55, label: "Company I", color: "#3ebbf6"},
-        {  y: 55, label: "Company J", color: "#3ebbf6"}
+//     var chart = new CanvasJS.Chart("chartContainer",
+//     {
+//       title:{
+//       // text: "Coal Reserves of Countries"
+//       },
+//       axisY:{
+// 		title:"Test Case number",
+// 		valueFormatString: " ",
+// 	  },
+// 	  toolTip:{
+// 	  	shared: true
+// 	   // content:"{label},<br> x: {city},</br> y: {y}" ,
+// 	 },
+// 	  dataPointWidth: 50,
+//       data: [
+//       {
+//         type: "stackedColumn",
+//         indexLabel: "{y}",
+//         name: "Chicago",
+//         dataPoints: [
+//         {  y: 40, label: "Company A", color: "#3ebbf6"},
+//         {  y: 45, label: "Company B", color: "#3ebbf6" },
+//         {  y: 85, label: "Company C", color: "#3ebbf6" },
+//         {  y: 50, label: "Company D", color: "#3ebbf6" },
+//         {  y: 30, label: "Company E", color: "#3ebbf6"},
+//         {  y: 30, label: "Company F", color: "#3ebbf6"},
+//         {  y: 35, label: "Company G", color: "#3ebbf6" },
+//         {  y: 25, label: "Company H", color: "#3ebbf6" },
+//         {  y: 55, label: "Company I", color: "#3ebbf6"},
+//         {  y: 55, label: "Company J", color: "#3ebbf6"}
 
-        ]
-      },  {
-      type: "stackedColumn",
-        indexLabel: "{y}",
-        name: "Los Angeles",
-        dataPoints: [
-        {  y: 15, label: "Company A", color: "#ffc637"},
-        {  y: 60, label: "Company B", color: "#ffc637" },
-        {  y: 20, label: "Company C", color: "#ffc637" },
-        {  y: 30, label: "Company D", color: "#ffc637" },
-        {  y: 75, label: "Company E", color: "#ffc637"},
-        {  y: 25, label: "Company F", color: "#ffc637"},
-        {  y: 20, label: "Company G", color: "#ffc637" },
-        {  y: 45, label: "Company H", color: "#ffc637" },
-        {  y: 30, label: "Company I", color: "#ffc637"},
-        {  y: 30, label: "Company J", color: "#ffc637"}
+//         ]
+//       },  {
+//       type: "stackedColumn",
+//         indexLabel: "{y}",
+//         name: "Los Angeles",
+//         dataPoints: [
+//         {  y: 15, label: "Company A", color: "#ffc637"},
+//         {  y: 60, label: "Company B", color: "#ffc637" },
+//         {  y: 20, label: "Company C", color: "#ffc637" },
+//         {  y: 30, label: "Company D", color: "#ffc637" },
+//         {  y: 75, label: "Company E", color: "#ffc637"},
+//         {  y: 25, label: "Company F", color: "#ffc637"},
+//         {  y: 20, label: "Company G", color: "#ffc637" },
+//         {  y: 45, label: "Company H", color: "#ffc637" },
+//         {  y: 30, label: "Company I", color: "#ffc637"},
+//         {  y: 30, label: "Company J", color: "#ffc637"}
 
-        ]
-      },  {
-        type: "stackedColumn",
-        indexLabel: "{y}",
-        name: "New York",
-        dataPoints: [
-        {  y: 36, label: "Company A", color: "#7933af"},
-        {  y: 28, label: "Company B", color: "#7933af" },
-        {  y: 18, label: "Company C", color: "#7933af" },
-        {  y: 75, label: "Company D", color: "#7933af" },
-        {  y: 30, label: "Company E", color: "#7933af"},
-        {  y: 75, label: "Company F", color: "#7933af"},
-        {  y: 35, label: "Company G", color: "#7933af" },
-        {  y: 20, label: "Company H", color: "#7933af" },
-        {  y: 20, label: "Company I", color: "#7933af"},
-        {  y: 72, label: "Company J", color: "#7933af"}
+//         ]
+//       },  {
+//         type: "stackedColumn",
+//         indexLabel: "{y}",
+//         name: "New York",
+//         dataPoints: [
+//         {  y: 36, label: "Company A", color: "#7933af"},
+//         {  y: 28, label: "Company B", color: "#7933af" },
+//         {  y: 18, label: "Company C", color: "#7933af" },
+//         {  y: 75, label: "Company D", color: "#7933af" },
+//         {  y: 30, label: "Company E", color: "#7933af"},
+//         {  y: 75, label: "Company F", color: "#7933af"},
+//         {  y: 35, label: "Company G", color: "#7933af" },
+//         {  y: 20, label: "Company H", color: "#7933af" },
+//         {  y: 20, label: "Company I", color: "#7933af"},
+//         {  y: 72, label: "Company J", color: "#7933af"}
 
-        ]
-      }
-      ]
-    });
+//         ]
+//       }
+//       ]
+//     });
 
-    chart.render();
-  }
+//     chart.render();
+//   }
   </script>
   <script>
   	/*---Jquery for toggle section on click angle-down icon---*/

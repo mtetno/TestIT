@@ -77,4 +77,25 @@ public class TestcasesController {
         testcasesRepo.updateByTestcaseId(loggedInUser.getUserId(),testcaseId);
         return true;
     }
+
+    @GetMapping(value = "/getAutoProgressStats")
+    public  List<Map<String, Object>> getAutoProgressStats() {
+        logger.info("Inside getAutoProgressStats");
+        List<Map<String, Object>> dashboardStats= testcasesRepo.getAutoProgressStats();
+    	return dashboardStats;
+    }
+
+    @GetMapping(value = "/getAutoStatusStats")
+    public  List<Map<String, Object>> getAutoStatusStats() {
+        logger.info("Inside getAutoStatusStats");
+        List<Map<String, Object>> dashboardStats= testcasesRepo.getAutoStatusStats();
+    	return dashboardStats;
+    }
+
+    @GetMapping(value = "/getApplicationCoverageStats")
+    public  List<Map<String, Object>> getApplicationCoverageStats() {
+        logger.info("Inside getApplicationCoverageStats");
+        List<Map<String, Object>> dashboardStats= testcasesRepo.getApplicationCoverageStats();
+    	return dashboardStats;
+    }
 }

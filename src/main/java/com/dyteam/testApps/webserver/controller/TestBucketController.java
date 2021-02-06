@@ -1,9 +1,12 @@
 package com.dyteam.testApps.webserver.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.TestBucket;
+import com.dyteam.testApps.webserver.entity.TestBucketTestcases;
 import com.dyteam.testApps.webserver.repository.TestBucketRepository;
+import com.dyteam.testApps.webserver.repository.TestBucketTestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 import org.slf4j.Logger;
@@ -22,23 +25,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/testBucket")
 public class TestBucketController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     TestBucketRepository testBucketRepository;
-     
+
+    @Autowired
+    TestBucketTestcasesRepository testBucketTestcasesRepository;
+
     @PostMapping("/save")
-    public TestBucket saveTestBucket(@RequestBody TestBucket testBucketParam, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public TestBucket saveTestBucket(@RequestBody TestBucket testBucketParam,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside saveTestBucket");
+        ;
+        ArrayList<Long> bucketTestCaseId = testBucketParam.getTestcasesId();
+        logger.info("Inside bucketTestCaseId size"+bucketTestCaseId.size());
         TestBucket testBucket = new TestBucket();
         testBucket.setCompanyId(loggedInUser.getUserId());
         testBucket.setEnvironmentId(testBucketParam.getEnvironmentId());
-        testBucket.setTestcasesId(testBucketParam.getTestcasesId());
         testBucket.setUserRoleId(testBucketParam.getUserRoleId());
         testBucket.setName(testBucketParam.getName());
         testBucket.setIsDelete(0);
         testBucket.setAddedBy(loggedInUser.getUserId());
-        return testBucketRepository.save(testBucket);
+        TestBucket savedBucket = testBucketRepository.save(testBucket);
+        for (Long testcaseid : bucketTestCaseId) {
+            TestBucketTestcases testBucketTestcases = new TestBucketTestcases();
+            testBucketTestcases.setBucketId(savedBucket.getId());             
+            testBucketTestcases.setTestcaseId(testcaseid);
+            testBucketTestcasesRepository.save(testBucketTestcases);
+        }
+        return savedBucket;
     }
     
     @DeleteMapping(value = "/deleteAll")
@@ -59,6 +75,27 @@ public class TestBucketController {
         logger.info("Inside getAllTestBuckets");
         Iterable<Map<String, Object>> testtypes = testBucketRepository.fetchAll();
         return testtypes;
+    }
+
+    @GetMapping(value = "/fetchTestBucketDetails/{id}")
+    public Iterable<Map<String, Object>> fetchTestBucketDetails(@PathVariable(value = "id") Long id) {
+        logger.info("Inside fetchTestBucketDetails");
+        Iterable<Map<String, Object>> testtypes = testBucketRepository.fetchBucketDetails(id);
+        return testtypes;
+    }
+
+    @GetMapping(value = "/cloneTestBucket/{id}/{bucketName}/{environment}/{userRole}")
+    public int cloneTestBucket(@PathVariable(value = "id") Long id,
+    @PathVariable(value = "bucketName") String bucketName,
+    @PathVariable(value = "environment") Long environment,
+    @PathVariable(value = "userRole") Long userRole
+    ) {
+        logger.info("Inside cloneTestBucket");    
+        testBucketRepository.cloneBucket(id);
+        int cloneId = testBucketRepository.getInsertedBucketId();
+        testBucketRepository.updateBucket(cloneId, bucketName,environment, userRole);
+        testBucketRepository.cloneBucketTestcases(Long.valueOf(cloneId));
+        return cloneId;
     }
     
 }

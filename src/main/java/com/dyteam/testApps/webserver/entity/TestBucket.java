@@ -1,5 +1,6 @@
 package com.dyteam.testApps.webserver.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,15 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @AllArgsConstructor
@@ -50,9 +52,8 @@ public class TestBucket {
 	@NotNull
 	private Long userRoleId;
 
-	@Column(name="testcases_id")
-	@NotNull
-	private String testcasesId;
+	@Transient
+	private ArrayList<Long> testcasesId;
 
 	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -106,14 +107,8 @@ public class TestBucket {
 		this.userRoleId = userRoleId;
 	}
 
-	public String getTestcasesId() {
-		return testcasesId;
-	}
-
-	public void setTestcasesId(String testcasesId) {
-		this.testcasesId = testcasesId;
-	}
-
+	 
+	
 	public Date getAddedWhen() {
 		return addedWhen;
 	}
@@ -136,6 +131,14 @@ public class TestBucket {
 
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public ArrayList<Long> getTestcasesId() {
+		return testcasesId;
+	}
+
+	public void setTestcasesId(ArrayList<Long> testcasesId) {
+		this.testcasesId = testcasesId;
 	}
 
 	

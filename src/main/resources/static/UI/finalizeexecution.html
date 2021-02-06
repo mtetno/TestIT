@@ -639,7 +639,7 @@
 			payload['name'] = $('#inputbox').val();
 			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
 			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
-			payload['testcasesId'] = getItem(RUNTESTS_SELECTED_TESTCASES_ID);
+			payload['testcasesId'] = JSON.parse(getItem(RUNTESTS_SELECTED_TESTCASES_ID));
 			creatTestBucket(payload);
 
 			var payload = {};

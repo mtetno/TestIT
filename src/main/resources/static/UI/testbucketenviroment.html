@@ -152,6 +152,11 @@
 		$(function(){
 			
 			fetchAllTestingEnvironments();
+			removeItem(TESTBUCKET_EXECUTION_NAME);
+			removeItem(TESTBUCKET_TESTING_ENVIRONMENT_ID);
+			removeItem(TESTBUCKET_TESTING_ENVIRONMENT_NAME);
+			removeItem(TESTBUCKET_SCHEDULE_DATE);
+			removeItem(TESTBUCKET_SCHEDULE_TIME);
 
 			$(".nextbtn").click(function(){
 				
