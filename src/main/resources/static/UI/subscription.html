@@ -113,62 +113,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">cbowen john</td>
-                    <td >cbowen@partneritsm.com</td>
-                    <td >17-02-2020</td>
-                    <td >17-02-2020</td>
-                  </tr>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">QA</td>
-                    <td >cbowen@partneritsm</td>
-                    <td >16-02-2020</td>
-                    <td >16-02-2020</td>
-                  </tr>
-                  <tr>
-                    <td scope="col" class="bucketcheck">
-                      <label class="main subCB">
-                        <input type="checkbox"> 
-                        <span class="geekmark"></span> 
-                      </label>
-                    </td>
-                    <td data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">DEV</td>
-                    <td >cbowen@partneritsm</td>
-                    <td >14-02-2020</td>
-                    <td >14-02-2020</td>
-                  </tr>
+                  
+                  
                 </tbody>
               </table>
             </div>
-            <div class="row paginate">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="pagination">
-                  <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                  <a href="#"><strong>Previous</strong></a>
-                  <a href="#" class="active">1</a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-                  <a href="#">5</a>
-                  <a href="#">...</a>
-                  <a href="#">10</a>
-                  <a href="#"><strong>Next</strong></a>
-                  <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-                </div>
-              </div>
-            </div>
+             
           </div>
         </div>
       </div>
@@ -195,17 +145,17 @@
                     </div>
                     <div class="col-md-6 mb-2">
                       <label class="required" >Username</label>
-                      <input type="text" id="f2" class="form-control border" name="username" placeholder="Enter Username" required>
+                      <input type="text" id="username" class="form-control border" name="username" placeholder="Enter Username" required>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6 mb-2">
                       <label class="required" >Password</label>
-                      <input type="password" class="form-control border" name="password" placeholder="Enter Password" required>
+                      <input type="password" class="form-control border" id="password" name="password" placeholder="Enter Password" required>
                     </div>
                     <div class="col-md-6 mb-2">
                       <label class="required" >Confirm Password</label>
-                      <input type="password" class="form-control border" name="confirmpassword" placeholder="Enter Confirm Password" required>
+                      <input type="password" class="form-control border" id="confirmpassword" name="confirmpassword" placeholder="Enter Confirm Password" required>
                     </div>
                   </div>
                   <div class="row">
@@ -215,60 +165,11 @@
                     </div>
                     <div class="col-md-6 mb-2 envlist">
                       <label class="required" >Testing Environment</label>
-                      <input type="text" class="form-control testing_inv border" name="testEnvSelect" required><i class="fa fa-angle-down testDetBtn" aria-hidden="true"></i>
-
-                      <div class="submaindiv" style="width: 100%; height: auto;">
-                        <ul>
-                          <li>
-                            <label class="main subCB">Window10_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Crome" checked="checked"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Firefox 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Firefox" checked="checked"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Firefox 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Firefox"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_IE 
-                                <input type="checkbox" name="testEnv[]" value="Window10_IE"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Linux_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Linux_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_IE 
-                                <input type="checkbox" name="testEnv[]" value="Window10_IE"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Linux_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Linux_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
+                      
+                    <select class="form-control border" name="testing_environment" id="testing_environment" required>
+                      <option value="Select Testing Environment">Select Testing Environment</option>
+                      <option value="Internet Explorer">Internet Explorer</option>
+                    </select>
                     </div>
                   </div>
 
@@ -287,13 +188,13 @@
                     <div class="col-md-6">
                       <label class="required" >Remind Before</label>
                       <select class="form-control border" name="remind_before" id="remind_before" required>
-                        <option value="10 Days">10 Days</option>
-                        <option value="9 Days">9 Days</option>
+                        <option value="0">10 Days</option>
+                        <option value="1">9 Days</option>
                       </select>
                     </div>
                     <div class="col-md-6">
                       <label class="required" >No Of Threads</label>
-                      <select class="form-control border" name="environment" id="environment" required>
+                      <select class="form-control border" name="threads" id="threads" required>
                         <option value="0">Select No Of Threads</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -310,7 +211,7 @@
             <!-- Modal footer -->
             <div class="modal-footer btnfooter">
               <button type="button" class="btn btn-dark" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
-              <button type="button" id="saveRec" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess1"><img src="img/save-24-px-1.png">SAVE</button>
+              <button type="button" id="saveRec" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" ><img src="img/save-24-px-1.png">SAVE</button>
             </div>
             
           </div>
@@ -992,12 +893,36 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment.js"></script>
 <script src="js/custom.js"></script>
+<script src="js/pages/common.js"></script>
+<script src="js/pages/subscription.js"></script>
 <!--Datepicker js link-->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
   $(function(){
-    
+    fetchAllTestingEnvironments();
+    fetchAllSubscriptions();
     /*---Jquery for Testing Environment select---*/
+
+    $("#deleteRow").click(function(e){
+				e.preventDefault();
+				var str = '';
+				var subId = 0;
+				$("table tbody .subCB input:checked").each(function(){
+          subId = $(this).attr('data-value');
+				if(str!='')
+					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+				else
+					str += $(this).closest("tr").find("td:nth-child(2)").text();
+				});
+
+				$("#deletedItem").text(str);
+
+				if(str.indexOf(",") > 0){
+					deleteSubscriptions();
+				}else{
+					deleteSubscription(subId);
+				}
+			});
 
     $(".envlist").click(function(){
       $(this).find(".submaindiv").slideToggle();
@@ -1086,25 +1011,78 @@
     /*---Jquery for save Subscription ---*/
 
     $("button#saveRec").click( function(){
-      var startdate = $("#startdate").val();
-      var enddate = $("#enddate").val();
-      var dt = new Date();
-      var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
+      var name = $("#name").val();
+      var username = $("#username").val();
+      var password = $("#password").val().trim();
+				var confirmpassword = $("#confirmpassword").val().trim();
+				var email = $("#email").val().trim();
+				var testing_environment = $("#testing_environment").val().trim();
+				var startdate = $("#startdate").val().trim();
+				var enddate = $("#enddate").val().trim();
+				var remind_before = $("#remind_before").val().trim();
+				var threads = $("#threads").val().trim();
+				var isDelete = 0
 
-      var savestr = `<tr>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td>`+$("#name").val()+`</td>
-      <td>`+$("#email").val()+`</td>
-      <td>`+startdate+`</td>
-      <td>`+enddate+`</td>
-      </tr>`;
-          // $("#bucketList tbody tr:first-child").before();
-          $("#subscriptionsList tbody tr:first-child").before(savestr);            
+				if(name.length == 0){
+					alert("Please enter valid name");
+					return false;
+				}else if(username.length == 0){
+					alert("Please enter valid username");
+					return false;
+				}else if(password.length == 0){
+					alert("Please enter valid password");
+					return false;
+				}else if(confirmpassword.length == 0){
+					alert("Please enter valid confirm password");
+					return false;
+				}else if(password != confirmpassword){
+					alert("Password and confirm password didnt matched");
+					return false;
+				}else if(testing_environment == 0){
+					alert("Please enter valid testing environment");
+					return false;
+				}else if(startdate.length == 0){
+					alert("Please enter valid start date");
+					return false;
+				}else if(enddate.length == 0){
+					alert("Please enter valid end date");
+					return false;
+				}else if(remind_before == 0){
+					alert("Please enter valid remind before");
+					return false;
+				}else if(threads == 0){
+					alert("Please enter valid threads");
+					return false;
+				}
+        $("#myModal1").modal('toggle');
+        
+				var dataObj = {};
+				dataObj["companyName"] = name;
+				dataObj["username"] = username;
+				dataObj["password"] = password;
+				dataObj["email"] = email;
+				dataObj["testingEnvironmentId"] = testing_environment;
+				dataObj["startDate"] = startdate;
+				dataObj["endDate"] = enddate;
+				dataObj["remindBefore"] = remind_before;
+				dataObj["threads"] = threads;
+				dataObj["isDelete"] = isDelete;
+				saveSubscription(dataObj);			    
+				  $("#name").val("");
+          $("#username").val("");
+          $("#password").val("");
+			    $("#confirmpassword").val("");
+			    $("#email").val("");
+				  $("#testing_environment").val(0);
+				  $("#startdate").val("");
+				  $("#enddate").val("");
+				  $("#remind_before").val("");
+				 $("#threads").val("");
+     
+				$('#myModalSucess1').modal('show'); 
+      
+
+
       });
     
     /*---Jquery for update Application Paths---*/
