@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "emailconfigurations")
+@Table(name = "email_configurations")
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)
 public class EmailConfigurations {
@@ -46,6 +46,10 @@ public class EmailConfigurations {
 	@Column(name="port")
 	@NotNull
 	private String port;
+
+	@Column(name="email")
+	@NotNull
+	private String email;
 
 	@Column(name="security_protocol")
 	@NotNull
@@ -87,6 +91,8 @@ public class EmailConfigurations {
 		this.hostname = hostname;
 	}
 
+	
+
 	public String getPort() {
 		return port;
 	}
@@ -125,6 +131,14 @@ public class EmailConfigurations {
 
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
  

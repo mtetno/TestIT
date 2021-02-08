@@ -11,14 +11,9 @@ function saveEmailConfiguration(dataObj) {
 		success: function () {
 			$("a.addRowBtn").css("pointer-events", "");
 			$("a.addRowBtn").css("opacity", "");
-			$("#deleteRow").attr("disabled", false);
 			$("#deleteRow1").attr("disabled", false);
-			$("#deleteRow2").attr("disabled", false);
-			$("#company_name").val('');
-			$("#hostname").val('');
-			$("#email").val('');
-			$("#port").val('');
-			$("#security_protocol").val('');
+			$("#deleteRow").attr("disabled", false);
+			$(this).closest(".addRowData").slideUp();
 			
 			 
 			fetchAllEmailConfiguration();

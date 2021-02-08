@@ -250,6 +250,25 @@ function fetchAllTestingEnvironments() {
 	});
 }
 
+function fetchAllCompanies() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Testing Environment</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.companyId + '">' + item.companyName + '</option>';
+			})
+			$("#company_name").html(options);
+		}
+	});
+}
+
 function fetchAllUsersRoles() {
 	$.ajax({
 		type: 'GET',

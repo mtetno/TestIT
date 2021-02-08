@@ -182,19 +182,7 @@
             </div>
             <div class="row paginate">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="pagination">
-                  <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                  <a href="#"><strong>Previous</strong></a>
-                  <a href="#" class="active">1</a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-                  <a href="#">5</a>
-                  <a href="#">...</a>
-                  <a href="#">10</a>
-                  <a href="#"><strong>Next</strong></a>
-                  <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-                </div>
+                 
               </div>
             </div>
           </div>
@@ -365,19 +353,7 @@
             </div>
             <div class="row paginate">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="pagination">
-                  <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                  <a href="#"><strong>Previous</strong></a>
-                  <a href="#" class="active">1</a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">4</a>
-                  <a href="#">5</a>
-                  <a href="#">...</a>
-                  <a href="#">10</a>
-                  <a href="#"><strong>Next</strong></a>
-                  <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-                </div>
+                 
               </div>
             </div>
           </div>
@@ -519,9 +495,12 @@
 <script src="js/moment.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/pages/emailconfiguration.js"></script>
+<script src="js/pages/common.js"></script>
 <script>
   $(function(){
 
+    fetchAllCompanies();
+    fetchAllEmailConfiguration();
     /*---Jquery for Add row---*/
 
     $("a.addRowBtn").click(function(e){
@@ -576,27 +555,16 @@
       var dataHostname = $("#hostname").val();
       var dataEmail = $("#email").val();
       var dataPort = $("#port").val();
+      var protocal = $("#security_protocol").val();
 
-      var str = `<tr>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td ><span class="updtRow">`+dataCompanynm+`</span></td>
-      <td >`+dataHostname+`</td>
-      <td >`+dataEmail+`</td>
-      <td >`+dataPort+`</td>
-      </tr>`;
-
-      $("table.emailconfigTable tbody").prepend(str);
-
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
-      $("#deleteRow1").attr("disabled", false);
-      $("#deleteRow").attr("disabled", false);
-      $(this).closest(".addRowData").slideUp();
+      var dataObj = {};
+      dataObj["companyId"] = dataCompanynm;
+      dataObj["hostname"] = dataHostname;
+      dataObj["port"] = dataPort;
+      dataObj["securityProtocol"] = protocal;
+      dataObj["email"] = dataEmail;
+      dataObj["isDelete"] = 0;
+      saveEmailConfiguration(dataObj);
     });
 
     /*---Jquery for Upadte Email Configuration---*/
@@ -700,21 +668,8 @@
         { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
     });
 
-    /*---Jquery for delete Exicution Environment row---*/
-
-    $("#deleteRow").click(function(e){
-      e.preventDefault();
-      var str = '';
-      $("table tbody .subCB input:checked").each(function(){
-        if(str!='')
-          str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
-        else
-          str += $(this).closest("tr").find("td:nth-child(2)").text();
-      });
-
-      $("#deletedItem").text(str);
-      $("#myModal").modal();
-    });
+     
+     
 
     $(document).on("click", "#yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){
@@ -724,19 +679,29 @@
 
     /*---Jquery for delete Environment URL's row---*/
 
-    $("#deleteRow1").click(function(e){
-      e.preventDefault();
-      var str = '';
-      $("table tbody .subCB input:checked").each(function(){
-        if(str!='')
-          str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
-        else
-          str += $(this).closest("tr").find("td:nth-child(2)").text();
-      });
+    $("#deleteRow").click(function(e){
+				e.preventDefault();
+				var str = '';
+				var subId = 0;
+				$("table tbody .subCB input:checked").each(function(){
+          subId = $(this).attr('data-value');
+				if(str!='')
+					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+				else
+					str += $(this).closest("tr").find("td:nth-child(2)").text();
+				});
 
-      $("#deletedItem1").text(str);
-      $("#myModal1").modal();
-    });
+        $("#deletedItem").text(str);
+        $("#myModal").modal();
+
+				if(str.indexOf(",") > 0){
+					deleteEmailConfiguration();
+				}else{
+					deleteEmailConfigurations(subId);
+				}
+			});
+
+     
 
     $(document).on("click", "#yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){
