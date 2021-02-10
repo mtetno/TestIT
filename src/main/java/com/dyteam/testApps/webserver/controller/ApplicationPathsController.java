@@ -51,7 +51,7 @@ public class ApplicationPathsController {
     
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllApplicationPaths() {
-        logger.info("Inside getAllEmailConfigurations");
+        logger.info("Inside getAllApplicationPaths");
         Iterable<Map<String, Object>> applicationPaths = applicationPathsRepository.fetchAll();
         return applicationPaths;
     }

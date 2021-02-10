@@ -1,12 +1,16 @@
 package com.dyteam.testApps.webserver.repository;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.transaction.Transactional;
+
+import com.dyteam.testApps.webserver.entity.Application;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import com.dyteam.testApps.webserver.entity.Application;
 
 @Repository
 public interface ApplicationRepository extends CrudRepository<Application, Long>{
@@ -23,5 +27,21 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 	Iterable<Application> findAllByCompanyId(Long companyId);
 
 	void deleteByCompanyId(Long companyId);
+
+	@Modifying
+    @Transactional
+    @Query(value = "SELECT a.*,b.company_name from Application a join company b where a.company_id = b.company_id",nativeQuery = true)
+	public List<Map<String, Object>> fetchAll();
+	
+	@Transactional
+	@Modifying
+	@Query("update Application set is_delete = 1 where added_by = :userId")
+	void updateAll(Long userId);
+
+	@Transactional
+  	@Modifying
+	@Query("update Application set is_delete = 1 where added_by = :userId AND application_id = :id")
+    void updateByApplicationId(Long userId,Long id);
+	
 	
 }

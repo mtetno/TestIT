@@ -31,6 +31,53 @@ function saveSubscription(dataObj) {
 	});
 }
 
+function saveApplication(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/save/"+dataObj['companyId'],
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$("a.addRowBtn").css("pointer-events", "");
+			$("a.addRowBtn").css("opacity", "");
+			$("#deleteRow2").attr("disabled", false);
+			$("#deleteRow").attr("disabled", false);
+			$("#deleteRow1").attr("disabled", false);
+			$(this).closest(".addRowData").slideUp();
+
+			fetchAllApplications();
+		}
+	});
+}
+
+function saveApplicationPaths(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/applicationPaths/save",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			
+			$("a.addRowBtn").css("pointer-events", "");
+			$("a.addRowBtn").css("opacity", "");
+			$("#deleteRow").attr("disabled", false);
+			$("#deleteRow1").attr("disabled", false);
+			$("#deleteRow2").attr("disabled", false);
+			$(this).closest(".rowhide").slideUp();
+
+			fetchAllApplicationPaths();
+		}
+	});
+}
+
 function deleteSubscriptions() {
 	$.ajax({
 		type: 'DELETE',
@@ -63,6 +110,70 @@ function deleteSubscription(id) {
 	});
 }
 
+function deleteApplicationPaths() {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/applicationPaths/deleteAll",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+			fetchAllApplicationPaths();
+		}
+	});
+}
+
+function deleteApplicationPath(id) {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/applicationPaths/delete/" + id,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			fetchAllApplicationPaths();
+		}
+	});
+}
+
+function deleteApplications() {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/deleteAll",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			$(this).closest("tr").remove();
+			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
+			fetchAllApplications();
+		}
+	});
+}
+
+function deleteApplication(id) {
+	$.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/delete/" + id,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			fetchAllApplications();
+		}
+	});
+}
+
 function fetchAllSubscriptions() {
 	$.ajax({
 		type: 'GET',
@@ -90,6 +201,71 @@ function fetchAllSubscriptions() {
 			  </tr>`;
  
 				$("#subscriptionsList tbody").prepend(str);
+			 
+			});
+		}
+	});
+}
+
+
+function fetchAllApplications() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allWithCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			$(".Apptable tbody").html("");
+			data.map((value) => {
+				
+				var str = ` <tr>
+				<td scope="col" class="bucketcheck">
+				  <label class="main subCB">
+					<input data-value="`+value.application_id+`" type="checkbox"> 
+					<span class="geekmark"></span> 
+				  </label>
+				</td>
+				<td >`+value.company_name+`</td>
+				<td >`+value.application_name+`</td>
+			  </tr>`;
+ 
+				$(".Apptable tbody").prepend(str);
+			 
+			});
+		}
+	});
+}
+
+
+function fetchAllApplicationPaths() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/applicationPaths/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			$("table.apppathtable tbody").html("");
+			data.map((value) => {
+				
+				var str = `<tr>
+					<td scope="col" class="bucketcheck">
+					<label class="main subCB">
+					<input data-value="`+value.application_path_id+`" type="checkbox"> 
+					<span class="geekmark"></span> 
+					</label>
+					</td>
+					<td >`+value.company_name+`</td>
+					<td >`+value.selenium_home+`</td>
+					<td >`+value.test_data_home+`</td>
+					</tr>`;
+ 
+				$("table.apppathtable tbody").prepend(str);
 			 
 			});
 		}

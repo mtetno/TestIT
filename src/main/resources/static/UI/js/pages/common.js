@@ -269,6 +269,25 @@ function fetchAllCompanies() {
 	});
 }
 
+function fetchAllRemindBefore() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/remindBefore/all",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.value + '</option>';
+			})
+			$("#remind_before").html(options);
+		}
+	});
+}
+
 function fetchAllUsersRoles() {
 	$.ajax({
 		type: 'GET',

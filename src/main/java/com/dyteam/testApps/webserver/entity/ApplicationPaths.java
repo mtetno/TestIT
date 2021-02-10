@@ -51,6 +51,10 @@ public class ApplicationPaths {
 	@NotNull
 	private String testDataHome;
 
+	@Column(name="screenshot_home")
+	@NotNull
+	private String screenshotHome;
+
 	@Column(name="batch_file_home")
 	@NotNull
 	private String batchFileHome;
@@ -74,6 +78,9 @@ public class ApplicationPaths {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+	
 
 	public Long getCompanyId() {
 		return companyId;
@@ -137,6 +144,14 @@ public class ApplicationPaths {
 
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public String getScreenshotHome() {
+		return screenshotHome;
+	}
+
+	public void setScreenshotHome(String screenshotHome) {
+		this.screenshotHome = screenshotHome;
 	}
 
 		

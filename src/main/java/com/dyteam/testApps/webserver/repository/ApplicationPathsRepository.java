@@ -29,7 +29,9 @@ public interface ApplicationPathsRepository extends CrudRepository<ApplicationPa
 	
 	@Modifying
     @Transactional
-    @Query(value = "SELECT * from ApplicationPaths",nativeQuery = true)
+    @Query(value = "SELECT a.*,b.company_name from application_paths a join company b where a.company_id = b.company_id",nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
+
+	 
 	
 }

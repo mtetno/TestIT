@@ -62,6 +62,12 @@ public class ApplicationController {
     public Iterable<Application> findAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
     	logger.info("get all applications by Company");
         return applicationRepo.findAll();
+	}
+	
+	@GetMapping("/allWithCompany")
+    public List<Map<String, Object>> fetchAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    	logger.info("get all applications by Company");
+        return applicationRepo.fetchAll();
     }
     
     @GetMapping("/allByCompany")
@@ -108,7 +114,7 @@ public class ApplicationController {
     public Application save(@RequestBody Application application,@PathVariable(value="companyId")Long companyId,
     		@AuthenticationPrincipal final LoginUser loggedInUser) {
     	logger.info("save application = "+application);
-    	application.setStatus(1);
+    	application.setStatus(0);
     	application.setCompanyId(companyId);
     	application.setUserId(loggedInUser.getUserId());
     	boolean isNew = null==application.getApplicationId();
@@ -130,6 +136,19 @@ public class ApplicationController {
     public Boolean delete(@PathVariable(value="applicationId") Long applicationId) {
     	applicationRepo.deleteById(applicationId);
 		return true;
+	}
+	
+	@DeleteMapping(value = "/deleteAll")
+    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+        applicationRepo.updateAll(loggedInUser.getUserId());
+        return true;
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "id") Long id) {
+        logger.info("id"+id);
+        applicationRepo.updateByApplicationId(loggedInUser.getUserId(),id);
+        return true;
     }
     
 }

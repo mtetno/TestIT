@@ -188,8 +188,7 @@
                     <div class="col-md-6">
                       <label class="required" >Remind Before</label>
                       <select class="form-control border" name="remind_before" id="remind_before" required>
-                        <option value="0">10 Days</option>
-                        <option value="1">9 Days</option>
+                         
                       </select>
                     </div>
                     <div class="col-md-6">
@@ -493,11 +492,7 @@
             <div class="col-md-4 rowadjust">
               <label>Company Name</label>
               <select class="form-control border" name="company_name" id="company_name">
-                <option value="Select Company Name">Select Company Name</option>
-                <option value="SocioMotif LLC">SocioMotif LLC</option>
-                <option value="Sagitech Solution">Sagitech Solution</option>
-                <option value="Infosys">Infosys</option>
-                <option value="Test Pvt Ltd">Test Pvt Ltd</option>
+                
               </select>
             </div>
             <div class="col-md-4 rowadjust">
@@ -525,54 +520,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td scope="col" class="bucketcheck">
-                    <label class="main subCB">
-                      <input type="checkbox"> 
-                      <span class="geekmark"></span> 
-                    </label>
-                  </td>
-                  <td >Sagitech Solution</td>
-                  <td >IYSM</td>
-                </tr>
-                <tr>
-                  <td scope="col" class="bucketcheck">
-                    <label class="main subCB">
-                      <input type="checkbox"> 
-                      <span class="geekmark"></span> 
-                    </label>
-                  </td>
-                  <td >Infosys</td>
-                  <td >SmartIT</td>
-                </tr>
-                <tr>
-                  <td scope="col" class="bucketcheck">
-                    <label class="main subCB">
-                      <input type="checkbox"> 
-                      <span class="geekmark"></span> 
-                    </label>
-                  </td>
-                  <td >Test Pvt Ltd</td>
-                  <td >IYSM</td>
-                </tr>
+                
               </tbody>
             </table>
           </div>
           <div class="row paginate">
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="pagination">
-                <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                <a href="#"><strong>Previous</strong></a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">...</a>
-                <a href="#">10</a>
-                <a href="#"><strong>Next</strong></a>
-                <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-              </div>
+               
             </div>
           </div>
         </div>
@@ -652,12 +606,8 @@
             <div class="row addRowData mb-2" style="display: none;">
               <div class="col-md-4 rowadjust">
                 <label>Company</label>
-                <select class="form-control border" name="company_nm" id="company_nm">
-                  <option value="Select Company">Select Company</option>
-                  <option value="SocioMotif LLC">SocioMotif LLC</option>
-                  <option value="Sagitech Solution">Sagitech Solution</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Test Pvt Ltd">Test Pvt Ltd</option>
+                <select class="form-control border" name="company_name" id="company_name">
+                  
                 </select>
               </div>
               <div class="col-md-4 rowadjust">
@@ -791,19 +741,7 @@
           </div>
           <div class="row paginate">
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="pagination">
-                <a href="#"><img src="img/last-page-24-px.png" alt="Imgprev"></a>
-                <a href="#"><strong>Previous</strong></a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">...</a>
-                <a href="#">10</a>
-                <a href="#"><strong>Next</strong></a>
-                <a href="#"><img src="img/last-page-next-24-px.png" alt="Imgnext"></a>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -901,27 +839,30 @@
   $(function(){
     fetchAllTestingEnvironments();
     fetchAllSubscriptions();
+    fetchAllRemindBefore();
+    fetchAllCompanies();
+    fetchAllApplications();
+    fetchAllApplicationPaths();
+
+
     /*---Jquery for Testing Environment select---*/
 
+    var deleteId = 0;
+    var deleteStr = '';
     $("#deleteRow").click(function(e){
 				e.preventDefault();
-				var str = '';
-				var subId = 0;
+ 
+				
 				$("table tbody .subCB input:checked").each(function(){
-          subId = $(this).attr('data-value');
-				if(str!='')
-					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+        deleteId = $(this).attr('data-value');
+				if(deleteStr!='')
+        deleteStr += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
 				else
-					str += $(this).closest("tr").find("td:nth-child(2)").text();
+        deleteStr += $(this).closest("tr").find("td:nth-child(2)").text();
 				});
 
-				$("#deletedItem").text(str);
-
-				if(str.indexOf(",") > 0){
-					deleteSubscriptions();
-				}else{
-					deleteSubscription(subId);
-				}
+				$("#deletedItem").text(deleteStr);
+ 
 			});
 
     $(".envlist").click(function(){
@@ -1111,54 +1052,73 @@
       var datacompnay = $("#company_name").val();
       var dataAppname = $("#application_name").val();
 
-      var str = `<tr>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td >`+datacompnay+`</td>
-      <td >`+dataAppname+`</td>
-      </tr>`;
+      if(dataAppname.length == 0){
+					alert("Please enter valid application name");
+					return false;
+			}else if(datacompnay == 0){
+					alert("Please select valid company");
+					return false;
+			}
 
-      $("table.Apptable tbody").prepend(str);
+      var dataObj = {};
+				dataObj["companyId"] = datacompnay;
+				dataObj["applicationName"] = dataAppname;
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
-      $("#deleteRow2").attr("disabled", false);
-      $("#deleteRow").attr("disabled", false);
-      $("#deleteRow1").attr("disabled", false);
-      $(this).closest(".addRowData").slideUp();
+      saveApplication(dataObj);
+      
+      $("#company_name").val(0);
+      $("#application_name").val("");
+     
     });
     
     /*---Jquery for Save Application Paths---*/
 
     $("button.addApppathBtn").click(function(){
-      var dataCompnany     = $("#company_nm").val();
+      var dataCompnany     = $("#company_name").val();
       var dataSelenium     = $("#selenium_home").val();
       var dataTestdata     = $("#test_data_home").val();
+      var screen_shot_home = $("#screen_shot_home").val();
+      var logs_home     = $("#logs_home").val();
+      var batch_file_home     = $("#batch_file_home").val();
 
-      var str = `<tr>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td >`+dataCompnany+`</td>
-      <td >`+dataSelenium+`</td>
-      <td >`+dataTestdata+`</td>
-      </tr>`;
+      if(dataCompnany == 0){
+					alert("Please select valid company");
+					return false;
+			}else if(dataSelenium.length == 0){
+					alert("Please select valid selenium name");
+					return false;
+			}else if(dataTestdata.length == 0){
+					alert("Please select valid test data");
+					return false;
+			}else if(screen_shot_home.length == 0){
+					alert("Please select valid screenshot home");
+					return false;
+			}else if(logs_home.length == 0){
+					alert("Please select valid logs home ");
+					return false;
+			}else if(batch_file_home.length == 0){
+					alert("Please select valid batch file");
+					return false;
+			}
 
-      $("table.apppathtable tbody").prepend(str);
+      var dataObj = {};
+			dataObj["companyId"] = dataCompnany;
+      dataObj["seleniumHome"] = dataSelenium;
+      dataObj["logsHome"] = logs_home;
+      dataObj["testDataHome"] = dataTestdata;
+      dataObj["batchFileHome"] = batch_file_home;
+      dataObj["screenshotHome"] = screen_shot_home;
+      dataObj["isDelete"] = 0;
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
-      $("#deleteRow").attr("disabled", false);
-      $("#deleteRow1").attr("disabled", false);
-      $("#deleteRow2").attr("disabled", false);
-      $(this).closest(".rowhide").slideUp();
+      saveApplicationPaths(dataObj);
+      
+      $("#company_name").val(0);
+      $("#selenium_home").val("");
+      $("#test_data_home").val("");
+      $("#screen_shot_home").val("");
+      $("#logs_home").val("");
+      $("#batch_file_home").val("");
+  
     });
 
 
@@ -1193,25 +1153,16 @@
         { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
     });
 
-    /*---Jquery for delete Subscription row---*/
+     
 
-    $("#deleteRow").click(function(e){
-      e.preventDefault();
-      var str = '';
-      $("table tbody .subCB input:checked").each(function(){
-        if(str!='')
-          str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
-        else
-          str += $(this).closest("tr").find("td:nth-child(2)").text();
-      });
-
-      $("#deletedItem").text(str);
-      $("#myModal").modal();
-    });
-
-    $(document).on("click", "#yesbtn", function(){
+    $(document).on("click", "#myModal #yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
+        if(deleteStr.indexOf(",") > 0){
+					deleteSubscriptions();
+				}else{
+					deleteSubscription(deleteId);
+				}
       });     
     });
 
@@ -1219,21 +1170,27 @@
 
     $("#deleteRow1").click(function(e){
       e.preventDefault();
-      var str = '';
+    
       $("table tbody .subCB input:checked").each(function(){
-        if(str!='')
-          str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+        deleteId = $(this).attr('data-value');
+        if(deleteStr!='')
+        deleteStr += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
         else
-          str += $(this).closest("tr").find("td:nth-child(2)").text();
+        deleteStr += $(this).closest("tr").find("td:nth-child(2)").text();
       });
 
-      $("#deletedItem1").text(str);
+      $("#deletedItem1").text(deleteStr);
       $("#myModalAppdlt").modal();
     });
 
-    $(document).on("click", "#yesbtn", function(){
+    $(document).on("click", "#myModalAppdlt #yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
+        if(deleteStr.indexOf(",") > 0){
+					deleteApplications();
+				}else{
+					deleteApplication(deleteId);
+				}
       });     
     });
 
@@ -1241,21 +1198,27 @@
 
     $("#deleteRow2").click(function(e){
       e.preventDefault();
-      var str = '';
+ 
       $("table tbody .subCB input:checked").each(function(){
-        if(str!='')
-          str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+        deleteId = $(this).attr('data-value');
+        if(deleteStr!='')
+        deleteStr += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
         else
-          str += $(this).closest("tr").find("td:nth-child(2)").text();
+        deleteStr += $(this).closest("tr").find("td:nth-child(2)").text();
       });
 
-      $("#deletedItem2").text(str);
+      $("#deletedItem2").text(deleteStr);
       $("#myModal2").modal();
     });
 
-    $(document).on("click", "#yesbtn", function(){
+    $(document).on("click", "#myModal2 #yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
+        if(deleteStr.indexOf(",") > 0){
+					deleteApplicationPaths();
+				}else{
+					deleteApplicationPath(deleteId);
+				}
       });     
     });
 

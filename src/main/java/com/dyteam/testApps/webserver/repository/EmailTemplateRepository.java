@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import com.dyteam.testApps.webserver.entity.EmailConfigurations;
 import com.dyteam.testApps.webserver.entity.EmailTemplates;
 
 import org.springframework.data.jpa.repository.Modifying;
