@@ -265,6 +265,7 @@ function fetchAllCompanies() {
 				options = options + '<option value="' + item.companyId + '">' + item.companyName + '</option>';
 			})
 			$("#company_name").html(options);
+			$("#company_name1").html(options);
 		}
 	});
 }

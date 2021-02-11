@@ -30,7 +30,7 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 
 	@Modifying
     @Transactional
-    @Query(value = "SELECT a.*,b.company_name from Application a join company b where a.company_id = b.company_id",nativeQuery = true)
+    @Query(value = "SELECT a.*,b.company_name from Application a join company b where a.company_id = b.company_id AND is_delete = 0",nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 	
 	@Transactional
