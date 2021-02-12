@@ -893,6 +893,7 @@
       e.preventDefault();
 
       $(this).closest(".card-body").find(".addRowData").slideToggle();
+      $("button.addApppathBtn").closest(".rowhide").slideUp();
 
       $(this).css("pointer-events", "none");
       $(this).css("opacity", ".65");
@@ -1048,7 +1049,7 @@
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow").attr("disabled", false);
        $("#deleteRow2").attr("disabled", false);
-      $(this).closest(".rowhide").slideUp();
+      $("button.updatepathBtn").closest(".rowhide").slideUp();
     });
 
     /*---Jquery for Save Application---*/
@@ -1070,6 +1071,12 @@
 				dataObj["applicationName"] = dataAppname;
 
       saveApplication(dataObj);
+      $("a.addRowBtn").css("pointer-events", "");
+			$("a.addRowBtn").css("opacity", "");
+			$("#deleteRow2").attr("disabled", false);
+			$("#deleteRow").attr("disabled", false);
+			$("#deleteRow1").attr("disabled", false);
+			$(this).closest(".addRowData").slideUp();
       
       $("#company_name").val(0);
       $("#application_name").val("");
@@ -1115,14 +1122,15 @@
       dataObj["screenshotHome"] = screen_shot_home;
       dataObj["isDelete"] = 0;
 
-      saveApplicationPaths(dataObj);
-
-      $("a.addRowBtn").css("pointer-events", "");
-			$("a.addRowBtn").css("opacity", "");
-			$("#deleteRow").attr("disabled", false);
-			$("#deleteRow1").attr("disabled", false);
-			$("#deleteRow2").attr("disabled", false);
-			$(this).closest(".rowhide").slideUp();
+      // $("a.addRowBtn").css("pointer-events", "");
+			// $("a.addRowBtn").css("opacity", "");
+			// $("#deleteRow").attr("disabled", false);
+			// $("#deleteRow1").attr("disabled", false);
+			// $("#deleteRow2").attr("disabled", false);
+			// $("#execution_environment").val('');
+      // $("button.addApppathBtn").closest(".rowhide").slideUp();
+      
+       
       
       $("#company_name1").val(0);
       $("#selenium_home").val("");
@@ -1130,6 +1138,10 @@
       $("#screen_shot_home").val("");
       $("#logs_home").val("");
       $("#batch_file_home").val("");
+      
+      saveApplicationPaths(dataObj);
+
+      
   
     });
 
@@ -1260,3 +1272,4 @@
   </script>
 </body>
 </html>
+

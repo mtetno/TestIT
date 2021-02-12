@@ -42,12 +42,7 @@ function saveApplication(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			$("a.addRowBtn").css("pointer-events", "");
-			$("a.addRowBtn").css("opacity", "");
-			$("#deleteRow2").attr("disabled", false);
-			$("#deleteRow").attr("disabled", false);
-			$("#deleteRow1").attr("disabled", false);
-			$(this).closest(".addRowData").slideUp();
+			
 
 			fetchAllApplications();
 		}
