@@ -1,9 +1,14 @@
 package com.dyteam.testApps.webserver.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dyteam.testApps.webserver.entity.INames;
+import com.dyteam.testApps.webserver.entity.IStackBar;
 import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.repository.CompanyRepository;
 import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
@@ -27,6 +32,9 @@ public class TestcasesController {
 
     @Autowired
     TestcasesRepository testcasesRepo;
+
+    @Autowired
+    CompanyRepository companyRepository;
 
     @PostMapping("/save")
     public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
@@ -98,4 +106,45 @@ public class TestcasesController {
         List<Map<String, Object>> dashboardStats= testcasesRepo.getApplicationCoverageStats();
     	return dashboardStats;
     }
+
+    @GetMapping(value = "/getTestcasesStackedApplicationData")
+    public HashMap<Long,ArrayList<IStackBar>> getTestcasesStackedApplicationData() {
+        logger.info("Inside getTestcasesStackedApplicationData");
+          Iterable<Testcases> allApps = testcasesRepo.groupByApplicationId();
+          Iterable<Testcases> allCompany = testcasesRepo.groupByCompanyId();
+ 
+
+          HashMap<Long,ArrayList<IStackBar>> allData = new HashMap<>();
+          for (Testcases testcases : allApps) {
+              Long id = testcases.getApplicationId();
+              ArrayList<IStackBar> stacks =new ArrayList<>();
+              for (Testcases company : allCompany) {   
+                  logger.info(id + " : "+ company.getCompanyId())  ;            
+                  IStackBar data = testcasesRepo.getApplicationVsCompanyStats(id,company.getCompanyId());
+                  stacks.add(data);
+              }
+              allData.put(id, stacks);
+          }
+          
+    	return allData;
+    }
+
+    @GetMapping(value = "/getTestcasesStackedApplicationData/companies")
+    public Iterable<INames> getTestcasesStackedCompanies() {
+        
+          return testcasesRepo.getAllCompanyNamesInTestcases();
+           
+    }
+
+
+
+    @GetMapping(value = "/getTestcasesStackedApplicationData/applications")
+    public Iterable<INames> getTestcasesStackedApplications() {
+        
+          return testcasesRepo.getAllApplicationNames();
+           
+    }
+    
+
+    
 }

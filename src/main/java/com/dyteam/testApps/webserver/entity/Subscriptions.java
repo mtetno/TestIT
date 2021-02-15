@@ -35,9 +35,9 @@ public class Subscriptions {
 	@Column(name="id")
 	private Long id;
 
-	@Column(name="company_name")
+	@Column(name="company_id")
 	@NotNull
-	private String companyName;
+	private Long companyId;
 
 	@Column(name="username")
 	@NotNull
@@ -91,15 +91,7 @@ public class Subscriptions {
 		this.id = id;
 	}
 
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+ 
 
 	public String getUsername() {
 		return username;
@@ -189,6 +181,15 @@ public class Subscriptions {
 		this.email = email;
 	}
 
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
+
+	 
  
 		 
 	

@@ -31,6 +31,8 @@ public class SubscriptionsController {
     public Subscriptions save(@RequestBody Subscriptions subscriptions, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save Subscriptions = " + subscriptions);
         subscriptions.setAddedBy(loggedInUser.getUserId());
+        Long comp = Long.parseLong("77"); // nned to ask & change
+        subscriptions.setCompanyId(comp); 
        return subscriptionsRepository.save(subscriptions);
     }
 
