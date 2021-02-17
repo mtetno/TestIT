@@ -141,7 +141,7 @@
                   <div class="row">
                     <div class="col-md-6 mb-2">
                       <label class="required">Name</label>
-                      <input type="text" id="name" class="form-control border" name="name" placeholder="Enter First Name" required>
+                      <input type="text" id="name" class="form-control border" name="name" placeholder="Enter company name" required>
                     </div>
                     <div class="col-md-6 mb-2">
                       <label class="required" >Username</label>
@@ -168,7 +168,7 @@
                       
                     <select class="form-control border" name="testing_environment" id="testing_environment" required>
                       <option value="Select Testing Environment">Select Testing Environment</option>
-                      <option value="Internet Explorer">Internet Explorer</option>
+                      
                     </select>
                     </div>
                   </div>
@@ -269,7 +269,7 @@
                     </div>
                     <div class="col-md-6 mb-2">
                       <label class="required" >Username</label>
-                      <input type="text" id="f2" class="form-control border" name="username" value="abhisheksunon21" readonly>
+                      <input type="text" id="username1" class="form-control border" name="username" value="" readonly>
                     </div>
                   </div>
                   <div class="row">
@@ -289,59 +289,11 @@
                     </div>
                     <div class="col-md-6 mb-2 envlist">
                       <label class="required" >Testing Environment</label>
-                      <input type="text" class="form-control testing_inv border" name="testEnvSelect" required><i class="fa fa-angle-down testDetBtn" aria-hidden="true"></i>
-                      <div class="submaindiv" style="width: 100%; height: auto;">
-                        <ul>
-                          <li>
-                            <label class="main subCB">Window10_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Crome" checked="checked"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Firefox 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Firefox" checked="checked"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_Firefox 
-                                <input type="checkbox" name="testEnv[]" value="Window10_Firefox"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_IE 
-                                <input type="checkbox" name="testEnv[]" value="Window10_IE"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Linux_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Linux_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Window10_IE 
-                                <input type="checkbox" name="testEnv[]" value="Window10_IE"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                          <li>
-                            <label class="main subCB">Linux_Crome 
-                                <input type="checkbox" name="testEnv[]" value="Linux_Crome"> 
-                                <span class="geekmark"></span> 
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
+                      <select class="form-control border" name="testing_environment1" id="testing_environment1" required>
+                        <option value="Select Testing Environment">Select Testing Environment</option>
+                        
+                      </select>
+
                     </div>
                   </div>
                   <div class="row">
@@ -359,8 +311,7 @@
                     <div class="col-md-6">
                       <label class="required" >Remind Before</label>
                       <select class="form-control border" name="remind_before1" id="remind_before1">
-                        <option value="10 Days">10 Days</option>
-                        <option value="9 Days">9 Days</option>
+                        
                       </select>
                     </div>
                     <div class="col-md-6">
@@ -838,8 +789,10 @@
 <script>
   $(function(){
     fetchAllTestingEnvironments();
+    fetchAllTestingEnvironments("#testing_environment1");
     fetchAllSubscriptions();
     fetchAllRemindBefore();
+    fetchAllRemindBefore("#remind_before1");
     fetchAllCompanies();
     fetchAllApplications();
     fetchAllApplicationPaths();
@@ -879,13 +832,13 @@
       e.stopPropagation();
     });
 
-    $(".envlist .subCB input[name='testEnv[]']").click(function(){
-      var count = $(".envlist .subCB input[name='testEnv[]']:checked").length;
-      if(count > 1)
-      $("input[name='testEnvSelect']").val($(".envlist .subCB input[name='testEnv[]']:checked:first-child").val()+" (+"+(count-1)+")");
-      else
-      $("input[name='testEnvSelect']").val($(".envlist .subCB input[name='testEnv[]']:checked:first-child").val());
-    });
+    // $(".envlist .subCB input[name='testEnv[]']").click(function(){
+    //   var count = $(".envlist .subCB input[name='testEnv[]']:checked").length;
+    //   if(count > 1)
+    //   $("input[name='testEnvSelect']").val($(".envlist .subCB input[name='testEnv[]']:checked:first-child").val()+" (+"+(count-1)+")");
+    //   else
+    //   $("input[name='testEnvSelect']").val($(".envlist .subCB input[name='testEnv[]']:checked:first-child").val());
+    // });
     
     /*---Jquery for Add row---*/
 
@@ -925,34 +878,96 @@
       $("#deleteRow2").attr("disabled", true);
     });
 
-    /*---Jquery for Update row---*/
-
-    $("table.subscriptionTable tbody tr td:nth-child(2)").click(function(){
-      $("#editmyModal1").modal();
-
-          $(".updatescriptmodel #uprowid").val($(this).closest("tr").index()+1);
-          $(".updatescriptmodel #name1").val($(this).closest("tr").find("td:nth-child(2)").text());
-          $(".updatescriptmodel #email1").val($(this).closest("tr").find("td:nth-child(3)").text()); 
-          $(".updatescriptmodel #startdate1").val($(this).closest("tr").find("td:nth-child(4)").text());
-          $(".updatescriptmodel #enddate1").val($(this).closest("tr").find("td:last-child").text());   
-      });
+       
 
     /*---Jquery for Update Save---*/
 
     $("button.updatesubscriptBtn").click(function(){
-      var rowIndx = $("#uprowid").val();
-      var dataname = $("#name1").val();
-      var dataemail = $("#email1").val();
-      var datastartdt = $("#startdate1").val();
-      var dataenddt = $("#enddate1").val();
+      // var rowIndx = $("#uprowid").val();
+      // var dataname = $("#name1").val();
+      // var dataemail = $("#email1").val();
+      // var datastartdt = $("#startdate1").val();
+      // var dataenddt = $("#enddate1").val();
 
 
-      $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(2)").html('<span class="updtRow">'+dataname+'</span>');
-      $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(3)").text(dataemail);
-      $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(4)").text(datastartdt);
-      $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:last-child").text(dataenddt);
+      // $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(2)").html('<span class="updtRow">'+dataname+'</span>');
+      // $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(3)").text(dataemail);
+      // $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(4)").text(datastartdt);
+      // $(".subscriptionTable tbody tr:nth-child("+rowIndx+")").find("td:last-child").text(dataenddt);
 
-      $("#editmyModal1").modal();
+      // $("#editmyModal1").modal();
+
+
+      var name = $("#name1").val();
+      var username = $("#username1").val();
+      var password = $("#password1").val().trim();
+				var confirmpassword = $("#confirmpassword1").val().trim();
+				var email = $("#email1").val().trim();
+				var testing_environment = $("#testing_environment1").val().trim();
+				var startdate = $("#startdate1").val().trim();
+				var enddate = $("#enddate1").val().trim();
+				var remind_before = $("#remind_before1").val().trim();
+				var threads = $("#no_of_threads1").val().trim();
+				var isDelete = 0
+
+				if(name.length == 0){
+					alert("Please enter valid name");
+					return false;
+				}else if(username.length == 0){
+					alert("Please enter valid username");
+					return false;
+				}else if(password.length == 0){
+					alert("Please enter valid password");
+					return false;
+				}else if(confirmpassword.length == 0){
+					alert("Please enter valid confirm password");
+					return false;
+				}else if(password != confirmpassword){
+					alert("Password and confirm password didnt matched");
+					return false;
+				}else if(testing_environment == 0){
+					alert("Please enter valid testing environment");
+					return false;
+				}else if(startdate.length == 0){
+					alert("Please enter valid start date");
+					return false;
+				}else if(enddate.length == 0){
+					alert("Please enter valid end date");
+					return false;
+				}else if(remind_before == 0){
+					alert("Please enter valid remind before");
+					return false;
+				}else if(threads == 0){
+					alert("Please enter valid threads");
+					return false;
+				}
+        $("#editmyModal1").modal();
+        
+				var dataObj = {};
+				dataObj["companyName"] = name;
+				dataObj["username"] = username;
+				dataObj["password"] = password;
+				dataObj["email"] = email;
+				dataObj["testingEnvironmentId"] = testing_environment;
+				dataObj["startDate"] = startdate;
+				dataObj["endDate"] = enddate;
+				dataObj["remindBefore"] = remind_before;
+				dataObj["threads"] = threads;
+        dataObj["threads"] = threads;
+				dataObj["id"] = $("#uprowid").val();
+				updateSubscription(dataObj);			    
+				  $("#name1").val("");
+          $("#username1").val("");
+          $("#password1").val("");
+			    $("#confirmpassword1").val("");
+			    $("#email1").val("");
+				  $("#testing_environment1").val(0);
+				  $("#startdate1").val("");
+				  $("#enddate1").val("");
+				  $("#remind_before1").val("");
+				 $("#no_of_threads1").val("");
+     
+				
     });
 
     /*---Jquery for save Subscription ---*/

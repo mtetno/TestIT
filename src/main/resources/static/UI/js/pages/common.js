@@ -154,24 +154,7 @@ function statusError(statusCode, responseText="") {
 	}
 }
 
-function fetchAllCompany() {
-	$.ajax({
-		type: 'GET',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/application/allCompany",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function (data) {
-			var options = '<option value="0">Select Application</option>';
-			data.map((item) => {
-				options = options + '<option value="' + item.companyId + '">' + item.companyName + '</option>';
-			})
-			$("#company_name").html(options);
-		}
-	});
-}
+ 
 
 function fetchAllApplicationsByCompanyId(id) {
 	$.ajax({
@@ -231,7 +214,7 @@ function fetchAllEnvironments() {
 	});
 }
 
-function fetchAllTestingEnvironments() {
+function fetchAllTestingEnvironments(inputName) {
 	$.ajax({
 		type: 'GET',
 		contentType: 'application/json',
@@ -245,6 +228,10 @@ function fetchAllTestingEnvironments() {
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.name + '</option>';
 			})
+
+			console.log(" inputName "+inputName);
+			inputName != undefined && inputName != '' ?  $(inputName).html(options)
+			: 
 			$("#testing_environment").html(options);
 		}
 	});
@@ -262,7 +249,7 @@ function fetchAllCompanies() {
 		success: function (data) {
 			var options = '<option value="0">Select Testing Environment</option>';
 			data.map((item) => {
-				options = options + '<option value="' + item.companyId + '">' + item.companyName + '</option>';
+				options = options + '<option value="' + item.id + '">' + item.companyName + '</option>';
 			})
 			$("#company_name").html(options);
 			$("#company_name1").html(options);
@@ -270,7 +257,7 @@ function fetchAllCompanies() {
 	});
 }
 
-function fetchAllRemindBefore() {
+function fetchAllRemindBefore(inputName) {
 	$.ajax({
 		type: 'GET',
 		contentType: 'application/json',
@@ -284,6 +271,9 @@ function fetchAllRemindBefore() {
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.value + '</option>';
 			})
+			 
+			inputName != undefined && inputName != '' ?  $(inputName).html(options)
+			: 
 			$("#remind_before").html(options);
 		}
 	});

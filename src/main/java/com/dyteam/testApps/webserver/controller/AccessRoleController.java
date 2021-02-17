@@ -2,8 +2,9 @@ package com.dyteam.testApps.webserver.controller;
 
 import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.AccessRole;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
+
 import com.dyteam.testApps.webserver.repository.AccessRoleRepository;
+import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 import com.google.common.collect.Lists;
 
@@ -31,12 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccessRoleController {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
-  private CompanyRepository companyRepo;
+  private SubscriptionsRepository subscriptionsRepository;
   private String key;
 
-  public AccessRoleController(@Autowired CompanyRepository companyRepo,
+  public AccessRoleController(@Autowired SubscriptionsRepository subscriptionsRepository,
       @Value("${execution.user.pass.key}") String key) {
-    this.companyRepo = companyRepo;
+    this.subscriptionsRepository = subscriptionsRepository;
     this.key = key;
   }
 
@@ -47,7 +48,7 @@ public class AccessRoleController {
   public AccessRole findById(@AuthenticationPrincipal final LoginUser loggedInUser) {
     logger.info("get ExecutionUser by id=" + loggedInUser.getId());
     AccessRole exeUser = executionUserRepo.findById(Long.parseLong(loggedInUser.getId())).orElse(null);
-    String decodePassword = Util.getString(companyRepo.getDecodePassword(exeUser.getPassword(), key));
+    String decodePassword = Util.getString(subscriptionsRepository.getDecodePassword(exeUser.getPassword(), key));
     exeUser.setPassword(decodePassword);
     return exeUser;
   }
@@ -88,7 +89,7 @@ public class AccessRoleController {
     executionUser.setCompanyId(loggedInUser.getCompanyId());
     executionUser.setAddedBy(loggedInUser.getUserId());
     String rawPassword = executionUser.getPassword();
-    String encodedPassword = companyRepo.getEncodedPassword(rawPassword, key);
+    String encodedPassword = subscriptionsRepository.getEncodedPassword(rawPassword, key);
     executionUser.setPassword(encodedPassword);
     Iterable<AccessRole> executionUsers = executionUserRepo.findAllByName(loggedInUser.getUserId(), 
         executionUser.getName());

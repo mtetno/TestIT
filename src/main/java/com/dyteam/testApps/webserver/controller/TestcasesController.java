@@ -8,8 +8,7 @@ import java.util.Map;
 import com.dyteam.testApps.webserver.entity.INames;
 import com.dyteam.testApps.webserver.entity.IStackBar;
 import com.dyteam.testApps.webserver.entity.Testcases;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
-import com.dyteam.testApps.webserver.repository.TestcasesRepository;
+  import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 import org.slf4j.Logger;
@@ -32,9 +31,6 @@ public class TestcasesController {
 
     @Autowired
     TestcasesRepository testcasesRepo;
-
-    @Autowired
-    CompanyRepository companyRepository;
 
     @PostMapping("/save")
     public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {

@@ -20,8 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.Environment;
 import com.dyteam.testApps.webserver.repository.ApplicationRepository;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
+ 
 import com.dyteam.testApps.webserver.repository.EnvironmentRepository;
+import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 /**
@@ -41,7 +42,7 @@ public class EnvironmentController {
     EnvironmentRepository environmentRepo;
         
     @Autowired
-    CompanyRepository companyRepo;
+    SubscriptionsRepository subscriptionsRepository;
     
     @Value("${project.base.path}") 
 	String projectBasePath;
@@ -80,7 +81,7 @@ public class EnvironmentController {
         boolean isNew = findByEnvironmentName.size() > 0 ? false : true;
         if(isNew) {
             savedEnvironment = environmentRepo.save(environment);
-        	String companyName = companyRepo.getName(loggedInUser.getCompanyId());
+        	String companyName = subscriptionsRepository.getName(loggedInUser.getCompanyId());
         	List<String> applicationNames = applicationRepo.findAllAppNamesByCompanyId(loggedInUser.getCompanyId());
 
         	if(null != applicationNames) {

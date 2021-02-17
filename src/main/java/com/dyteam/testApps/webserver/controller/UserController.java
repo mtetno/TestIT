@@ -5,6 +5,14 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
+import com.dyteam.testApps.webserver.Util;
+import com.dyteam.testApps.webserver.entity.ISubscription;
+import com.dyteam.testApps.webserver.entity.User;
+import com.dyteam.testApps.webserver.repository.ApplicationRepository;
+import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
+import com.dyteam.testApps.webserver.repository.UserRepository;
+import com.dyteam.testApps.webserver.security.LoginUser;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dyteam.testApps.webserver.Util;
-import com.dyteam.testApps.webserver.entity.Company;
-import com.dyteam.testApps.webserver.entity.User;
-import com.dyteam.testApps.webserver.repository.ApplicationRepository;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
-import com.dyteam.testApps.webserver.repository.UserRepository;
-import com.dyteam.testApps.webserver.security.LoginUser;
 
 /**
  * This controller takes care of handling all operations related to User
@@ -49,7 +49,7 @@ public class UserController {
     ApplicationRepository applicationRepo;
     
     @Autowired
-    CompanyRepository companyRepo;
+    SubscriptionsRepository subscriptionsRepository;
     
     @Autowired
 	PasswordEncoder passwordEncoder;
@@ -108,20 +108,20 @@ public class UserController {
 			final User userAfterSave = userRepo.save(user);
 			userAfterSaveOuter = userAfterSave;
 			if(isNew) {
-				Company company = companyRepo.getCompanyInfoForFolder(loggedInUser.getCompanyId());
+				ISubscription company = subscriptionsRepository.getCompanyInfoForFolder(loggedInUser.getCompanyId());
 				List<String> applicationNames = applicationRepo.findAllAppNamesByCompanyId(loggedInUser.getCompanyId());
 
 				if(null != applicationNames) {
 					applicationNames.parallelStream().forEach(appName -> {
 						try {
 							Util.createFolders(Paths.get(projectBasePath,Util.COMPANIES_BASE_FOLDER_NAME,
-									company.getCompanyName(),
+									company.getCompany_name(),
 									appName,Util.TEST_DATA_FOLDER_NAME,loggedInUser.getUsername()));
-							if(StringUtils.isNotBlank(company.getSeleniumHome())) {
-								Util.createFolders(Paths.get(company.getSeleniumHome(),Util.COMPANIES_BASE_FOLDER_NAME,
-										company.getCompanyName(),loggedInUser.getUsername()));
+							if(StringUtils.isNotBlank(company.getSelenium_home())) {
+								Util.createFolders(Paths.get(company.getSelenium_home(),Util.COMPANIES_BASE_FOLDER_NAME,
+										company.getCompany_name(),loggedInUser.getUsername()));
 							} else {
-								logger.error("Could not create folder structure for the user as the company's selenium home is "+company.getSeleniumHome());
+								logger.error("Could not create folder structure for the user as the company's selenium home is "+company.getSelenium_home());
 							}
 							
 						} catch (IOException e) {

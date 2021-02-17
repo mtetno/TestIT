@@ -80,10 +80,8 @@
 					<div class="col-md-12 stackcols">
 						<div class="col-md-12 col-sm-12 col-xs-12 mb-2">
 							<label class="subtitle">Stacked column chart</label>
-								<ul>
-				                  <li><i></i><span><strong>ITSM</strong></span></li>
-				                  <li><i></i><span><strong>SmartIT</strong></span></li>
-				                  <li><i></i><span><strong>MyIT</strong></span></li>
+								<ul id="stackBarAppNames">
+				                  
 				                </ul>
 							</div>
 	                    <div id="chartContainer" style="height: 300px; width: 100%;">
@@ -236,7 +234,7 @@
 	
 	var graphData = [];
 	apps.map((app,index) => {
-
+		$("#stackBarAppNames").append("<li><i></i><span><strong>"+app.name+"</strong></span></li>")
 		var dataPoints = [];
 		companies.map((company,idx)=>{
 			var appData = stackData[app.id];
@@ -258,6 +256,8 @@
       })
 	})
 
+
+
 	inputData['data'] = graphData;
 	var chart = new CanvasJS.Chart("chartContainer", inputData);
 
@@ -275,7 +275,7 @@
 		str2 = "<span style = \"color:#212529;\"><strong>"+(e.entries[0].dataPoint.label)+"</strong></span><br/>";
 		total = Math.round(total * 100) / 100;
 		str3 = "<span style = \"color:#212529\">Total:</span><strong> "+total+"</strong><br/>";
-		return (str2.concat(str)).concat(str3);
+		return str.concat(str3);
 	}
 
 	}

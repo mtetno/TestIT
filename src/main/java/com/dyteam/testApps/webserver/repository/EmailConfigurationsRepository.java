@@ -28,7 +28,7 @@ public interface EmailConfigurationsRepository extends CrudRepository<EmailConfi
 	
 	@Modifying
     @Transactional
-    @Query(value = "SELECT a.*,b.company_name from email_configurations a join company b where is_delete = 0 AND a.company_id = b.company_id",nativeQuery = true)
+    @Query(value = "SELECT a.*,b.company_name from email_configurations a join subscriptions b where is_delete = 0 AND a.company_id = b.id",nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 	
 }

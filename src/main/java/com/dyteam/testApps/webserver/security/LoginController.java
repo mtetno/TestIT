@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dyteam.testApps.webserver.TestAppException;
 import com.dyteam.testApps.webserver.Util;
-import com.dyteam.testApps.webserver.entity.Company;
+import com.dyteam.testApps.webserver.entity.Subscriptions;
 import com.dyteam.testApps.webserver.entity.User;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
+import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
 import com.dyteam.testApps.webserver.repository.UserRepository;
  
 
@@ -42,7 +42,7 @@ final class LoginController {
 	PasswordEncoder passwordEncoder;
 	
 	@Autowired
-    CompanyRepository companyRepo;
+    SubscriptionsRepository subscriptionsRepository;
 	
 	@Value("${selenium.home.default.path}")
 	String seleniumHomePath;
@@ -96,20 +96,20 @@ final class LoginController {
 	@GetMapping("/getpass/{password}")
 	String getpass(@PathVariable("password") String password) {
 		logger.info("start getDbPassword "+password);
-		String encoDestring = companyRepo.getPassword();
+		String encoDestring = subscriptionsRepository.getPassword();
 		logger.info("end getDbPassword "+encoDestring);
 		return encoDestring;
 	}
 	
 	@GetMapping("/getEncryptedPass/{password}/{theKey}")
 	String getEncryptedPass(@PathVariable("password") String password,@PathVariable("theKey") String theKey) {
-		String encoDestring = companyRepo.getEncodedPassword(password, theKey);
+		String encoDestring = subscriptionsRepository.getEncodedPassword(password, theKey);
 		return encoDestring;
 	}
 	
 	@GetMapping("/getDecryptedPass/{password}/{theKey}")
 	String getDecryptedPass(@PathVariable("password") String encPassword,@PathVariable("theKey") String theKey) {
-		String encoDestring = Util.getString(companyRepo.getDecodePassword(encPassword, theKey));
+		String encoDestring = Util.getString(subscriptionsRepository.getDecodePassword(encPassword, theKey));
 		return encoDestring;
 	}
 	
@@ -125,7 +125,7 @@ final class LoginController {
     	logger.info("changing the password");
     	try {
     		User user = userRepo.findByUserName(username).get();
-    		Company userCompany = companyRepo.findById(user.getCompanyId()).get();
+    		Subscriptions userCompany = subscriptionsRepository.findById(user.getCompanyId()).get();
     		String email = user.getEmail();
     		if(StringUtils.isBlank(email)) {
     			throw new TestAppException("No email configured email="+email, 1);

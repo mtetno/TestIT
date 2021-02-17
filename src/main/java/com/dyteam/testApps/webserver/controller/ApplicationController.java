@@ -8,6 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.dyteam.testApps.webserver.Util;
+import com.dyteam.testApps.webserver.entity.Application;
+import com.dyteam.testApps.webserver.entity.Subscriptions;
+import com.dyteam.testApps.webserver.model.CompanyAppMap;
+import com.dyteam.testApps.webserver.repository.ApplicationRepository;
+import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
+import com.dyteam.testApps.webserver.security.LoginUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dyteam.testApps.webserver.Util;
-import com.dyteam.testApps.webserver.entity.Application;
-import com.dyteam.testApps.webserver.entity.Company;
-import com.dyteam.testApps.webserver.model.CompanyAppMap;
-import com.dyteam.testApps.webserver.repository.ApplicationRepository;
-import com.dyteam.testApps.webserver.repository.CompanyRepository;
-import com.dyteam.testApps.webserver.security.LoginUser;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class ApplicationController {
     ApplicationRepository applicationRepo;
     
     @Autowired
-    CompanyRepository companyRepo;
+    SubscriptionsRepository subscriptionsRepository;
     
     @GetMapping("/{applicationId}")
     public Optional<Application> findById(@PathVariable(value="applicationId") Long applicationId) {
@@ -81,13 +81,13 @@ public class ApplicationController {
 	}
 	
 	@GetMapping("/allCompany")
-    public Iterable<Company> findAllCompany() {
-        return companyRepo.findAll();
+    public Iterable<Subscriptions> findAllCompany() {
+        return subscriptionsRepository.findAll();
     }
     
     @GetMapping("/mapByCompany")
     public CompanyAppMap mapByCompany() {
-    	Iterable<Company> companies = companyRepo.findAll();
+    	Iterable<Subscriptions> companies = subscriptionsRepository.findAll();
     	Iterable<Application> apps = applicationRepo.findAll();
     	Map<Long,List<Application>> map = new HashMap<>();
     	apps.forEach(a -> {
@@ -121,7 +121,7 @@ public class ApplicationController {
     	Application save = applicationRepo.save(application);
     	if(isNew) {
 			try {
-				String compnayName = companyRepo.getName(companyId);
+				String compnayName = subscriptionsRepository.getName(companyId);
 				Util.createFolders(Paths.get(projectBasePath,Util.COMPANIES_BASE_FOLDER_NAME,
 						compnayName,
 						application.getApplicationName(),Util.TEST_DATA_FOLDER_NAME,Util.MASTER_FOLDER_NAME));

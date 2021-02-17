@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.Application;
-import com.dyteam.testApps.webserver.entity.Company;
+import com.dyteam.testApps.webserver.entity.Subscriptions;
+ 
 
 public class CompanyAppMap implements Serializable{
 
 	private static final long serialVersionUID = -5446739781038330474L;
 
-	private Iterable<Company> companies;
+	private Iterable<Subscriptions> companies;
 	
 	private Map<Long,List<Application>> map;
 	
@@ -19,7 +20,7 @@ public class CompanyAppMap implements Serializable{
 	}
 	
 	
-	public CompanyAppMap(Iterable<Company> companies, Map<Long, List<Application>> map) {
+	public CompanyAppMap(Iterable<Subscriptions> companies, Map<Long, List<Application>> map) {
 		super();
 		this.companies = companies;
 		this.map = map;
@@ -29,10 +30,10 @@ public class CompanyAppMap implements Serializable{
 		return map;
 	}
 	
-	public Iterable<Company> getCompanies() {
+	public Iterable<Subscriptions> getCompanies() {
 		return companies;
 	}
-	public void setCompanies(Iterable<Company> companies) {
+	public void setCompanies(Iterable<Subscriptions> companies) {
 		this.companies = companies;
 	}
 	public void setMap(Map<Long, List<Application>> map) {

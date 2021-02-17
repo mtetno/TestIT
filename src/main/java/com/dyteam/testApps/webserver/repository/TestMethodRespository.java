@@ -28,7 +28,7 @@ public interface TestMethodRespository extends CrudRepository<TestMethods, Long>
 	
 	@Modifying
     @Transactional
-    @Query(value = "SELECT a.test_method_id,a.company_id,a.application_id,a.test_method,a.status,b.application_name,c.company_name from test_methods a join application b on b.application_id = a.application_id join company c on a.company_id = c.company_id where a.is_delete = 0",nativeQuery = true)
+    @Query(value = "SELECT a.test_method_id,a.company_id,a.application_id,a.test_method,a.status,b.application_name,c.company_name from test_methods a join application b on b.application_id = a.application_id join subscriptions c on a.company_id = c.id where a.is_delete = 0",nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 	
 }

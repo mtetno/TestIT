@@ -31,10 +31,18 @@ public class SubscriptionsController {
     public Subscriptions save(@RequestBody Subscriptions subscriptions, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save Subscriptions = " + subscriptions);
         subscriptions.setAddedBy(loggedInUser.getUserId());
-        Long comp = Long.parseLong("77"); // nned to ask & change
-        subscriptions.setCompanyId(comp); 
        return subscriptionsRepository.save(subscriptions);
     }
+
+     @PostMapping("/update")
+    public Boolean update(@RequestBody Subscriptions subscriptions, @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("update Subscriptions = " + subscriptions);
+        subscriptionsRepository.update(subscriptions.getCompanyName(),subscriptions.getUsername(),
+        subscriptions.getPassword(),subscriptions.getEmail(),subscriptions.getTestingEnvironmentId(),
+        subscriptions.getRemindBefore(),subscriptions.getThreads(),subscriptions.getEndDate(),subscriptions.getStartDate(),subscriptions.getId());
+        return true;
+    }
+
 
     @DeleteMapping(value = "/deleteAll")
     public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {

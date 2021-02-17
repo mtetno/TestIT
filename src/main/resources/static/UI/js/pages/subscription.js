@@ -31,6 +31,25 @@ function saveSubscription(dataObj) {
 	});
 }
 
+
+
+function updateSubscription(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/subscriptions/update",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			 
+			fetchAllSubscriptions();
+		}
+	});
+}
+
 function saveApplication(dataObj) {
 	$.ajax({
 		type: 'POST',
@@ -175,22 +194,22 @@ function fetchAllSubscriptions() {
 			$("#subscriptionsList tbody").html("");
 			data.map((value) => {
 				
-				var str = `<tr>
+				var str = `<tr data='`+JSON.stringify(value)+`'>
 				<td scope="col" class="bucketcheck">
 				  <label class="main subCB">
 					<input data-value="`+value.id+`" type="checkbox"> 
 					<span class="geekmark"></span> 
 				  </label>
 				</td>
-				<td data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">`+value.username+`</td>
+				<td data-toggle="modal" data-dismiss="modal" data-target="#editmyModal1">`+value.company_name+`</td>
 				<td >`+value.email+`</td>
 				<td >`+value.start_date+`</td>
 				<td >`+value.end_date+`</td>
 			  </tr>`;
  
 				$("#subscriptionsList tbody").prepend(str);
-			 
 			});
+			updateRowListener();
 		}
 	});
 }
@@ -259,3 +278,25 @@ function fetchAllApplicationPaths() {
 		}
 	});
 }
+
+function updateRowListener(){
+	/*---Jquery for Update row---*/
+
+  
+  $("table.subscriptionTable tbody tr td:nth-child(2)").click(function(){
+	$("#editmyModal1").modal();
+		var editData = JSON.parse($($(this).closest("tr")[0]).attr('data'));
+
+		$("#uprowid").val(editData.id);
+		$(".updatescriptmodel #name1").val(editData.company_name);
+		$(".updatescriptmodel #username1").val(editData.username);
+		$(".updatescriptmodel #password1").val(editData.pasword);
+		$(".updatescriptmodel #confirmpassword1").val(editData.pasword);
+		$(".updatescriptmodel #email1").val(editData.email);
+		$(".updatescriptmodel #testing_environment1").val(editData.testing_environment_id);
+		$(".updatescriptmodel #startdate1").val(editData.start_date);
+		$(".updatescriptmodel #enddate1").val(editData.end_date);
+		$(".updatescriptmodel #remind_before1").val(editData.remind_before);
+		$(".updatescriptmodel #no_of_threads1").val(editData.threads);  
+	});
+  } 
