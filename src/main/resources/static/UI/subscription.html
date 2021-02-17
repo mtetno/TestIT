@@ -845,8 +845,8 @@
     $("a.addRowBtn").click(function(e){
       e.preventDefault();
 
-      $(this).closest(".card-body").find(".addRowData").slideToggle();
-      $("button.addApppathBtn").closest(".rowhide").slideUp();
+      $("a.addRowBtn").closest(".card-body").find(".addRowData").slideToggle();
+      
 
       $(this).css("pointer-events", "none");
       $(this).css("opacity", ".65");
@@ -1155,7 +1155,13 @@
       $("#batch_file_home").val("");
       
       saveApplicationPaths(dataObj);
+      $("a.addRowBtn").closest(".card-body").find(".addRowData").slideToggle();
 
+      $("a.addRowBtn").css("pointer-events", "");
+      $("a.addRowBtn").css("opacity", "");
+      $("#deleteRow").attr("disabled", false);
+      $("#deleteRow1").attr("disabled", false);
+      $("#deleteRow2").attr("disabled", false);
       
   
     });
