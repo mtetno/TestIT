@@ -151,13 +151,13 @@ function fetchAllEmailTemplates() {
                     <td><i class="`+value.legend+`"></i></td>
                     <td scope="col" class="bucketcheck">
                       <label class="main subCB">
-                        <input type="checkbox"> 
+                        <input  data-value="`+value.template_id+`" type="checkbox"> 
                         <span class="geekmark"></span> 
                       </label>
                     </td>
-                    <td ><span class="updtRow">`+value.company_name+`</span></td>
+                    <td ><span class="updtRow">`+value.application_name+`</span></td>
                     <td >`+value.template_type+`</td>
-                    <td >Execution Inprogress</td>
+                    <td>`+value.content+`</td>
                     <td >-</td>
                     <td >Report Issue</td>
                   </tr>`;

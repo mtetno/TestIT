@@ -1143,10 +1143,10 @@ input[type="radio"]:checked + label:before {
 .subscriptionTable tbody tr td:nth-child(2) {
     text-decoration: underline;
 }
-
+/* 
 .apppathtable tbody tr td:nth-child(2) {
     text-decoration: underline;
-}
+} */
 
 /*------ Manage Test Cases -----*/
 
@@ -1165,9 +1165,9 @@ input[type="radio"]:checked + label:before {
 
 /*------Email Configuration------*/
 
-.emailconfigTable tbody tr td:nth-child(2){
+/* .emailconfigTable tbody tr td:nth-child(2){
     text-decoration: underline;
-}
+} */
 
 .Tempconfigtable tbody tr td:nth-child(2){
     text-decoration: underline;

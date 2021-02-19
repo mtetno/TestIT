@@ -212,11 +212,7 @@
               <div class="col-md-5 mb-2 rowadjust">
                 <label>Company</label>
                 <select class="form-control border" name="application" id="application">
-                  <option value="Select Company">Select Company</option>
-                  <option value="Sociomotif LLC">Sociomotif LLC</option>
-                  <option value="Sagitech Solution">Sagitech Solution</option>
-                  <option value="Infosys">Infosys</option>
-                  <option value="Test Pvt Ltd">Test Pvt Ltd</option>
+                   
                 </select>
               </div>
               <div class="col-md-5 mb-2 rowadjust">
@@ -460,7 +456,9 @@
   $(function(){
 
     fetchAllCompanies();
+    fetchAllApplications();
     fetchAllEmailConfiguration();
+    fetchAllEmailTemplates();
     /*---Jquery for Add row---*/
 
     $("a.addRowBtn").click(function(e){
@@ -477,7 +475,7 @@
     /*---Jquery for Upadte Email Configuration---*/
 
     $("table.emailconfigTable span.updtRow").click(function(){
-      $(this).closest(".card-body").find(".updateRowData").slideToggle();
+      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
 
       $(".updateRowData #uprowid").val($(this).closest("tr").index()+1);
       $(".updateRowData #company_name1").val($(this).closest("tr").find("td:nth-child(2)").text());
@@ -494,7 +492,7 @@
     /*---Jquery for Upadte Template Configuration---*/
 
     $("table.Tempconfigtable span.updtRow").click(function(){
-      $(this).closest(".card-body").find(".updateRowData").slideToggle();
+      $("table.Tempconfigtable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
 
       $(".updateRowData #uprowid").val($(this).closest("tr").index()+1);
       $(".updateRowData #company_nm1").val($(this).closest("tr").find("td:nth-child(3)").text());
@@ -525,6 +523,7 @@
       dataObj["email"] = dataEmail;
       dataObj["isDelete"] = 0;
       saveEmailConfiguration(dataObj);
+      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
     });
 
     /*---Jquery for Upadte Email Configuration---*/
@@ -552,24 +551,26 @@
 
     $("button.addTempconfigBtn").click(function(){
       var dataAppl = $("#application").val();
+      var urlEnvironment = $("#url_environment").val();
+      var className = $("#class_name").val();
       var dataTags = $("#legend_of_tag").val();
 
-      var str = `<tr>
-      <td><i class="`+dataTags+`"></i></td>
-      <td scope="col" class="bucketcheck">
-      <label class="main subCB">
-      <input type="checkbox"> 
-      <span class="geekmark"></span> 
-      </label>
-      </td>
-      <td >`+dataAppl+`</td>
-      <td >Tenenatadmin</td>
-      <td >Execution Complete</td>
-      <td >Forgot Password</td>
-      <td >Report Issue</td>
-      </tr>`;
+      if(dataAppl == 0){
+        alert("please select valid company name");
+      }else if(urlEnvironment == 0){
+        alert("please select valid template type");
+      }else if(dataTags == 0){
+        alert("please select valid legends");
+      }
 
-      $("table.Tempconfigtable tbody").prepend(str);
+      var dataObj = {};
+      dataObj["companyId"] = dataAppl;
+      dataObj["templateType"] = urlEnvironment;
+      dataObj["content"] = className;
+      dataObj["legend"] = dataTags;
+      dataObj["isDelete"] = 0;
+      
+      saveEmailTemplate(dataObj);
 
       $("a.addRowBtn").css("pointer-events", "");
       $("a.addRowBtn").css("opacity", "");
@@ -639,10 +640,11 @@
 
     /*---Jquery for delete Environment URL's row---*/
 
+    var str = '';
+		var subId = 0;
     $("#deleteRow").click(function(e){
 				e.preventDefault();
-				var str = '';
-				var subId = 0;
+		
 				$("table tbody .subCB input:checked").each(function(){
           subId = $(this).attr('data-value');
 				if(str!='')
@@ -654,14 +656,44 @@
         $("#deletedItem").text(str);
         $("#myModal").modal();
 
-				if(str.indexOf(",") > 0){
+				
+			});
+
+
+      $("#deleteRow1").click(function(e){
+				e.preventDefault();
+				
+				$(".Tempconfigtable tbody .subCB input:checked").each(function(){
+          subId = $(this).attr('data-value');
+				if(str!='')
+					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+				else
+					str += $(this).closest("tr").find("td:nth-child(2)").text();
+				});
+
+        $("#deletedItem1").text(str);
+        $("#myModal1").modal();
+
+				
+			});
+
+
+      $(document).on("click", "#myModal #yesbtn", function(){
+        if(str.indexOf(",") > 0){
 					deleteEmailConfiguration();
 				}else{
 					deleteEmailConfigurations(subId);
 				}
-			});
+      });
 
-     
+    $(document).on("click", "#myModal1 #yesbtn", function(){
+   
+        if(str.indexOf(",") > 0){
+					deleteEmailTemplates();
+				}else{
+					deleteEmailTemplate(subId);
+				}
+    });
 
     $(document).on("click", "#yesbtn", function(){
       $("table tbody .subCB input:checked").each(function(){

@@ -260,7 +260,7 @@ function fetchAllApplicationPaths() {
 			$("table.apppathtable tbody").html("");
 			data.map((value) => {
 				
-				var str = `<tr>
+				var str = `<tr data='`+JSON.stringify(value)+`'>
 					<td scope="col" class="bucketcheck">
 					<label class="main subCB">
 					<input data-value="`+value.application_path_id+`" type="checkbox"> 
