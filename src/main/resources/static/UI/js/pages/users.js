@@ -253,181 +253,200 @@ function addUser(userId=0){
 }
 
 $(document).ready(function() {	
-	// $.ajax({
-	// 	url: base_url+"/user/allByCompany",
-	// 	type: "get",
-	// 	beforeSend: function (xhr) {
-	// 		xhr.setRequestHeader('Authorization', "Bearer " + ("TAaccess"));
-	// 	},
-	// 	success: function(data)
-	// 	{ 
-	// 		var payload = "";
-	// 		var num = 1;
-	// 		$.each(data, function(index, value) {				
-	// 			if(readCookie("TAuid") != parseInt(value.userId)) {
-	// 				var dateArray = value.createdAt.split(".");
-	// 				var role = "";
-	// 				switch(value.userType){
-	// 					case 1: role = "Administrator"; break;
-	// 					case 2: role = "Company"; break;
-	// 					case 3: role = "Tester"; break;
-	// 				}
-	// 				/*payload += '<tr>';
-	// 				payload += '<td>'+num+'</td>';
-	// 				payload += '<td>'+value.fName+' '+value.lName+'</td>';
-	// 				payload += '<td>'+value.email+'</td>';
-	// 				//payload += '<td>'+role+'</td>';
-	// 				payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
-	// 				payload += '<td>';
-	// 				payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'../user/'+value.userId+'\');" class="table-link">';
-	// 				payload += '<span class="fa-stack">';
-	// 				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-	// 				payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
-	// 				payload += '</span>';
-	// 				payload += '</a>';
-	// 				payload += '<a style="cursor:pointer" onclick="checkDelete(\'../user/'+value.userId+'\');" class="table-link danger">';
-	// 				payload += '<span class="fa-stack">';
-	// 				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-	// 				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
-	// 				payload += '</span>';
-	// 				payload += '</a>';
-	// 				payload += '</td>';
-	// 				payload += '</tr>';
-	// 				num++;*/
+
+	$(".selectAll").click(function(){
+		var isCheckedAll =$(".selectAll").find("input[type=checkbox]").prop("checked");
+		chkArr=[];
+		
+		// if(!isCheckedAll){
+		// 	$('.table input[type=checkbox]').map((i,val)=>{
+		// 		if($(val).attr("data-value")!=undefined){chkArr.push($(val).attr("data-value"))}
+		// });
+		// }
+
+		$('.table input[type=checkbox]').prop("checked", !(isCheckedAll));
+	})
+
+	$.ajax({
+		url: base_url+"/user/allByCompany",
+		type: "get",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function(data)
+		{ 
+			var payload = "";
+			var num = 1;
+			$.each(data, function(index, value) {				
+				if(readCookie("TAuid") != parseInt(value.userId)) {
+					var dateArray = value.createdAt.split(".");
+					var role = "";
+					switch(value.userType){
+						case 1: role = "Administrator"; break;
+						case 2: role = "Company"; break;
+						case 3: role = "Tester"; break;
+					}
+					/*payload += '<tr>';
+					payload += '<td>'+num+'</td>';
+					payload += '<td>'+value.fName+' '+value.lName+'</td>';
+					payload += '<td>'+value.email+'</td>';
+					//payload += '<td>'+role+'</td>';
+					payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
+					payload += '<td>';
+					payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'../user/'+value.userId+'\');" class="table-link">';
+					payload += '<span class="fa-stack">';
+					payload += '<i class="fa fa-square fa-stack-2x"></i>';
+					payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
+					payload += '</span>';
+					payload += '</a>';
+					payload += '<a style="cursor:pointer" onclick="checkDelete(\'../user/'+value.userId+'\');" class="table-link danger">';
+					payload += '<span class="fa-stack">';
+					payload += '<i class="fa fa-square fa-stack-2x"></i>';
+					payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
+					payload += '</span>';
+					payload += '</a>';
+					payload += '</td>';
+					payload += '</tr>';
+					num++;*/
 					
-	// 				payload += '<tr>';
-	// 				payload += '<td scope="col" class="bucketcheck">';
-	// 				payload += '<label class="main subCB">';
-	// 				payload += '<input type="checkbox" data-value='+value.userId+'>';
-	// 				payload += '<span class="geekmark"></span> ';
-	// 				payload += '</label>';
-	// 				payload += '</td>';
-	// 				payload += '<td>'+value.fName+' '+value.lName+'</td>';
-	// 				payload += '<td>'+value.userName+'</td>';
-	// 				payload += '<td>'+value.email+'</td>';
-	// 				payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
-	// 				payload += '<input type="hidden" name="role" class="role" value="'+value.userType+'" />';
-	// 				payload += '</tr>';
-	// 			}
-	// 		});
-	// 		$("#bucketList tbody").html(payload);
-	// 		$('#bucketList').DataTable({
-	// 			"lengthChange": false,
-	// 			"searching": false,   // Search Box will Be Disabled
-	// 			"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-	// 			"info": true,
-	// 		});
-	// 	},
-	// 	complete: function(){
-	// 		$(".mainCB input[type=checkbox]").click(function(){
-	// 			if($(this).prop("checked")==true)
-	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-	// 			else
-	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-	// 		});
+					payload += '<tr>';
+					payload += '<td scope="col" class="bucketcheck">';
+					payload += '<label class="main subCB">';
+					payload += '<input type="checkbox" data-value='+value.userId+'>';
+					payload += '<span class="geekmark"></span> ';
+					payload += '</label>';
+					payload += '</td>';
+					payload += '<td>'+value.fName+' '+value.lName+'</td>';
+					payload += '<td>'+value.userName+'</td>';
+					payload += '<td>'+value.email+'</td>';
+					payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
+					payload += '<input type="hidden" name="role" class="role" value="'+value.userType+'" />';
+					payload += '</tr>';
+				}
+			});
+			$("#bucketList tbody").html(payload);
+			$('#bucketList').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": true,
+			});
+		},
+		complete: function(){
+			$(".mainCB input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+				else
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+			});
 			
 			
-	// 		$('.table input[type=checkbox]').change(function() {
-	// 			if(this.checked) {
-	// 				chkArr.push($(this).attr("data-value"));
-	// 			}
-	// 			else {
-	// 				chkArr.pop($(this).attr("data-value"));
-	// 			}
-	// 		});
+			$('.table input[type=checkbox]').change(function() {
+				if(this.checked && $(this).attr("data-value")!=undefined) {
+					chkArr.push($(this).attr("data-value"));
+				}
+				else {
+					chkArr.pop($(this).attr("data-value"));
+				}
+			});
 
-	// 		/*---Jquery for save row---*/
-	// 		//$(document).on("click", "#saveRec", function(){
-	// 		$(document).on("click", ".addroleBtn", function(){
-	// 			if(addUser()){
-	// 				var dt = new Date();
-	// 				var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
-	// 				var time = dt.getHours()+":"+dt.getMinutes();
-	// 				var savestr = '<tr>';
-	// 				savestr += '<td scope="col" class="bucketcheck">';
-	// 				savestr += '<label class="main subCB">';
-	// 				savestr += '<input type="checkbox">';
-	// 				savestr += '<span class="geekmark"></span>';
-	// 				savestr += '</label>';
-	// 				savestr += '</td>';
-	// 				savestr += '<td>'+$("#f1").val()+'</td>';
-	// 				savestr += '<td>'+$("#f2").val()+'</td>';
-	// 				savestr += '<td>'+$("#f3").val()+'</td>';
-	// 				savestr += '<td >'+date+' '+time+'</td>';
-	// 				savestr += '</tr>';
-	// 				// $("#bucketList tbody tr:first-child").before();
-	// 				$("#bucketList tbody tr:first-child").before(savestr);
-	// 			}
-	// 		});
+			/*---Jquery for save row---*/
+			//$(document).on("click", "#saveRec", function(){
+			$(document).on("click", "#saveRec", function(){
+				if(addUser()){
+					var dt = new Date();
+					var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
+					var time = dt.getHours()+":"+dt.getMinutes();
+					var savestr = '<tr>';
+					savestr += '<td scope="col" class="bucketcheck">';
+					savestr += '<label class="main subCB">';
+					savestr += '<input type="checkbox">';
+					savestr += '<span class="geekmark"></span>';
+					savestr += '</label>';
+					savestr += '</td>';
+					savestr += '<td>'+$("#f1").val()+'</td>';
+					savestr += '<td>'+$("#f2").val()+'</td>';
+					savestr += '<td>'+$("#f3").val()+'</td>';
+					savestr += '<td >'+date+' '+time+'</td>';
+					savestr += '</tr>';
+					// $("#bucketList tbody tr:first-child").before();
+					$("#bucketList tbody tr:first-child").before(savestr);
+				}
+			});
 
-	// 		/*---Jquery for update row---*/
+			/*---Jquery for update row---*/
 
-	// 		$("table.usertable tbody tr td:nth-child(3)").click(function(){
-	// 		$("#editmyModal1").modal();
-	// 			var lname="";
-	// 			var fname = ($(this).closest("tr").find("td:nth-child(2)").text()).split(" ");
-	// 			if(fname[1]!="" || fname[1]!=undefined) lname = fname[1];
-	// 	      $(".updateusermodel input[type=checkbox]").attr("data-value", )
-	// 	      $(".updateusermodel #uprowid").attr("data-value", $(this).closest("tr").find("td:nth-child(1) input[type=checkbox]").attr("data-value"));
-	// 	      $(".updateusermodel #uprowid").val($(this).closest("tr").index()+1);
-	// 	      $(".updateusermodel #firstname1").val(fname[0]); 
-	// 	      $(".updateusermodel #lastname1").val(lname); 
-	// 	      $(".updateusermodel #role1").val($(this).closest("tr").find("input[name=role]").val()); 
-	// 	      $(".updateusermodel #username1").val($(this).closest("tr").find("td:nth-child(3)").text());
-	// 	      $(".updateusermodel #email1").val($(this).closest("tr").find("td:nth-child(4)").text());    
+			$("table.usertable tbody tr td:nth-child(3)").click(function(){
+			$("#editmyModal1").modal();
+				var lname="";
+				var fname = ($(this).closest("tr").find("td:nth-child(2)").text()).split(" ");
+				if(fname[1]!="" || fname[1]!=undefined) lname = fname[1];
+		      $(".updateusermodel input[type=checkbox]").attr("data-value", )
+		      $(".updateusermodel #uprowid").attr("data-value", $(this).closest("tr").find("td:nth-child(1) input[type=checkbox]").attr("data-value"));
+		      $(".updateusermodel #uprowid").val($(this).closest("tr").index()+1);
+		      $(".updateusermodel #firstname1").val(fname[0]); 
+		      $(".updateusermodel #lastname1").val(lname); 
+		      $(".updateusermodel #role1").val($(this).closest("tr").find("input[name=role]").val()); 
+		      $(".updateusermodel #username1").val($(this).closest("tr").find("td:nth-child(3)").text());
+		      $(".updateusermodel #email1").val($(this).closest("tr").find("td:nth-child(4)").text());    
 
-	// 	    });
+		    });
 
-	// 	    /*---Jquery for Update Save---*/
+		    /*---Jquery for Update Save---*/
 
-	// 	    $("button.updateuserBtn").click(function(){
-	// 			if(addUser($("#uprowid").attr("data-value"))){
-	// 				var rowIndx = $("#uprowid").val();
-	// 				var dataFname = $("#firstname1").val()+" "+$("#lastname1").val();
-	// 				var dataUsername = $("#username1").val();
-	// 				var dataEmail = $("#email1").val();
+		    $("button.updateuserBtn").click(function(){
+				if(addUser($("#uprowid").attr("data-value"))){
+					var rowIndx = $("#uprowid").val();
+					var dataFname = $("#firstname1").val()+" "+$("#lastname1").val();
+					var dataUsername = $("#username1").val();
+					var dataEmail = $("#email1").val();
 
-	// 				var dt = new Date();
-	// 				var date = ('0'+dt.getDate()).slice(-2)+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
-	// 				var time = dt.getHours()+":"+dt.getMinutes();
+					var dt = new Date();
+					var date = ('0'+dt.getDate()).slice(-2)+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
+					var time = dt.getHours()+":"+dt.getMinutes();
 
-	// 				$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(2)").html('<span class="updtRow">'+dataFname+'</span>');
-	// 				$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(3)").text(dataUsername);
-	// 				$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(4)").text(dataEmail);
-	// 				$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:last-child").text(date+" "+time);
+					$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(2)").html('<span class="updtRow">'+dataFname+'</span>');
+					$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(3)").text(dataUsername);
+					$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(4)").text(dataEmail);
+					$(".usertable tbody tr:nth-child("+rowIndx+")").find("td:last-child").text(date+" "+time);
 
-	// 				$("#editmyModal1").modal();
-	// 			}
-	// 	    });
+					$("#editmyModal1").modal();
+				}
+		    });
 
-	// 		/*---Jquery for delete row---*/
+			/*---Jquery for delete row---*/
 
-	// 		$("#deleteRow").click(function(e){
-	// 			e.preventDefault();
-	// 			var str = '';
-	// 			$("table tbody .subCB input:checked").each(function(){
-	// 			if(str!='')
-	// 				str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
-	// 			else
-	// 				str += $(this).closest("tr").find("td:nth-child(2)").text();
-	// 			});
+			var str = '';
+			var deleteId = 0;
+			$("#deleteRow").click(function(e){
+				e.preventDefault();
+				
+				$("table tbody .subCB input:checked").each(function(){
+					deleteId = $(this).attr('data-value');
+				if(str!='')
+					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
+				else
+					str += $(this).closest("tr").find("td:nth-child(2)").text();
+				});
 
-	// 			$("#deletedItem").text(str);
-	// 			$("#myModal").modal();
-	// 		});
+				$("#deletedItem").text(str);
+				$("#myModal").modal();
+			});
 
-	// 		$(document).on("click", "#yesbtn", function(){
-	// 			chkArr.forEach(function(index, val){
-	// 				deleteuser(index);
-	// 			});
-	// 			$("table tbody .subCB input:checked").each(function(){
-	// 				$(this).closest("tr").remove();
-	// 			});	    
-	// 		});
+			$(document).on("click", "#yesbtn", function(){
+				chkArr.forEach(function(index, val){
+					 
+						deleteuser(index);
+				 
+				});
+				$("table tbody .subCB input:checked").each(function(){
+					$(this).closest("tr").remove();
+				});	    
+			});
             
             
-	// 	}
-	// });
+		}
+	});
 	
 	$(".successmod").on('hidden.bs.modal', function () {
 		location.reload();
@@ -470,7 +489,7 @@ $(document).ready(function() {
 		url: url,
 		type: 'DELETE',
 		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + ("TAaccess"));
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: callback,
 		data: data,

@@ -188,7 +188,7 @@ function fetchAllApplications() {
 		success: function (data) {
 			var options = '<option value="0">Select Application</option>';
 			data.map((item) => {
-				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+				options = options + '<option value="' + item.application_id + '">' + item.application_name + '</option>';
 			})
 			$("#application").html(options);
 		}

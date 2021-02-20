@@ -220,7 +220,7 @@ function fetchAllApplications() {
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/application/allWithCompany",
+		url: base_url + "/application/all",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},

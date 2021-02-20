@@ -145,6 +145,12 @@ public class UserController {
     	userRepo.deleteById(userId);
 		return true;
     }
+
+	@DeleteMapping("/deleteAll")
+    public Boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    	userRepo.deleteByCompanyId(loggedInUser.getCompanyId());
+		return true;
+    }
     
     /**
      * Update User password

@@ -57,14 +57,9 @@ public class ApplicationController {
     	logger.info("get Application by id="+applicationId);
         return applicationRepo.findById(applicationId);
     }
-    
-    @GetMapping("/all")
-    public Iterable<Application> findAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-    	logger.info("get all applications by Company");
-        return applicationRepo.findAll();
-	}
+
 	
-	@GetMapping("/allWithCompany")
+	@GetMapping("/all")
     public List<Map<String, Object>> fetchAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
     	logger.info("get all applications by Company");
         return applicationRepo.fetchAll();
