@@ -3,9 +3,9 @@ package com.dyteam.testApps.webserver.repository;
 import java.util.List;
 import java.util.Map;
 
-import com.dyteam.testApps.webserver.entity.INames;
-import com.dyteam.testApps.webserver.entity.IStackBar;
 import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.projection.INames;
+import com.dyteam.testApps.webserver.projection.IStackBar;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,7 +33,7 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long>{
 	@Query("update Testcases set is_delete = 1 where added_by = :userId AND testcase_id = :id")
 	void updateByTestcaseId(Long userId,Long id);
 
-	@Query("select e from Testcases e where e.companyId = :companyId AND isDelete = 0")
+	@Query("select e from Testcases e where e.companyId = :companyId AND e.isDelete = 0")
 	List<Testcases> findAllByCompanyId(Long companyId);
 
 	@Query(value = "select count(a.auto_progress_id) as count, b.value as name from testcases a join automation_progress b where a.auto_progress_id = b.id group by a.auto_progress_id",nativeQuery = true)

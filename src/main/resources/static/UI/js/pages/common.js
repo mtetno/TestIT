@@ -279,7 +279,7 @@ function fetchAllRemindBefore(inputName) {
 	});
 }
 
-function fetchAllUsersRoles() {
+function fetchAllUsersRoles(inputName) {
 	$.ajax({
 		type: 'GET',
 		contentType: 'application/json',
@@ -293,6 +293,9 @@ function fetchAllUsersRoles() {
 			data.map((item) => {
 				options = options + '<option value="' + item.executionUserId + '">' + item.name + '</option>';
 			})
+			 
+			inputName != undefined && inputName != '' ?  $(inputName).html(options)
+			: 
 			$("#user_role").html(options);
 		}
 	});

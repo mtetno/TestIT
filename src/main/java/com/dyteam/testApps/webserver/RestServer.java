@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
- 
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -16,11 +17,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan
 @EnableAutoConfiguration
 @EnableScheduling
-
 public class RestServer {
 
     public static void main(String[] args) {
-        SpringApplication.run(RestServer.class, args);
+        ConfigurableEnvironment environment = new StandardEnvironment();
+        environment.setActiveProfiles("dev");
+
+      SpringApplication springApplication = new SpringApplication(RestServer.class);
+      springApplication.setEnvironment(environment);
+      springApplication.run(args);
+        // SpringApplication.run(RestServer.class, args);
     }
     
     @Bean

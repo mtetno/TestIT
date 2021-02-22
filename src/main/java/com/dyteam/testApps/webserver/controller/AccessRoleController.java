@@ -56,7 +56,7 @@ public class AccessRoleController {
   @GetMapping("/all")
   public Iterable<AccessRole> findAll() {
     logger.info("get all executionUsers");
-    Iterable<AccessRole> findAll = executionUserRepo.findAll();
+    Iterable<AccessRole> findAll = executionUserRepo.fetchAll();
     findAll.forEach(eu -> eu.setPassword(null));
     return findAll;
   }

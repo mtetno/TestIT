@@ -142,7 +142,7 @@ function addUser(userId=0){
 	if(userId==0){
 		$firstname = $('.addusermodel input[name=firstname]').val();
 		$lastname = $('.addusermodel input[name=lastname]').val();
-		$user_type = $('.addusermodel input[name=role]').val();
+		$user_type = $('#f4').val();
 		$loginid = $('.addusermodel input[name=username]').val();
 		$useremail = $('.addusermodel input[name=email]').val();
 		$password = $('.addusermodel input[name=password]').val();
@@ -329,7 +329,8 @@ $(document).ready(function() {
 				"lengthChange": false,
 				"searching": false,   // Search Box will Be Disabled
 				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": true,
+				"info": false,
+				"paging":   false
 			});
 		},
 		complete: function(){

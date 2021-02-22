@@ -61,7 +61,6 @@ function deleteAllTestcases() {
 		},
 		success: function () {
 			$("#bucketList").find(".mainCB input[type=checkbox]").prop("checked", false);
-			showMessage("Testcases deleted successfully");
 			displayTestcases();	
 		}
 	});
@@ -77,7 +76,6 @@ function deleteTestcase(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			showMessage("Testcase deleted successfully")
 			displayTestcases();
 		}
 	});

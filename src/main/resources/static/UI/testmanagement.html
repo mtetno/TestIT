@@ -573,12 +573,12 @@
 				$("#description").val("");
 				$("#classname").val("");
 				$("#test_method").val("");
-				$("#environment").val("");
-				$("#application").val("")
-				$("#type").val("");
+				$("#environment").val(0);
+				$("#application").val(0)
+				$("#type").val(0);
 				$("#found_in_build").val("");
-				$("#automation_status").val("");
-				$("#automation_progress").val("");
+				$("#automation_status").val(0);
+				$("#automation_progress").val(0);
 				$('#myModalSucess1').modal('show'); 
 				
 			});
@@ -615,10 +615,11 @@
 
 			/*---Jquery for delete row---*/
 
+			var str = '';
+			var testcaseId = 0;
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
-				var str = '';
-				var testcaseId = 0;
+				
 				$("table tbody .subCB input:checked").each(function(){
 				testcaseId = $(this).attr('data-value');
 				if(str!='')
@@ -628,17 +629,19 @@
 				});
 
 				$("#deletedItem").text(str);
+				$("#myModal").modal();
 
-				if(str.indexOf(",") > 0){
-					deleteAllTestcases();
-				}else{
-					deleteTestcase(testcaseId);
-				}
+				
 			});
 
 			$(document).on("click", "#yesbtn", function(){
 				$("table tbody .subCB input:checked").each(function(){
 					$(this).closest("tr").remove();
+					if(str.indexOf(",") > 0){
+						deleteAllTestcases();
+					}else{
+						deleteTestcase(testcaseId);
+					}
 				});	    
 			});
             

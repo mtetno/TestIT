@@ -159,7 +159,9 @@
 						<div class="row">
 							<div class="col-md-12">
 								<label class="required" >Role</label>
-								<input type="text" id="f4" class="form-control border" name="role" placeholder="Enter Role" required>
+								<select class="form-control border" name="role" id="f4" required>
+									<option value="Select User Role">Select User Role</option>
+								</select>
 							</div>
 						</div>
 		          	</div>
@@ -373,8 +375,11 @@
 	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
 	<script src="js/custom.js"></script>
 	<script src="js/pages/users.js"></script>
+	<script src="js/pages/common.js"></script>
 	<script>
 		$(function(){
+
+			fetchAllUsersRoles("#f4");
 
 			/*---Jquery for toggle section on click caret-down icon---*/
 

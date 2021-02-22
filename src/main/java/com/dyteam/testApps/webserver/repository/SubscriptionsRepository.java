@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import com.dyteam.testApps.webserver.entity.ISubscription;
 import com.dyteam.testApps.webserver.entity.Subscriptions;
+import com.dyteam.testApps.webserver.projection.ISubscription;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

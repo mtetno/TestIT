@@ -1163,6 +1163,10 @@ input[type="radio"]:checked + label:before {
 	color: #007bff !important;
 }
 
+#bucketList_wrapper{
+ width: -webkit-fill-available;
+}
+
 /*------Email Configuration------*/
 
 /* .emailconfigTable tbody tr td:nth-child(2){

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dyteam.testApps.webserver.Util;
-import com.dyteam.testApps.webserver.entity.ISubscription;
 import com.dyteam.testApps.webserver.entity.User;
+import com.dyteam.testApps.webserver.projection.ISubscription;
 import com.dyteam.testApps.webserver.repository.ApplicationRepository;
 import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
 import com.dyteam.testApps.webserver.repository.UserRepository;

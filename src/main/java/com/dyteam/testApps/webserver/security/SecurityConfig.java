@@ -66,6 +66,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticationProvider(provider)
 				.addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
 				.authorizeRequests().antMatchers(COMPANY).hasAnyAuthority(ROLE.SUPER.toString()).and()
+				.authorizeRequests().antMatchers("/health").permitAll().and()
 //				.authorizeRequests().antMatchers(APPLICATION).hasAnyAuthority(ROLE.SUPER.toString()).and()
 //				.authorizeRequests().requestMatchers(new NegatedRequestMatcher(new OrRequestMatcher(new AntPathRequestMatcher(COMPANY)))).hasAnyAuthority(ROLE.strValues()).and()
 				.csrf().disable().formLogin().disable().httpBasic().disable()

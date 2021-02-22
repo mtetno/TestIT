@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dyteam.testApps.webserver.entity.INames;
-import com.dyteam.testApps.webserver.entity.IStackBar;
 import com.dyteam.testApps.webserver.entity.Testcases;
-  import com.dyteam.testApps.webserver.repository.TestcasesRepository;
+import com.dyteam.testApps.webserver.projection.INames;
+import com.dyteam.testApps.webserver.projection.IStackBar;
+import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 import org.slf4j.Logger;
@@ -35,22 +35,9 @@ public class TestcasesController {
     @PostMapping("/save")
     public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save testcases = " + testcases);
-        Testcases testcasesDB = new Testcases();
-        testcasesDB.setTestcaseName(testcases.getTestcaseName());
-        testcasesDB.setCompanyId(loggedInUser.getCompanyId());
-        testcasesDB.setDescription(testcases.getDescription());
-        testcasesDB.setClassName(testcases.getClassName());
-        testcasesDB.setTestMethod(testcases.getTestMethod());
-        testcasesDB.setEnvironmentId(testcases.getEnvironmentId());
-        testcasesDB.setApplicationId(testcases.getApplicationId());
-        testcasesDB.setTestTypeId(testcases.getTestTypeId());
-        testcasesDB.setFoundInBuild(testcases.getFoundInBuild());
-        testcasesDB.setAutoStatusId(testcases.getAutoStatusId());
-        testcasesDB.setAutoProgressId(testcases.getAutoProgressId());
-        testcasesDB.setAddedBy(loggedInUser.getUserId());
-        testcasesDB.setIsDelete(testcases.getIsDelete());
-     
-        Testcases save = testcasesRepo.save(testcasesDB);
+        testcases.setCompanyId(loggedInUser.getCompanyId());
+        testcases.setAddedBy(loggedInUser.getUserId());
+        Testcases save = testcasesRepo.save(testcases);
         return save;
     }
 

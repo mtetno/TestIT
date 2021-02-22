@@ -37,4 +37,7 @@ public interface AccessRoleRepository extends CrudRepository<AccessRole, Long> {
 	@Query("update AccessRole set is_delete = 0 where added_by = :userId AND name = :name")
 	void updateByName(Long userId, String name);
 
+	@Query("select e from AccessRole e where e.isDelete=0")
+	Iterable<AccessRole> fetchAll();
+
 }

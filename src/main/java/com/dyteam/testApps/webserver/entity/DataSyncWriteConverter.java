@@ -2,6 +2,7 @@ package com.dyteam.testApps.webserver.entity;
 
 import java.io.IOException;
 
+import com.dyteam.testApps.webserver.projection.IStackBar;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
