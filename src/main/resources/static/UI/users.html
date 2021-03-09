@@ -158,7 +158,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<label class="required" >Role</label>
+								<label >Role</label>
 								<select class="form-control border" name="role" id="f4" required>
 									<option value="Select User Role">Select User Role</option>
 								</select>
@@ -170,7 +170,7 @@
 		        <!-- Modal footer -->
 		        <div class="modal-footer btnfooter">
 		        	<button type="button" class="btn btn-dark" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
-		            <button type="button" id="saveRec" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess1"><img src="img/save-24-px-1.png">SAVE</button>
+		            <button type="button" id="saveRec" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" ><img src="img/save-24-px-1.png">SAVE</button>
 		        </div>
 		        
 		      </div>
@@ -192,7 +192,7 @@
 			        <!-- Modal body -->
 			        <div class="modal-body model_body">
 			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The User Added Successfully.</p>
+			          <p>The Subscriber Added Successfully.</p>
 			        </div>
 			        
 			        <!-- Modal footer -->
@@ -254,8 +254,10 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<label class="required" >Role</label>
-										<input type="text" id="role1" class="form-control border" name="role1" value="NewUInium_Automation2-StandaredSupportStaff" required>
+										<label >Role</label>
+										<select class="form-control border" name="role1" id="role1" required>
+											<option value="Select User Role">Select User Role</option>
+										</select>
 									</div>
 								</div>
 			          		
@@ -287,7 +289,7 @@
 			        <!-- Modal body -->
 			        <div class="modal-body model_body">
 			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The User Updated Successfully.</p>
+			          <p>The Subscriber Updated Successfully.</p>
 			        </div>
 			        
 			        <!-- Modal footer -->
@@ -380,6 +382,7 @@
 		$(function(){
 
 			fetchAllUsersRoles("#f4");
+			fetchAllUsersRoles("#role1");
 
 			/*---Jquery for toggle section on click caret-down icon---*/
 

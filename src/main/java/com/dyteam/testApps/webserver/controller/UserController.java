@@ -1,19 +1,14 @@
 package com.dyteam.testApps.webserver.controller;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
-import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.User;
-import com.dyteam.testApps.webserver.projection.ISubscription;
+import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
 import com.dyteam.testApps.webserver.repository.ApplicationRepository;
 import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
 import com.dyteam.testApps.webserver.repository.UserRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,56 +79,39 @@ public class UserController {
      * @return
      */
     @PostMapping("/save")
-    public User save(@RequestBody User user,@AuthenticationPrincipal final LoginUser loggedInUser) {
+    public User save(@RequestBody User user,@AuthenticationPrincipal final LoginUser loggedInUser)  throws ResourceAlreadyExists  {
     	User userAfterSaveOuter = null;
 		try {
 			boolean isNew = null==user.getUserId();
-			if(isNew) {
+			if(isNew == false){
+				 
 				user.setAddedBy(loggedInUser.getUserId());
 				user.setCompanyId(loggedInUser.getCompanyId());
 				user.setRefUserId(loggedInUser.getUserId());
 				String password = user.getPassword();
 				user.setPassword(passwordEncoder.encode(password));
 				user.setStatus(1);
-			}else {
-				User userDB = userRepo.findById(user.getUserId()).get();
-				userDB.setfName(user.getfName());
-				userDB.setlName(user.getlName());
-				userDB.setEmail(user.getEmail());
-				userDB.setContact(user.getContact());
-				userDB.setUserType(user.getUserType());
-				userDB.setAddress(user.getAddress());
-				user = userDB;
-			}
-			final User userAfterSave = userRepo.save(user);
-			userAfterSaveOuter = userAfterSave;
-			if(isNew) {
-				ISubscription company = subscriptionsRepository.getCompanyInfoForFolder(loggedInUser.getCompanyId());
-				List<String> applicationNames = applicationRepo.findAllAppNamesByCompanyId(loggedInUser.getCompanyId());
-
-				if(null != applicationNames) {
-					applicationNames.parallelStream().forEach(appName -> {
-						try {
-							Util.createFolders(Paths.get(projectBasePath,Util.COMPANIES_BASE_FOLDER_NAME,
-									company.getCompany_name(),
-									appName,Util.TEST_DATA_FOLDER_NAME,loggedInUser.getUsername()));
-							if(StringUtils.isNotBlank(company.getSelenium_home())) {
-								Util.createFolders(Paths.get(company.getSelenium_home(),Util.COMPANIES_BASE_FOLDER_NAME,
-										company.getCompany_name(),loggedInUser.getUsername()));
-							} else {
-								logger.error("Could not create folder structure for the user as the company's selenium home is "+company.getSelenium_home());
-							}
-							
-						} catch (IOException e) {
-							logger.error("Error occure while creating dir structure for user="+userAfterSave,e);
-						}
-					});
-				} 
+				userRepo.update(user.getfName(),user.getlName(),user.getContact(),
+				user.getStatus(),user.getEmail(),user.getAddress(),user.getUserId());
+			}else{
+				if(userRepo.findByUserName(user.getUserName()).isPresent() == false ){
+					User userDB = userRepo.findById(user.getUserId()).get();
+					userDB.setfName(user.getfName());
+					userDB.setlName(user.getlName());
+					userDB.setEmail(user.getEmail());
+					userDB.setContact(user.getContact());
+					userDB.setUserType(user.getUserType());
+					userDB.setAddress(user.getAddress());
+					user = userDB;
+				
+					userAfterSaveOuter = userRepo.save(user);	
+				}else{
+					throw new ResourceAlreadyExists("User Already exists");	
+				}
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-    	logger.info("persist user = "+user);
 		return userAfterSaveOuter;
     }
     

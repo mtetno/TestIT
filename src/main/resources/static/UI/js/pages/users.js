@@ -178,7 +178,7 @@ function addUser(userId=0){
 		$loginid = $('#update_modal .modal-body input[name=loginid]:visible').val();
 		$password="";*/
 	}
-	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' || $user_type == '')
+	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
 	{
 		showError();
 		return false;
@@ -239,20 +239,27 @@ function addUser(userId=0){
 		url: base_url+"/user/save",
 			success: function(msg){
 				$('#modal_ajax').modal('hide');
-				if($userId!==0){
-					$("#myModalSucess1").modal();
-				}
-				else {
-					$("#editmyModalSucess1").modal();
-				}
-				if(!alert(successMsg)) {
-					window.location.href= window.location.href;
-				}
+				$("#myModalSucess1").modal();
+				fetchUsers();
+				//window.location.href= window.location.href;
+				// if($userId!==0){
+				// 	$("#myModalSucess1").modal();
+				// }
+				// else {
+				// 	$("#editmyModalSucess1").modal();
+				// }
+				// if(!alert(successMsg)) {
+				// 	window.location.href= window.location.href;
+				// }
+			},error: function(jqXHR, textStatus, errorThrown){
+				alert(jqXHR.responseJSON.errorMessage);
 			}
 	});
 }
 
 $(document).ready(function() {	
+
+	fetchUsers();
 
 	$(".selectAll").click(function(){
 		var isCheckedAll =$(".selectAll").find("input[type=checkbox]").prop("checked");
@@ -267,6 +274,7 @@ $(document).ready(function() {
 		$('.table input[type=checkbox]').prop("checked", !(isCheckedAll));
 	})
 
+	function fetchUsers(){
 	$.ajax({
 		url: base_url+"/user/allByCompany",
 		type: "get",
@@ -277,6 +285,7 @@ $(document).ready(function() {
 		{ 
 			var payload = "";
 			var num = 1;
+			$("#bucketList tbody").html("");
 			$.each(data, function(index, value) {				
 				if(readCookie("TAuid") != parseInt(value.userId)) {
 					var dateArray = value.createdAt.split(".");
@@ -448,6 +457,7 @@ $(document).ready(function() {
             
 		}
 	});
+}
 	
 	$(".successmod").on('hidden.bs.modal', function () {
 		location.reload();

@@ -32,7 +32,6 @@ public class User {
 	private Long userId;
 	
 	@Column(name="user_type")
-	@NotNull
 	private Integer userType;
 	
 	@Column(name="company_id")
