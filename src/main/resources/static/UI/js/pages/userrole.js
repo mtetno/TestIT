@@ -6,6 +6,7 @@ specialKeys.push(36); //Home
 specialKeys.push(35); //End
 specialKeys.push(37); //Left
 specialKeys.push(39); //Right
+
 function IsAlphaNumeric(e) {
 	var keyCode = e.keyCode == 0 ? e.charCode : e.keyCode;
 	var ret = ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
@@ -13,6 +14,72 @@ function IsAlphaNumeric(e) {
 		$("#username_error").html("* Special symbols and spaces not allowed").show();
 	return ret;
 }
+
+function fetchRoles(isRefreshDisabled){
+	$.ajax({
+		url: base_url+"/accessRole/allByCompany",
+		type: "get",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function(data)
+		{ 
+			var payload = "";
+			$(".Roletable tbody").html("");
+			$.each(data, function(index, value) {
+				/*payload += '<tr>';
+				payload += '<td>'+(index+1)+'</td>';
+				payload += '<td>'+value.name+'</td>';
+				payload += '<td>'+value.role+'</td>';
+				payload += '<td>'+value.addedBy.userName+'</td>';
+				payload += '<td>';
+				payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'/accessRole/'+value.executionUserId+'\');" class="table-link">';
+				payload += '<span class="fa-stack">';
+				payload += '<i class="fa fa-square fa-stack-2x"></i>';
+				payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
+				payload += '</span>';
+				payload += '</a>';
+				payload += '<a style="cursor:pointer" onclick="checkDelete(\'/accessRole/'+value.executionUserId+'\');" class="table-link danger">';
+				payload += '<span class="fa-stack">';
+				payload += '<i class="fa fa-square fa-stack-2x"></i>';
+				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
+				payload += '</span>';
+				payload += '</a>';
+				payload += '</td>';
+				payload += '</tr>';*/
+				
+				var role = "";
+				switch(value.addedBy.userType){
+					case 1: role = "Administrator"; break;
+					case 2: role = "Company"; break;
+					case 3: role = "Tester"; break;
+				}
+				payload += '<tr>';
+				payload += '<td scope="col" class="bucketcheck">';
+				payload += '<label class="main subCB">';
+				payload += '<input type="checkbox" data-value="'+value.executionUserId+'">';
+				payload += '<span class="geekmark"></span>';
+				payload += '</label>';
+				payload += '</td>';
+				payload += '<td>'+value.addedBy.userName+'</td>';
+				payload += '<td>'+role+'</td>';
+				payload += '</tr>';
+			});
+			$(".Roletable tbody").html(payload);
+			if(isRefreshDisabled != true){
+				$('.Roletable').DataTable({
+					"lengthChange": false,
+					"searching": false,   // Search Box will Be Disabled
+					"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+					"info": false,
+					"pagingType": "full_numbers"
+				});
+			}
+		}
+	});
+}
+
+
 function showUpdateModal(url)
 {
 	// SHOW AJAX RESPONSE ON REQUEST SUCCESS
@@ -150,77 +217,19 @@ function addUserRole(executionUserId=0){
 			success: function(msg){
 				$('#modal_ajax').modal('hide');
 				if(!alert(successMsg)) {
-					window.location.href= window.location.href;
+					fetchRoles(true);
+					//window.location.href= window.location.href;
 				}
 			}
 	});
 }
 
-$(document).ready(function() {	
-	$.ajax({
-		url: base_url+"/accessRole/allByCompany",
-		type: "get",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function(data)
-		{ 
-			var payload = "";
-			$.each(data, function(index, value) {
-				/*payload += '<tr>';
-				payload += '<td>'+(index+1)+'</td>';
-				payload += '<td>'+value.name+'</td>';
-				payload += '<td>'+value.role+'</td>';
-				payload += '<td>'+value.addedBy.userName+'</td>';
-				payload += '<td>';
-				payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'/accessRole/'+value.executionUserId+'\');" class="table-link">';
-				payload += '<span class="fa-stack">';
-				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-				payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
-				payload += '</span>';
-				payload += '</a>';
-				payload += '<a style="cursor:pointer" onclick="checkDelete(\'/accessRole/'+value.executionUserId+'\');" class="table-link danger">';
-				payload += '<span class="fa-stack">';
-				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
-				payload += '</span>';
-				payload += '</a>';
-				payload += '</td>';
-				payload += '</tr>';*/
-				
-				var role = "";
-				switch(value.addedBy.userType){
-					case 1: role = "Administrator"; break;
-					case 2: role = "Company"; break;
-					case 3: role = "Tester"; break;
-				}
-				payload += '<tr>';
-				payload += '<td scope="col" class="bucketcheck">';
-				payload += '<label class="main subCB">';
-				payload += '<input type="checkbox" data-value="'+value.executionUserId+'">';
-				payload += '<span class="geekmark"></span>';
-				payload += '</label>';
-				payload += '</td>';
-				payload += '<td>'+value.addedBy.userName+'</td>';
-				payload += '<td>'+role+'</td>';
-				payload += '</tr>';
-			});
-			$(".Roletable tbody").html(payload);
-			$('.Roletable').DataTable({
-				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
-				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": false,
-				"paging":   false
-			});
-		}
-	});
-	
-	
-	
-	
-	
-	
+$(document).ready(function(isRefreshDisabled) {	
+
+	fetchRoles();
+
+
+  
 	//serialize object function
 	$.fn.serializeObject = function() {
 		var o = {};

@@ -1,5 +1,7 @@
 var specialKeys = new Array();
 var chkArr = [];
+var isAllChecked = false;
+
 specialKeys.push(8); //Backspace
 specialKeys.push(9); //Tab
 specialKeys.push(46); //Delete
@@ -104,7 +106,8 @@ function checkDelete(url)
 			},
 			success: function(response)
 			{
-				window.location.href= window.location.href;
+				//window.location.href= window.location.href;
+				//fetchUsers();
 			}
 		});
 	  //return true;  
@@ -127,7 +130,8 @@ function deleteuser(userId)
 			},
 			success: function(response)
 			{
-				window.location.href= window.location.href;
+				//window.location.href= window.location.href;
+				
 			}
 		});
 	  //return true;  
@@ -180,15 +184,15 @@ function addUser(userId=0){
 	}
 	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
 	{
-		showError();
+		alert("Please enter valid fields");
 		return false;
 	}
 	if($('input[name=password]:visible').val() != $('input[name=confirmpassword]:visible').val()){
-		showError(1);
+		alert("Password did not matched");
 		return false;
 	}
 	else if($('input[name=password1]:visible').val() != $('input[name=confirmpassword1]:visible').val()){
-		showError(1);
+		alert("Password did not matched");
 		return false;
 	}
 	if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email]:visible').val())) {
@@ -198,7 +202,7 @@ function addUser(userId=0){
 	   console.log('passed');
 	}
 	else {
-		$('input[name=email]:visible').parent().find("span.errmsg").html("Enter valid email address").show();
+		alert("Enter valid email address");
 		return false;
 	}
 	var dataObj = {};
@@ -240,6 +244,7 @@ function addUser(userId=0){
 			success: function(msg){
 				$('#modal_ajax').modal('hide');
 				$("#myModalSucess1").modal();
+				
 				fetchUsers();
 				//window.location.href= window.location.href;
 				// if($userId!==0){
@@ -251,6 +256,15 @@ function addUser(userId=0){
 				// if(!alert(successMsg)) {
 				// 	window.location.href= window.location.href;
 				// }
+
+		 $('.addusermodel input[name=firstname]').val("");
+		 $('.addusermodel input[name=lastname]').val("");
+		 $('#f4').val("");
+		 $('.addusermodel input[name=username]').val("");
+		 $('.addusermodel input[name=email]').val("");
+		 $('.addusermodel input[name=password]').val("");
+		 $('.addusermodel input[name=confirmpassword]').val("");
+
 			},error: function(jqXHR, textStatus, errorThrown){
 				alert(jqXHR.responseJSON.errorMessage);
 			}
@@ -259,17 +273,21 @@ function addUser(userId=0){
 
 $(document).ready(function() {	
 
+	var uname = readCookie("TAuname");
+	$("#userMenu span").text(uname);
+
 	fetchUsers();
 
 	$(".selectAll").click(function(){
 		var isCheckedAll =$(".selectAll").find("input[type=checkbox]").prop("checked");
 		chkArr=[];
 		
-		// if(!isCheckedAll){
-		// 	$('.table input[type=checkbox]').map((i,val)=>{
-		// 		if($(val).attr("data-value")!=undefined){chkArr.push($(val).attr("data-value"))}
-		// });
-		// }
+		if(!isCheckedAll){
+			$('.table input[type=checkbox]').map((i,val)=>{
+				isAllChecked=true;
+				if($(val).attr("data-value")!=undefined){chkArr.push($(val).attr("data-value"))}
+		});
+		}
 
 		$('.table input[type=checkbox]').prop("checked", !(isCheckedAll));
 	})
@@ -337,9 +355,9 @@ $(document).ready(function() {
 			$('#bucketList').DataTable({
 				"lengthChange": false,
 				"searching": false,   // Search Box will Be Disabled
-				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
 				"info": false,
-				"paging":   false
+				"pagingType": "full_numbers" 
 			});
 		},
 		complete: function(){
@@ -356,7 +374,10 @@ $(document).ready(function() {
 					chkArr.push($(this).attr("data-value"));
 				}
 				else {
-					chkArr.pop($(this).attr("data-value"));
+					if(isAllChecked == false){
+						chkArr.pop($(this).attr("data-value"));
+						isAllChecked=false;
+					}
 				}
 			});
 
@@ -445,13 +466,11 @@ $(document).ready(function() {
 
 			$(document).on("click", "#yesbtn", function(){
 				chkArr.forEach(function(index, val){
-					 
 						deleteuser(index);
-				 
 				});
-				$("table tbody .subCB input:checked").each(function(){
-					$(this).closest("tr").remove();
-				});	    
+				//fetchUsers();
+				window.location.href= window.location.href;
+				    
 			});
             
             

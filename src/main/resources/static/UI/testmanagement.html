@@ -197,7 +197,7 @@
 								</div>
 								<div class="col-md-6 mb-2">
 									<label>Found In Build</label>
-									<input type="number" class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here">
+									<input type="text" class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here">
 								</div>
 							</div>
 							<div class="row">
@@ -487,6 +487,15 @@
 	<script src="js/custom.js"></script>
 	
 	<script>
+
+$(document).ready(function() {	
+
+var uname = readCookie("TAuname");
+$("#userMenu span").text(uname);
+
+});
+
+
 		$(function(){
 
 			fetchAllApplications();

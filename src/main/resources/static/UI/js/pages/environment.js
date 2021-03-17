@@ -7,6 +7,7 @@ function fetchAllEnvironment(){
 		},
 		success: function(data) {
 			var payload = "";
+			$("#bucketList tbody").html("");
 			$.each(data, function(index, value) {
 				var dateArray = value.createdAt.split(".");
 				var role = "";
@@ -54,23 +55,26 @@ function fetchAllEnvironment(){
 				payload += '</tr>';
 			});
 			$(".envTable tbody").html(payload);
+			$(".envTable").find(".mainCB input[type=checkbox]").prop("checked", false);
+			$('.envTable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			})
+			
 		}
 	});
 }
 
 $(document).ready(function() {
 
-	$('.envTable').DataTable({
-		"lengthChange": false,
-		"searching": false,   // Search Box will Be Disabled
-		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-		"info": false,
-		"paging":   false
-	});
-
-
-
+	
+ 
 	fetchAllEnvironment();
+
+
 	
 	//serialize object function
 	$.fn.serializeObject = function() {

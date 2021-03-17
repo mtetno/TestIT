@@ -508,6 +508,25 @@
 
 
   <script>
+
+$(document).ready(function() {	
+
+/*
+  $('#bucketList').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+      */
+
+var uname = readCookie("TAuname");
+$("#userMenu span").text(uname);
+
+});  
+
+
     $(function () {
 
       $(".dataTables_wrapper").css("width","100%");
@@ -632,14 +651,23 @@
       });
 
       $(document).on("click", "#environmentYesbtn", function () {
-        $("table tbody .subCB input:checked").each(function () {
-          var environmentName = $("#deletedItem").text();
-          if (environmentName.indexOf(",") != -1) {
-            deleteAllEnvironment();
-          } else {
-            deleteSelectedEnvironment(environmentName);
-          }
-        });
+        $('.envTable input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                deleteSelectedEnvironment($(val).attr("data-value"));     
+                }
+              }
+		    });
+        window.location.href= window.location.href;
+        /*$("table tbody .subCB input:checked").each(function () {
+          //var environmentName = $("#deletedItem").text();
+          //if (environmentName.indexOf(",") != -1) {
+            
+            //deleteAllEnvironment();
+          //} else {
+//            deleteSelectedEnvironment(environmentId);
+          //}
+        });*/
       });
 
       /*---Jquery for delete Environment URL's row---*/
@@ -660,14 +688,25 @@
 
       $(document).on("click", "#urlsYesbtn", function () {
         $(".Urltable").find(".mainCB input[type=checkbox]").prop("checked", false);
-        $("table tbody .subCB input:checked").each(function () {
-          var deletedItem = $(this).attr('data-value');
-          if (deletedItem.indexOf(",") != -1) {
-            deleteAllEnvironmentUrls();
-          } else {
-            deleteSelectedEnvironmentUrl(deletedItem);
-          }
-        });
+        // $("table tbody .subCB input:checked").each(function () {
+        //   var deletedItem = $(this).attr('data-value');
+        //   if (deletedItem.indexOf(",") != -1) {
+        //     deleteAllEnvironmentUrls();
+        //   } else {
+        //     deleteSelectedEnvironmentUrl(deletedItem);
+        //   }
+        // });
+
+        $('.Urltable input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteSelectedEnvironmentUrl($(val).attr("data-value"));     
+                }
+              }
+		    });
+        displayAllEnvironmentUrls(true);
+        //window.location.href= window.location.href;
+
       });
 
       /*---Jquery for delete Access Role row---*/
@@ -688,16 +727,26 @@
 
       $(document).on("click", "#accessYesbtn", function () {
         $(".Roletable").find(".mainCB input[type=checkbox]").prop("checked", false);
-        $("table tbody .subCB input:checked").each(function () {
-          var roleId = $(this).attr('data-value');
-          $(this).closest("tr").remove();
-          var accessRoles = $("#deletedItem2").text();
-          if (accessRoles.indexOf(",") != -1) {
-            deleteAllAccessRoles();
-          } else {
-            deleteSelectedAccessRole(roleId);
-          }
-        });
+        // $("table tbody .subCB input:checked").each(function () {
+        //   var roleId = $(this).attr('data-value');
+        //   $(this).closest("tr").remove();
+        //   var accessRoles = $("#deletedItem2").text();
+        //   if (accessRoles.indexOf(",") != -1) {
+        //     deleteAllAccessRoles();
+        //   } else {
+        //     deleteSelectedAccessRole(roleId);
+        //   }
+        // });
+
+        $('.Roletable input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteSelectedAccessRole($(val).attr("data-value"));     
+                }
+              }
+		    });
+        fetchRoles(true);
+
       });
 
       /*---Jquery for toggle section on click caret-down icon---*/

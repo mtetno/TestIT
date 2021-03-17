@@ -120,8 +120,9 @@ $(document).ready(function() {
 			var table = $('table#bucketList').DataTable({
 				"lengthChange": false,
 				"searching": false,   // Search Box will Be Disabled
-				"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
 				"info": true,
+				"pagingType": "full_numbers"
 			});
 			$('.searchboxes').keyup(function(){
 				table.search($(this).val()).draw() ;

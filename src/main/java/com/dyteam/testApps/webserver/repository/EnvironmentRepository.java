@@ -15,8 +15,8 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
 
 	@Transactional
   	@Modifying
-	@Query("update Environment set is_delete = 1 where added_by = :userId AND environment_name = :environmentName")
-	void deleteByEnvironmentName(Long userId,String environmentName);
+	@Query("update Environment set is_delete = 1 where added_by = :userId AND environment_id = :environmentId")
+	void deleteByEnvironmentId(Long userId,String environmentId);
 
 	@Transactional
   	@Modifying

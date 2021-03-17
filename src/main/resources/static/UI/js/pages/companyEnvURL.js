@@ -3,13 +3,7 @@ $(document).ready(function () {
 
 	displayAllEnvironmentUrls();
 
-	$('.Urltable').DataTable({
-		"lengthChange": false,
-		"searching": false,   // Search Box will Be Disabled
-		"ordering": false,    // Ordering (Sorting on Each Column)will Be Disabled
-		"info": false,
-		"paging":   false
-	});
+	 
 
 	$.ajax({
 		url: base_url + "/application/allByCompany",
@@ -293,7 +287,8 @@ function saveEnvironment(dataObj) {
 			$("#deleteRow2").attr("disabled", false);
 			$("#execution_environment").val('');
 			$("button.addEnvBtn").closest(".addRowData").slideUp();
-			fetchAllEnvironment();
+			// fetchAllEnvironment();
+			window.location.href= window.location.href;
 		}
 	});
 }
@@ -326,7 +321,8 @@ function deleteSelectedEnvironment(environmentName) {
 		},
 		success: function () {
 			$(this).closest("tr").remove();
-			fetchAllEnvironment();
+			//fetchAllEnvironment();
+			
 		}
 	});
 }
@@ -382,7 +378,8 @@ function saveEnvironmentUrl(dataObj) {
 		success: function (data) {
 			showMessage("Environment url saved successfully!");
 			closeEnvironmentUrlInput();
-			displayAllEnvironmentUrls();
+			displayAllEnvironmentUrls(true);
+			//window.location.href = window.location.href;
 		}
 	});
 }
@@ -409,7 +406,7 @@ function closeEnvironmentUrlInput() {
 	$("button.cancelRow").closest(".addRowData").slideUp();
 }
 
-function displayAllEnvironmentUrls() {
+function displayAllEnvironmentUrls(isRefreshDisabled) {
 	$.ajax({
 		url: base_url + "/companyEnvironUrl/findAllByCompanyId",
 		method: "get",
@@ -440,6 +437,14 @@ function displayAllEnvironmentUrls() {
 			});
 			//$("select[name=application_id]").append(appOptions);
 			$(".Urltable tbody").html(payload);
+			if(isRefreshDisabled != true){
+			$('.Urltable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			})}
 		}
 	});
 }
@@ -454,7 +459,7 @@ function deleteAllEnvironmentUrls() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			displayAllEnvironmentUrls();
+			displayAllEnvironmentUrls(true);
 		}
 	});
 }
@@ -470,7 +475,7 @@ function deleteSelectedEnvironmentUrl(environmentURLId) {
 		},
 		success: function () {
 			$(this).closest("tr").remove();
-			displayAllEnvironmentUrls();
+			displayAllEnvironmentUrls(true);
 		}
 	});
 }

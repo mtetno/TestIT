@@ -104,10 +104,10 @@ public class EnvironmentController {
 		return savedEnvironment;
     }
     
-    @DeleteMapping("/{userId}/{environmentName}")
+    @DeleteMapping("/{userId}/{environmentId}")
     public Boolean delete(@PathVariable(value="userId") Long userId,
-    @PathVariable(value="environmentName") String environmentName) {
-    	environmentRepo.deleteByEnvironmentName(userId,environmentName);
+    @PathVariable(value="environmentId") String environmentId) {
+    	environmentRepo.deleteByEnvironmentId(userId,environmentId);
 		return true;
     }
 

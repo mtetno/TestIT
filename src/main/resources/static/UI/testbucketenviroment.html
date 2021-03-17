@@ -149,7 +149,17 @@
 	<script src="js/pages/testbucketenviroment.js"></script>
 	<script src="js/pages/constants.js"></script>
 	<script>
+
+$(document).ready(function() {	
+
+var uname = readCookie("TAuname");
+$("#userMenu span").text(uname);
+
+});
+
+
 		$(function(){
+			
 			
 			fetchAllTestingEnvironments();
 			removeItem(TESTBUCKET_EXECUTION_NAME);

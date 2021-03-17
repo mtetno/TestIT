@@ -82,33 +82,47 @@ public class UserController {
     public User save(@RequestBody User user,@AuthenticationPrincipal final LoginUser loggedInUser)  throws ResourceAlreadyExists  {
     	User userAfterSaveOuter = null;
 		try {
-			boolean isNew = null==user.getUserId();
-			if(isNew == false){
-				 
+			//boolean isNew = null==user.getUserId();
+			//if(isNew == false){
+				if(user.getUserId() != null && user.getUserId() > 0){
+					User userDB = userRepo.findById(user.getUserId()).get();
+					user.setContact(userDB.getContact());
+					user.setUserType(userDB.getUserType());
+					user.setAddress(userDB.getAddress());
+				} 
+				
 				user.setAddedBy(loggedInUser.getUserId());
 				user.setCompanyId(loggedInUser.getCompanyId());
+				//user.setUserId(loggedInUser.getUserId());
 				user.setRefUserId(loggedInUser.getUserId());
 				String password = user.getPassword();
 				user.setPassword(passwordEncoder.encode(password));
 				user.setStatus(1);
-				userRepo.update(user.getfName(),user.getlName(),user.getContact(),
-				user.getStatus(),user.getEmail(),user.getAddress(),user.getUserId());
-			}else{
-				if(userRepo.findByUserName(user.getUserName()).isPresent() == false ){
-					User userDB = userRepo.findById(user.getUserId()).get();
-					userDB.setfName(user.getfName());
-					userDB.setlName(user.getlName());
-					userDB.setEmail(user.getEmail());
-					userDB.setContact(user.getContact());
-					userDB.setUserType(user.getUserType());
-					userDB.setAddress(user.getAddress());
-					user = userDB;
+				user.setfName(user.getfName());
+				user.setlName(user.getlName());
+				user.setEmail(user.getEmail());
+			 
+				userAfterSaveOuter = userRepo.save(user);
+				//userRepo.update(user.getfName(),user.getlName(),user.getContact(),
+				//user.getStatus();
+				//user.getEmail();user.getAddress(),user.getUserId());
+				//userAfterSaveOuter = userRepo.save(user);	
+			// }else{
+			// 	if(userRepo.findByUserName(user.getUserName()).isPresent() == false ){
+			// 		User userDB = userRepo.findById(loggedInUser.getUserId()).get();//userRepo.findById(user.getUserId()).get();
+			// 		userDB.setfName(user.getfName());
+			// 		userDB.setlName(user.getlName());
+			// 		userDB.setEmail(user.getEmail());
+			// 		userDB.setContact(user.getContact());
+			// 		userDB.setUserType(user.getUserType());
+			// 		userDB.setAddress(user.getAddress());
+			// 		user = userDB;
 				
-					userAfterSaveOuter = userRepo.save(user);	
-				}else{
-					throw new ResourceAlreadyExists("User Already exists");	
-				}
-			}
+			// 		userAfterSaveOuter = userRepo.save(user);	
+			// 	}else{
+			// 		throw new ResourceAlreadyExists("User Already exists");	
+			// 	}
+			// }
 		} catch (Exception e) {
 			throw e;
 		}
