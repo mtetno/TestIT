@@ -20,13 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class RestServer {
 
     public static void main(String[] args) {
-        ConfigurableEnvironment environment = new StandardEnvironment();
+    ConfigurableEnvironment environment = new StandardEnvironment();
         environment.setActiveProfiles("dev");
 
       SpringApplication springApplication = new SpringApplication(RestServer.class);
       springApplication.setEnvironment(environment);
       springApplication.run(args);
-        // SpringApplication.run(RestServer.class, args);
+    // SpringApplication.run(RestServer.class, args);
     }
     
     @Bean

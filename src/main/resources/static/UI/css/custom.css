@@ -152,7 +152,7 @@ h1#page-title {
     display: inline-block;
     position: relative;
     padding-left: 25px;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
     cursor: pointer;
     font-size: 1rem; 
 } 
