@@ -35,7 +35,7 @@ function showUpdateModal(url)
 			$('#update_modal .modal-body input[name=email]').val(response.email);
 			$('#update_modal .modal-body input[name=loginid]').val(response.userName);
 			$('#update_modal .modal-body textarea[name=address]').val(response.address);
-			$('#update_modal .modal-body input[name=button]').attr("onclick","addUser("+response.userId+")");
+			$('#update_modal .modal-body input[name=button]').attr("onclick","updateUser("+response.userId+")");
 			
 			// LOADING THE AJAX MODAL
 			$('#update_modal').modal('show', {backdrop: 'true'});
@@ -119,9 +119,6 @@ function checkDelete(url)
 
 function deleteuser(userId)
 {
-	//var chk=confirm("Are You Sure To Delete This !");
-	//if(chk)
-	//{
 		$.ajax({
 			url: base_url+"/user/"+userId,
 			type: 'DELETE',
@@ -130,16 +127,149 @@ function deleteuser(userId)
 			},
 			success: function(response)
 			{
-				//window.location.href= window.location.href;
-				
+				window.location.href= window.location.href;
 			}
 		});
-	  //return true;  
-	//}
-	//else{
-	//	return false;
-	//}
 }
+
+
+function updateUser(userId=0){	
+	$(".errmsg").hide();
+	if(userId==0){
+		$firstname = $('.addusermodel input[name=firstname]').val();
+		$lastname = $('.addusermodel input[name=lastname]').val();
+		$user_type = $('#f4').val();
+		$loginid = $('.addusermodel input[name=username]').val();
+		$useremail = $('.addusermodel input[name=email]').val();
+		$password = $('.addusermodel input[name=password]').val();
+		$confirm = $('.addusermodel input[name=confirmpassword]').val();
+		$Address = $usercontact = "";
+		
+		/*$firstname = $('input[name=fName]:visible').val();
+		$lastname = $('input[name=lName]:visible').val();
+		$user_type = $("select[name=userType] option:selected").val();
+		$useremail = $('input[name=email]:visible').val();
+		$Address = $('textarea[name=address]:visible').val();
+		$usercontact = $('input[name=contact]:visible').val();
+		$password = $('input[name=password]:visible').val();
+		$loginid = $('input[name=loginid]:visible').val();
+		$confirm = $('input[name=confirm]:visible').val();*/
+	}
+	else {
+		$firstname = $('.updateusermodel input[name=firstname1]').val();
+		$lastname = $('.updateusermodel input[name=lastname1]').val();
+		$user_type = $('.updateusermodel input[name=role1]').val();
+		$loginid = $('.updateusermodel input[name=username1]').val();
+		$useremail = $('.updateusermodel input[name=email1]').val();
+		$password = $('.updateusermodel input[name=password1]').val();
+		$confirm = $('.updateusermodel input[name=confirmpassword1]').val();
+		$Address = $usercontact = "";
+		
+		/*$firstname = $('#update_modal .modal-body input[name=firstname]').val();
+		$lastname = $('#update_modal .modal-body input[name=lastname]').val();
+		$usercontact = $('#update_modal .modal-body input[name=contact]').val();
+		$user_type = $("#update_modal .modal-body select[name=user_type] option:selected").val();
+		$useremail = $('#update_modal .modal-body input[name=email]').val();
+		$Address = $('#update_modal .modal-body textarea[name=address]').val();
+		$loginid = $('#update_modal .modal-body input[name=loginid]:visible').val();
+		$password="";*/
+	}
+	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
+	{
+		alert("Please enter valid fields");
+		return false;
+	}
+	if($('input[name=password]:visible').val() != $('input[name=confirmpassword]:visible').val()){
+		alert("Password did not matched");
+		return false;
+	}
+	else if($('input[name=password1]:visible').val() != $('input[name=confirmpassword1]:visible').val()){
+		alert("Password did not matched");
+		return false;
+	}
+	if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email]:visible').val())) {
+	   console.log('passed');
+	}
+	else if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email1]:visible').val())) {
+	   console.log('passed');
+	}
+	else {
+		alert("Enter valid email address");
+		return false;
+	}
+	var dataObj = {};
+	dataObj["email"]= $useremail;
+	dataObj["address"]= $Address;
+	dataObj["contact"]= $usercontact;
+
+	dataObj["fName"] = $firstname;
+	dataObj["lName"] = $lastname;
+	dataObj["userName"] = $loginid;
+	dataObj["password"] = $password;
+	dataObj["userType"] = $user_type;
+	if(userId!=0){
+		dataObj["userId"] = userId;
+	}
+	
+	//**************************HARD CODED VALUES***************************//
+	dataObj["description"] = "";
+	dataObj["designation"] = "";
+	dataObj["status"] = 1;
+	dataObj["passStatus"] = 1;
+	//dataObj["addedBy"] = 1;
+	
+	dataObj["profileImg"] = "";
+	//dataObj["companyId"] = 1;
+	//dataObj["refUserId"] = 1;
+	dataObj["addedByName"] = "";
+	//**************************HARD CODED VALUES***************************//
+	//alert(JSON.stringify(dataObj));
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		url: base_url+"/user/update",
+			success: function(msg){
+				$('#myModal1').modal('hide');
+				$('#modal_ajax').modal('hide');
+				$("#myModalSucess1").modal();
+				
+				//fetchUsers();
+				setTimeout(function(){ window.location.href= window.location.href;
+				 }, 1000);
+				// if($userId!==0){
+				// 	$("#myModalSucess1").modal();
+				// }
+				// else {
+				// 	$("#editmyModalSucess1").modal();
+				// }
+				// if(!alert(successMsg)) {
+				// 	window.location.href= window.location.href;
+				// }
+
+		 $('.addusermodel input[name=firstname]').val("");
+		 $('.addusermodel input[name=lastname]').val("");
+		 $('#f4').val("");
+		 $('.addusermodel input[name=username]').val("");
+		 $('.addusermodel input[name=email]').val("");
+		 $('.addusermodel input[name=password]').val("");
+		 $('.addusermodel input[name=confirmpassword]').val("");
+
+			},error: function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
+				alert(jqXHR.responseJSON.errorMessage);
+			}
+	});
+}
+
+
+
 
 function addUser(userId=0){	
 	$(".errmsg").hide();
@@ -242,6 +372,7 @@ function addUser(userId=0){
 		},
 		url: base_url+"/user/save",
 			success: function(msg){
+				$('#myModal1').modal('hide');
 				$('#modal_ajax').modal('hide');
 				$("#myModalSucess1").modal();
 				
@@ -266,6 +397,9 @@ function addUser(userId=0){
 		 $('.addusermodel input[name=confirmpassword]').val("");
 
 			},error: function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
 				alert(jqXHR.responseJSON.errorMessage);
 			}
 	});
@@ -344,7 +478,7 @@ $(document).ready(function() {
 					payload += '</label>';
 					payload += '</td>';
 					payload += '<td>'+value.fName+' '+value.lName+'</td>';
-					payload += '<td>'+value.userName+'</td>';
+					payload += "<td>"+value.userName+"</td>";
 					payload += '<td>'+value.email+'</td>';
 					payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
 					payload += '<input type="hidden" name="role" class="role" value="'+value.userType+'" />';
@@ -415,7 +549,7 @@ $(document).ready(function() {
 		      $(".updateusermodel input[type=checkbox]").attr("data-value", )
 		      $(".updateusermodel #uprowid").attr("data-value", $(this).closest("tr").find("td:nth-child(1) input[type=checkbox]").attr("data-value"));
 		      $(".updateusermodel #uprowid").val($(this).closest("tr").index()+1);
-		      $(".updateusermodel #firstname1").val(fname[0]); 
+			  $(".updateusermodel #firstname1").val(fname[0]);
 		      $(".updateusermodel #lastname1").val(lname); 
 		      $(".updateusermodel #role1").val($(this).closest("tr").find("input[name=role]").val()); 
 		      $(".updateusermodel #username1").val($(this).closest("tr").find("td:nth-child(3)").text());
@@ -426,7 +560,7 @@ $(document).ready(function() {
 		    /*---Jquery for Update Save---*/
 
 		    $("button.updateuserBtn").click(function(){
-				if(addUser($("#uprowid").attr("data-value"))){
+				if(updateUser($("#uprowid").attr("data-value"))){
 					var rowIndx = $("#uprowid").val();
 					var dataFname = $("#firstname1").val()+" "+$("#lastname1").val();
 					var dataUsername = $("#username1").val();
@@ -469,7 +603,7 @@ $(document).ready(function() {
 						deleteuser(index);
 				});
 				//fetchUsers();
-				window.location.href= window.location.href;
+				//window.location.href= window.location.href;
 				    
 			});
             

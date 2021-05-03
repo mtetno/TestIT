@@ -1,6 +1,5 @@
 package com.dyteam.testApps.webserver.entity;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,66 +24,66 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)
 public class User {
-	
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="user_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
 	private Long userId;
-	
-	@Column(name="user_type")
+
+	@Column(name = "user_type")
 	private Integer userType;
-	
-	@Column(name="company_id")
+
+	@Column(name = "company_id")
 	@NotNull
 	private Long companyId;
 
-	@Column(name="fname")
+	@Column(name = "fname")
 	@NotNull
 	private String fName;
-	
-	@Column(name="lname")
+
+	@Column(name = "lname")
 	@NotNull
 	private String lName;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	@NotNull
 	@NotEmpty
 	private String email;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	@NotNull
 	@NotEmpty
 	private String password;
-	
-	@Column(name="user_name")
+
+	@Column(name = "user_name")
 	@NotNull
 	@NotEmpty
 	private String userName;
-	
-	@Column(name="contact")
+
+	@Column(name = "contact")
 	@NotNull
 	private String contact;
-	
-	@Column(name="address")
+
+	@Column(name = "address")
 	@NotNull
 	private String address;
-	
-	@Column(name="added_by")
+
+	@Column(name = "added_by")
 	@NotNull
 	private Long addedBy;
-	
-	@Column(name="ref_user_id")
+
+	@Column(name = "ref_user_id")
 	@NotNull
 	private Long refUserId;
-	
-	@Column(name="createdat",insertable=false,updatable=false)
+
+	@Column(name = "createdat", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	@NotNull
 	private Integer status;
-	
+
 	public User() {
 	}
 
@@ -98,7 +97,7 @@ public class User {
 	}
 
 	public User(Long userId) {
-		this.userId=userId;
+		this.userId = userId;
 	}
 
 	public Long getUserId() {
@@ -212,5 +211,5 @@ public class User {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
+
 }
