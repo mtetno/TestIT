@@ -53,10 +53,13 @@ final class UUIDAuthenticationService implements IUserAuthenticationService {
 
 @Override
   public LoginUser login(final String loginId, final String password) {
+	logger.info("loginId"+loginId);
     final String uuid = UUID.randomUUID().toString();
     LoginUser user = null;
     Optional<User> findByLoginId = userRepo.findByUserName(loginId);
+	logger.info("findByLoginId"+findByLoginId.isPresent());
     if(findByLoginId.isPresent()) {
+		logger.info("user present in DB");
     	User userEntity = findByLoginId.get();
     	Integer userType = userEntity.getUserType();
     	Optional<ROLE> role = ROLE.find(userType);
@@ -68,8 +71,11 @@ final class UUIDAuthenticationService implements IUserAuthenticationService {
 //    		roles = Arrays.asList(authority);
 //    		roles = Arrays.asList(role.get().toString());
     	}
+		
     	user = new LoginUser(uuid, userEntity.getUserId(),loginId, password,userEntity.getCompanyId(),authorities);
     	String passwordDb = userEntity.getPassword();
+		logger.info("password"+password);
+		logger.info("passwordDb"+passwordDb);
     	if(passEncoder.matches(password, passwordDb)) {
     		loggedInUsers.save(user);
     		return user;
