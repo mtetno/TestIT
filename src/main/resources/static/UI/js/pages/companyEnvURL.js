@@ -139,9 +139,11 @@ function addCompanyEnvironUrlId(companyEnvironUrlId = 0) {
 		},
 		success: function (msg) {
 			$('.modal').modal('hide');
-			if (!alert(successMsg)) {
-				window.location.href = window.location.href;
-			}
+			displayAllEnvironmentUrls();
+			// window.location.href = window.location.href;
+			// if (!alert(successMsg)) {
+			// 	window.location.href = window.location.href;
+			// }
 		}
 	});
 
@@ -287,11 +289,13 @@ function saveEnvironment(dataObj) {
 			$("#deleteRow2").attr("disabled", false);
 			$("#execution_environment").val('');
 			$("button.addEnvBtn").closest(".addRowData").slideUp();
-			// fetchAllEnvironment();
-			window.location.href= window.location.href;
+			$("#executionEnvironmentAddition").modal();
+			fetchAllEnvironment();
 		}
 	});
 }
+
+
 
 function deleteAllEnvironment() {
 	$.ajax({
@@ -315,14 +319,13 @@ function deleteSelectedEnvironment(environmentName) {
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
+		async: false,
 		url: base_url + "/environment/" + readCookie("TAuid") + "/" + environmentName,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
 			$(this).closest("tr").remove();
-			//fetchAllEnvironment();
-			
 		}
 	});
 }
@@ -376,16 +379,12 @@ function saveEnvironmentUrl(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			showMessage("Environment url saved successfully!");
+			$("#savedEnvironmentUrl").modal();
 			closeEnvironmentUrlInput();
-			displayAllEnvironmentUrls(true);
-			//window.location.href = window.location.href;
+			displayAllEnvironmentUrls();
+			// window.location.href= window.location.href;
 		}
 	});
-}
-
-function showMessage(message) {
-	$("#valiationModel .model_body").html('<p>' + message + '</p>');
 }
 
 function closeEnvironmentUrlInput() {
@@ -406,7 +405,8 @@ function closeEnvironmentUrlInput() {
 	$("button.cancelRow").closest(".addRowData").slideUp();
 }
 
-function displayAllEnvironmentUrls(isRefreshDisabled) {
+function displayAllEnvironmentUrls() {
+    
 	$.ajax({
 		url: base_url + "/companyEnvironUrl/findAllByCompanyId",
 		method: "get",
@@ -432,37 +432,47 @@ function displayAllEnvironmentUrls(isRefreshDisabled) {
 					payload += '<td>' + v.envUrl + '</td>';
 					payload += '</tr>';
 				});
-
-				//appOptions += '<option value="'+key+'">' + value.applicationName + '</option>';
 			});
-			//$("select[name=application_id]").append(appOptions);
+		
+			
+			
+			
+			$(".UrltableParent .paging_full_numbers").remove()
+
+			$('.Urltable').dataTable().fnClearTable();
+    		$('.Urltable').dataTable().fnDestroy();
+
+			
 			$(".Urltable tbody").html(payload);
-			if(isRefreshDisabled != true){
-			$('.Urltable').DataTable({
-				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
-				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": false,
-				"pagingType": "full_numbers"
-			})}
+				$('.Urltable').DataTable({
+					"lengthChange": false,
+					"searching": false,   // Search Box will Be Disabled
+					"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+					"info": false,
+					"pagingType": "full_numbers"
+				});
+				$(".selectdiv").css("padding-left","4rem")
+				$(".bucketList_wrapper").css("padding-left","4rem")	
+				$(".Urltable").css("margin-left","2rem")	
+				 
 		}
 	});
 }
 
-function deleteAllEnvironmentUrls() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/companyEnvironUrl/deleteAllEnvionmentUrls",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			displayAllEnvironmentUrls(true);
-		}
-	});
-}
+// function deleteAllEnvironmentUrls() {
+// 	$.ajax({
+// 		type: 'DELETE',
+// 		contentType: 'application/json',
+// 		dataType: 'json',
+// 		url: base_url + "/companyEnvironUrl/deleteAllEnvionmentUrls",
+// 		beforeSend: function (xhr) {
+// 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+// 		},
+// 		success: function () {
+// 			displayAllEnvironmentUrls();
+// 		}
+// 	});
+// }
 
 function deleteSelectedEnvironmentUrl(environmentURLId) {
 	$.ajax({
@@ -475,7 +485,6 @@ function deleteSelectedEnvironmentUrl(environmentURLId) {
 		},
 		success: function () {
 			$(this).closest("tr").remove();
-			displayAllEnvironmentUrls(true);
 		}
 	});
 }
@@ -493,7 +502,6 @@ function displayAllAccessRoles() {
 			data.map((value) => {
 				console.log(value);
 				var Val = value.name;
-				debugger;
 				payload += '<tr>';
 				payload += '<td scope="col" class="bucketcheck">';
 				payload += '<label class="main subCB">';
@@ -505,7 +513,23 @@ function displayAllAccessRoles() {
 				payload += '<td>' + value.role + '</td>';
 				payload += '</tr>';
 			});
+			
+			$(".RoletableParent .paging_full_numbers").remove()
+			$('.Roletable').dataTable().fnClearTable();
+    		$('.Roletable').dataTable().fnDestroy();
+
 			$(".Roletable tbody").html(payload);
+			$('.Roletable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+			$(".selectdiv").css("padding-left","4rem")
+			$(".bucketList_wrapper").css("padding-left","4rem")	
+			$(".Roletable").css("margin-left","2rem")	
+
 		}
 	});
 }
@@ -521,7 +545,7 @@ function saveAccessRoles(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			showMessage("Roles saved successfully!");
+			$("#addRoleModal").modal();
 			closeAccessRoleInput();
 			displayAllAccessRoles();
 		}
@@ -542,21 +566,6 @@ function closeAccessRoleInput() {
     $("#role").val("");
 }
 
-function deleteAllAccessRoles() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/accessRole/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			 showMessage("Access Roles deleted successfully!")
-		}
-	});
-}
-
 function deleteSelectedAccessRole(id) {
 	$.ajax({
 		type: 'DELETE',
@@ -567,7 +576,16 @@ function deleteSelectedAccessRole(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			showMessage("Access Role deleted successfully!")
+			displayAllAccessRoles();
 		}
 	});
 }
+
+function showLoader(){
+	$("#loader").addClass("loading");
+	}
+	
+	function hideLoader(){
+	$("#loader").removeClass("loading");
+	}
+		  

@@ -97,6 +97,7 @@
 
   <!--Main Contebt Start-->
   <div id="main-content" class="container-fluid pull-right">
+    <div id="loader"></div>
     <!--Page Title-->
     <!-- <h1 id="page-title">Setup</h1> -->
 
@@ -142,7 +143,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv envTableParent" style="overflow-x: auto;">
               <table id="bucketList" class="envTable table selectdiv1">
                 <thead>
                   <tr>
@@ -198,13 +199,13 @@
               </div>
               <div class="col-md-3 buttonlink1 btnpadding">
                 <button class="btn btn-primary buttonlink1 addUrlBtn" data-toggle="modal" data-dismiss="modal"
-                  data-target="#valiationModel"><img src="img/add-24-px-2.png">ADD</button>
+                  ><img src="img/add-24-px-2.png">ADD</button>
                 <button class="btn btn-primary buttonlink1 btn-dark cancelRow"><img
                     src="img/close-24-px.png">CANCEL</button>
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv UrltableParent" style="overflow-x: auto;">
               <table id="bucketList" class="table selectdiv1 Urltable">
                 <thead>
                   <tr>
@@ -270,7 +271,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv RoletableParent" style="overflow-x: auto;">
               <table id="bucketList" class="table selectdiv1 Roletable">
                 <thead>
                   <tr>
@@ -353,6 +354,115 @@
     </div>
     <!-- End of Row Delete Modal Success -->
 
+
+    <!-- The Row Delete Modal Execution Environment Success -->
+    <div class="modal fade" id="savedEnvironmentUrl">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header model_head">
+            <h4 class="modal-title"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body model_body">
+            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
+            <p>Environment url saved Successfully.</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer btnfooter">
+            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Row Delete Modal Success -->
+
+    <!-- The Row Add Modal Environment Success -->
+    <div class="modal fade" id="executionEnvironmentAddition">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header model_head">
+            <h4 class="modal-title"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body model_body">
+            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
+            <p>Execution Environment added Successfully.</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer btnfooter">
+            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Row Delete Modal Success -->
+
+    <!-- The Row Add Role Success -->
+    <div class="modal fade" id="addRoleModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header model_head">
+            <h4 class="modal-title"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body model_body">
+            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
+            <p>Access Role added Successfully.</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer btnfooter">
+            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Row Delete Modal Success -->
+
+     <!-- The Delete Role Success -->
+     <div class="modal fade" id="deletedRoleModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header model_head">
+            <h4 class="modal-title"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body model_body">
+            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
+            <p>Access Role deleted Successfully.</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer btnfooter">
+            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End of Delete Added role Modal Success -->
+
     <!-- The Row Delete Environment URL's Modal 1-->
     <div class="modal fade model1" id="myModal1">
       <div class="modal-dialog">
@@ -430,7 +540,7 @@
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
             <button type="button" id="accessYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
-              data-target="#myModalSucess2">YES</button>
+            >YES</button>
           </div>
 
         </div>
@@ -438,59 +548,9 @@
     </div>
     <!-- End of Row Delete Modal 1-->
 
-    <!-- The Row Delete Modal Access Role Success 1-->
-    <div class="modal fade" id="myModalSucess2">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+    
 
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Access Role deleted Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success 1-->
-
-    <!-- Generic Model for showing validation -->
-    <div class="modal fade" id="valiationModel">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Generic Model for showing validation -->
-
+   
   </div>
   <!--Main Content End-->
 
@@ -531,11 +591,18 @@ $("#userMenu span").text(uname);
 
       $(".dataTables_wrapper").css("width","100%");
 
+      $("#environmentTab").click(function (e) {
+        e.preventDefault();
+        $(".dataTables_wrapper").css("width","100%");
+        fetchAllEnvironment();
+      });
+
       $("#environmentUrlTab").click(function (e) {
         e.preventDefault();
         $(".dataTables_wrapper").css("width","100%");
          fetchAllApplications();
          fetchAllEnvironments();
+         displayAllEnvironmentUrls();
       });
 
       $("#accessRolesTab").click(function (e) {
@@ -657,16 +724,7 @@ $("#userMenu span").text(uname);
                 }
               }
 		    });
-        window.location.href= window.location.href;
-        /*$("table tbody .subCB input:checked").each(function () {
-          //var environmentName = $("#deletedItem").text();
-          //if (environmentName.indexOf(",") != -1) {
-            
-            //deleteAllEnvironment();
-          //} else {
-//            deleteSelectedEnvironment(environmentId);
-          //}
-        });*/
+        window.location.href = window.location.href;
       });
 
       /*---Jquery for delete Environment URL's row---*/
@@ -703,8 +761,9 @@ $("#userMenu span").text(uname);
                 }
               }
 		    });
-        displayAllEnvironmentUrls(true);
-        //window.location.href= window.location.href;
+        setTimeout(function(){ displayAllEnvironmentUrls(); }, 500);
+        
+        // window.location.href= window.location.href;
 
       });
 
@@ -726,17 +785,6 @@ $("#userMenu span").text(uname);
 
       $(document).on("click", "#accessYesbtn", function () {
         $(".Roletable").find(".mainCB input[type=checkbox]").prop("checked", false);
-        // $("table tbody .subCB input:checked").each(function () {
-        //   var roleId = $(this).attr('data-value');
-        //   $(this).closest("tr").remove();
-        //   var accessRoles = $("#deletedItem2").text();
-        //   if (accessRoles.indexOf(",") != -1) {
-        //     deleteAllAccessRoles();
-        //   } else {
-        //     deleteSelectedAccessRole(roleId);
-        //   }
-        // });
-
         $('.Roletable input[type=checkbox]').map((i,val)=>{
 				      if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
@@ -744,8 +792,7 @@ $("#userMenu span").text(uname);
                 }
               }
 		    });
-        fetchRoles(true);
-
+        $("#deletedRoleModal").modal();
       });
 
       /*---Jquery for toggle section on click caret-down icon---*/

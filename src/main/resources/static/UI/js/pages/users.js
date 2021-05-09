@@ -238,18 +238,8 @@ function updateUser(userId=0){
 				$('#modal_ajax').modal('hide');
 				$("#myModalSucess1").modal();
 				
-				//fetchUsers();
-				setTimeout(function(){ window.location.href= window.location.href;
-				 }, 1000);
-				// if($userId!==0){
-				// 	$("#myModalSucess1").modal();
-				// }
-				// else {
-				// 	$("#editmyModalSucess1").modal();
-				// }
-				// if(!alert(successMsg)) {
-				// 	window.location.href= window.location.href;
-				// }
+				fetchUsers();
+				
 
 		 $('.addusermodel input[name=firstname]').val("");
 		 $('.addusermodel input[name=lastname]').val("");
@@ -283,15 +273,7 @@ function addUser(userId=0){
 		$confirm = $('.addusermodel input[name=confirmpassword]').val();
 		$Address = $usercontact = "";
 		
-		/*$firstname = $('input[name=fName]:visible').val();
-		$lastname = $('input[name=lName]:visible').val();
-		$user_type = $("select[name=userType] option:selected").val();
-		$useremail = $('input[name=email]:visible').val();
-		$Address = $('textarea[name=address]:visible').val();
-		$usercontact = $('input[name=contact]:visible').val();
-		$password = $('input[name=password]:visible').val();
-		$loginid = $('input[name=loginid]:visible').val();
-		$confirm = $('input[name=confirm]:visible').val();*/
+		
 	}
 	else {
 		$firstname = $('.updateusermodel input[name=firstname1]').val();
@@ -303,14 +285,7 @@ function addUser(userId=0){
 		$confirm = $('.updateusermodel input[name=confirmpassword1]').val();
 		$Address = $usercontact = "";
 		
-		/*$firstname = $('#update_modal .modal-body input[name=firstname]').val();
-		$lastname = $('#update_modal .modal-body input[name=lastname]').val();
-		$usercontact = $('#update_modal .modal-body input[name=contact]').val();
-		$user_type = $("#update_modal .modal-body select[name=user_type] option:selected").val();
-		$useremail = $('#update_modal .modal-body input[name=email]').val();
-		$Address = $('#update_modal .modal-body textarea[name=address]').val();
-		$loginid = $('#update_modal .modal-body input[name=loginid]:visible').val();
-		$password="";*/
+		
 	}
 	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
 	{
@@ -377,16 +352,7 @@ function addUser(userId=0){
 				$("#myModalSucess1").modal();
 				
 				fetchUsers();
-				//window.location.href= window.location.href;
-				// if($userId!==0){
-				// 	$("#myModalSucess1").modal();
-				// }
-				// else {
-				// 	$("#editmyModalSucess1").modal();
-				// }
-				// if(!alert(successMsg)) {
-				// 	window.location.href= window.location.href;
-				// }
+		
 
 		 $('.addusermodel input[name=firstname]').val("");
 		 $('.addusermodel input[name=lastname]').val("");
@@ -447,28 +413,7 @@ $(document).ready(function() {
 						case 2: role = "Company"; break;
 						case 3: role = "Tester"; break;
 					}
-					/*payload += '<tr>';
-					payload += '<td>'+num+'</td>';
-					payload += '<td>'+value.fName+' '+value.lName+'</td>';
-					payload += '<td>'+value.email+'</td>';
-					//payload += '<td>'+role+'</td>';
-					payload += '<td>'+dateArray[0].replace("T", " ")+'</td>';
-					payload += '<td>';
-					payload += '<a style="cursor:pointer" onclick="showUpdateModal(\'../user/'+value.userId+'\');" class="table-link">';
-					payload += '<span class="fa-stack">';
-					payload += '<i class="fa fa-square fa-stack-2x"></i>';
-					payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
-					payload += '</span>';
-					payload += '</a>';
-					payload += '<a style="cursor:pointer" onclick="checkDelete(\'../user/'+value.userId+'\');" class="table-link danger">';
-					payload += '<span class="fa-stack">';
-					payload += '<i class="fa fa-square fa-stack-2x"></i>';
-					payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
-					payload += '</span>';
-					payload += '</a>';
-					payload += '</td>';
-					payload += '</tr>';
-					num++;*/
+		
 					
 					payload += '<tr>';
 					payload += '<td scope="col" class="bucketcheck">';
@@ -602,9 +547,7 @@ $(document).ready(function() {
 				chkArr.forEach(function(index, val){
 						deleteuser(index);
 				});
-				//fetchUsers();
-				//window.location.href= window.location.href;
-				    
+		
 			});
             
             

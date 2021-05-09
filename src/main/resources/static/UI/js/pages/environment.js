@@ -1,3 +1,5 @@
+isExecutionEnvironmentDataTableAssigned = false;
+
 function fetchAllEnvironment(){
 	$.ajax({
 		url: base_url+"/environment/findAllByUserId", 
@@ -22,25 +24,6 @@ function fetchAllEnvironment(){
 						role = "Tester";
 						break;
 				}
-				/*payload += '<tr>';
-				payload += '<td>' + (index + 1) + '</td>';
-				payload += '<td>' + value.environmentName + '</td>';
-				payload += '<td>' + dateArray[0].replace("T", " ") + '</td>';
-				payload += '<td>';
-				payload += '<a class="hide" style="cursor:pointer" onclick="showUpdateModal(\''+base_url+'/environment/' + value.environmentId + '\');" class="table-link">';
-				payload += '<span class="fa-stack">';
-				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-				payload += '<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>';
-				payload += '</span>';
-				payload += '</a>';
-				payload += '<a style="cursor:pointer" onclick="checkDelete(\''+base_url+'/environment/' + value.environmentId + '\');" class="table-link danger">';
-				payload += '<span class="fa-stack">';
-				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
-				payload += '</span>';
-				payload += '</a>';
-				payload += '</td>';
-				payload += '</tr>';*/
 				
 				payload += '<tr>';
 				payload += '<td scope="col" class="bucketcheck">';
@@ -54,15 +37,23 @@ function fetchAllEnvironment(){
 				payload += '<td>'+readCookie("TAuname")+'</td>';
 				payload += '</tr>';
 			});
+			
+			$(".envTableParent .paging_full_numbers").remove()
+
+			$('.envTable').dataTable().fnClearTable();
+    		$('.envTable').dataTable().fnDestroy();
+			
 			$(".envTable tbody").html(payload);
-			$(".envTable").find(".mainCB input[type=checkbox]").prop("checked", false);
 			$('.envTable').DataTable({
 				"lengthChange": false,
 				"searching": false,   // Search Box will Be Disabled
 				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
 				"info": false,
 				"pagingType": "full_numbers"
-			})
+			});
+			$(".selectdiv").css("padding-left","4rem")
+			$(".bucketList_wrapper").css("padding-left","4rem")	
+			$(".envTable").css("margin-left","2rem")	
 			
 		}
 	});
@@ -147,9 +138,10 @@ function addEnv(environmentId=0){
 		success: function(msg){
 			$('.modal').modal('hide');
 			$("button:visible").removeAttr('disabled');
-			if(!alert(successMsg)) {
-				window.location.href= window.location.href;
-			}
+			// if(!alert(successMsg)) {
+			// 	window.location.href= window.location.href;
+			// }
+			fetchAllEnvironment();
 		},
 		complete: function(){
 			$("button:visible").removeAttr('disabled');
