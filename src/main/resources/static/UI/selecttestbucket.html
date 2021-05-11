@@ -102,7 +102,7 @@
 							<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
 						</div>
 					</div>
-					<div id="mainContainer" class="row selectdiv" style="overflow-x: auto;">
+					<div id="mainContainer" class="row selectdiv bucketListTableParent" style="overflow-x: auto;">
 						<table id="bucketList" class="table selectdiv1 bucketListTable">
 						  <thead>
 						    <tr>
@@ -346,6 +346,11 @@
 
 	<!--Scripts-->
 	<script src="js/jquery.min.js"></script>
+	<script src="js/Libraries/jquery.dataTables.js"></script>
+	<script src="js/Libraries/dataTables.fixedHeader.js"></script>
+    <script src="js/Libraries/dataTables.tableTools.js"></script>
+	<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/custom.js"></script>
@@ -455,15 +460,13 @@
 			});
 
 			$(document).on("click", "#yesbtn", function(){
-				$("table tbody .subCB input:checked").each(function(){
-					$(this).closest("tr").remove();
-				});	 
-				
-				if(str.indexOf(",") > 0){
-        			deleteAllTestBuckets();
-				}else{
-					deleteTestBucket(testBucketId);
-				}     
+				$('table tbody .subCB input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+					deleteTestBucket($(val).attr("data-value"));     
+                }
+              }
+		    }); 
 			});
 
 			$("#redirect").click(function(){

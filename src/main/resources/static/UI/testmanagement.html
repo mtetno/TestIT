@@ -87,7 +87,7 @@
 							<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
 						</div>
 					</div>
-					<div class="row selectdiv" style="overflow-x: auto;">
+					<div class="row selectdiv testmanagementtableParent" style="overflow-x: auto;">
 						<table id="bucketList" class="table selectdiv1 testmanagementtable">
 						  <thead>
 						    <tr>
@@ -197,7 +197,7 @@
 								</div>
 								<div class="col-md-6 mb-2">
 									<label>Found In Build</label>
-									<input type="text" class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here">
+									<input class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
 								</div>
 							</div>
 							<div class="row">
@@ -480,6 +480,11 @@
 
 	<!--Scripts-->
 	<script src="js/jquery.min.js"></script>
+	<script src="js/Libraries/jquery.dataTables.js"></script>
+	<script src="js/Libraries/dataTables.fixedHeader.js"></script>
+    <script src="js/Libraries/dataTables.tableTools.js"></script>
+	<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/pages/common.js"></script>
@@ -588,7 +593,7 @@ $("#userMenu span").text(uname);
 				$("#found_in_build").val("");
 				$("#automation_status").val(0);
 				$("#automation_progress").val(0);
-				$('#myModalSucess1').modal('show'); 
+				
 				
 			});
             
@@ -643,15 +648,18 @@ $("#userMenu span").text(uname);
 				
 			});
 
+			
+			
+
 			$(document).on("click", "#yesbtn", function(){
-				$("table tbody .subCB input:checked").each(function(){
-					$(this).closest("tr").remove();
-					if(str.indexOf(",") > 0){
-						deleteAllTestcases();
-					}else{
-						deleteTestcase(testcaseId);
-					}
-				});	    
+
+				$('table tbody .subCB input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+					deleteTestcase($(val).attr("data-value"));     
+                }
+              }
+		    });   
 			});
             
             /*---Jquery for toggle section on click caret-down icon---*/

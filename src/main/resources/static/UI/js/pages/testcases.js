@@ -9,7 +9,14 @@ function saveTestcases(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
+			$('#myModalSucess1').modal('show'); 
 			displayTestcases();	
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(jqXHR);
+			console.log(textStatus);
+			console.log(errorThrown);
+			alert(jqXHR.responseJSON.errorMessage);
 		}
 	});
 }
@@ -43,7 +50,25 @@ function displayTestcases(){
 			 rows = rows + savestr;
 			});			 
 
-			$("#bucketList tbody").html(rows);
+			// $("#bucketList tbody").html(rows);
+
+			
+			$(".testmanagementtableParent .paging_full_numbers").remove()
+			$('.testmanagementtable').dataTable().fnClearTable();
+    		$('.testmanagementtable').dataTable().fnDestroy();
+
+			$(".testmanagementtable tbody").html(rows);
+			$('.testmanagementtable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+			// $(".selectdiv").css("padding-left","4rem")
+			// $(".bucketList_wrapper").css("padding-left","4rem")	
+			// $(".testmanagementtable").css("margin-left","2rem")	
+
 		}
 	});
 }

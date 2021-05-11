@@ -72,6 +72,20 @@ function fetchAllTestBucket() {
                 </tr>`;
  
 				$("#mainContainer .bucketListTable tbody").prepend(str);
+
+			// $("#mainContainer .bucketListTableParent .paging_full_numbers").remove()
+			// $('#mainContainer .bucketListTable').dataTable().fnClearTable();
+    		// $('#mainContainer .bucketListTable').dataTable().fnDestroy();
+			// $("#mainContainer .bucketListTable tbody").html(str);
+			// $('#mainContainer .bucketListTable').DataTable({
+			// 	"lengthChange": false,
+			// 	"searching": false,   // Search Box will Be Disabled
+			// 	"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+			// 	"info": false,
+			// 	"pagingType": "full_numbers"
+			// });
+
+
 				$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
 			});
 			postTestBucketFetch();

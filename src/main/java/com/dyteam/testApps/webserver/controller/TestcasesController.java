@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
 import com.dyteam.testApps.webserver.projection.INames;
 import com.dyteam.testApps.webserver.projection.IStackBar;
 import com.dyteam.testApps.webserver.repository.TestcasesRepository;
@@ -35,6 +36,10 @@ public class TestcasesController {
     @PostMapping("/save")
     public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save testcases = " + testcases);
+        List<Testcases> foundcases = testcasesRepo.findByTestcaseName(testcases.getTestcaseName());
+        if (foundcases.size() > 0) {
+            throw new ResourceAlreadyExists("Testcase name Already exists");
+        }
         testcases.setCompanyId(loggedInUser.getCompanyId());
         testcases.setAddedBy(loggedInUser.getUserId());
         Testcases save = testcasesRepo.save(testcases);
@@ -49,85 +54,81 @@ public class TestcasesController {
     }
 
     @GetMapping(value = "/allByComapny")
-    public  List<Testcases> getAllByCompanyTestcases(
-            @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public List<Testcases> getAllByCompanyTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAllByCompanyTestcases");
         List<Testcases> testtypes = testcasesRepo.findAllByCompanyId(loggedInUser.getCompanyId());
-    	return testtypes;
+        return testtypes;
     }
 
     @DeleteMapping(value = "/deleteAll")
     public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        testcasesRepo.updateAll(loggedInUser.getUserId());
+        testcasesRepo.deleteAll();
         return true;
     }
 
     @DeleteMapping(value = "/delete/{testcaseId}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "testcaseId") Long testcaseId) {
-        logger.info("testcaseId"+testcaseId);
-        testcasesRepo.updateByTestcaseId(loggedInUser.getUserId(),testcaseId);
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,
+            @PathVariable(value = "testcaseId") Long testcaseId) {
+        logger.info("testcaseId" + testcaseId);
+        // testcasesRepo.updateByTestcaseId(loggedInUser.getUserId(), testcaseId);
+        testcasesRepo.deleteById(testcaseId);
         return true;
     }
 
     @GetMapping(value = "/getAutoProgressStats")
-    public  List<Map<String, Object>> getAutoProgressStats() {
+    public List<Map<String, Object>> getAutoProgressStats() {
         logger.info("Inside getAutoProgressStats");
-        List<Map<String, Object>> dashboardStats= testcasesRepo.getAutoProgressStats();
-    	return dashboardStats;
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoProgressStats();
+        return dashboardStats;
     }
 
     @GetMapping(value = "/getAutoStatusStats")
-    public  List<Map<String, Object>> getAutoStatusStats() {
+    public List<Map<String, Object>> getAutoStatusStats() {
         logger.info("Inside getAutoStatusStats");
-        List<Map<String, Object>> dashboardStats= testcasesRepo.getAutoStatusStats();
-    	return dashboardStats;
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoStatusStats();
+        return dashboardStats;
     }
 
     @GetMapping(value = "/getApplicationCoverageStats")
-    public  List<Map<String, Object>> getApplicationCoverageStats() {
+    public List<Map<String, Object>> getApplicationCoverageStats() {
         logger.info("Inside getApplicationCoverageStats");
-        List<Map<String, Object>> dashboardStats= testcasesRepo.getApplicationCoverageStats();
-    	return dashboardStats;
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getApplicationCoverageStats();
+        return dashboardStats;
     }
 
     @GetMapping(value = "/getTestcasesStackedApplicationData")
-    public HashMap<Long,ArrayList<IStackBar>> getTestcasesStackedApplicationData() {
+    public HashMap<Long, ArrayList<IStackBar>> getTestcasesStackedApplicationData() {
         logger.info("Inside getTestcasesStackedApplicationData");
-          Iterable<Testcases> allApps = testcasesRepo.groupByApplicationId();
-          Iterable<Testcases> allCompany = testcasesRepo.groupByCompanyId();
- 
+        Iterable<Testcases> allApps = testcasesRepo.groupByApplicationId();
+        Iterable<Testcases> allCompany = testcasesRepo.groupByCompanyId();
 
-          HashMap<Long,ArrayList<IStackBar>> allData = new HashMap<>();
-          for (Testcases testcases : allApps) {
-              Long id = testcases.getApplicationId();
-              ArrayList<IStackBar> stacks =new ArrayList<>();
-              for (Testcases company : allCompany) {   
-                  logger.info(id + " : "+ company.getCompanyId())  ;            
-                  IStackBar data = testcasesRepo.getApplicationVsCompanyStats(id,company.getCompanyId());
-                  stacks.add(data);
-              }
-              allData.put(id, stacks);
-          }
-          
-    	return allData;
+        HashMap<Long, ArrayList<IStackBar>> allData = new HashMap<>();
+        for (Testcases testcases : allApps) {
+            Long id = testcases.getApplicationId();
+            ArrayList<IStackBar> stacks = new ArrayList<>();
+            for (Testcases company : allCompany) {
+                logger.info(id + " : " + company.getCompanyId());
+                IStackBar data = testcasesRepo.getApplicationVsCompanyStats(id, company.getCompanyId());
+                stacks.add(data);
+            }
+            allData.put(id, stacks);
+        }
+
+        return allData;
     }
 
     @GetMapping(value = "/getTestcasesStackedApplicationData/companies")
     public Iterable<INames> getTestcasesStackedCompanies() {
-        
-          return testcasesRepo.getAllCompanyNamesInTestcases();
-           
+
+        return testcasesRepo.getAllCompanyNamesInTestcases();
+
     }
-
-
 
     @GetMapping(value = "/getTestcasesStackedApplicationData/applications")
     public Iterable<INames> getTestcasesStackedApplications() {
-        
-          return testcasesRepo.getAllApplicationNames();
-           
-    }
-    
 
-    
+        return testcasesRepo.getAllApplicationNames();
+
+    }
+
 }
