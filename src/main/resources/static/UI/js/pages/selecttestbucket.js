@@ -41,9 +41,10 @@ function fetchAllTestBucket() {
 		},
 		success: function (data) {
 			$("table.bucketListTable tbody").html("");
-				$("#executeSummary.bucketListTable tbody").html("");
+			$("#executeSummary.bucketListTable tbody").html("");
+			var str,summaryStr;
 			data.map((value) => {
-                var str = `
+                str += `
                 <tr>
                     <td scope="col" class="bucketcheck">
                     <label class="main subCB">
@@ -57,7 +58,7 @@ function fetchAllTestBucket() {
                     <td><img src="img/flip.png" class="addrow" alt="3" title="Clone"> <img src="img/visibility-24-px.png" alt="3" data-toggle="modal" class="viewBucket" title="View"></td>
 				</tr>`;
 				
-				var summaryStr = `
+				summaryStr += `
                 <tr>
                     <td scope="col" class="bucketcheck">
                     <label class="main subCB">
@@ -71,23 +72,25 @@ function fetchAllTestBucket() {
 					<td><img src="img/visibility-24-px.png" alt="3" data-toggle="modal" class="viewBucket" title="View"></td>
                 </tr>`;
  
-				$("#mainContainer .bucketListTable tbody").prepend(str);
+				// $("#mainContainer .bucketListTable tbody").prepend(str);
 
 			// $("#mainContainer .bucketListTableParent .paging_full_numbers").remove()
-			// $('#mainContainer .bucketListTable').dataTable().fnClearTable();
-    		// $('#mainContainer .bucketListTable').dataTable().fnDestroy();
-			// $("#mainContainer .bucketListTable tbody").html(str);
-			// $('#mainContainer .bucketListTable').DataTable({
-			// 	"lengthChange": false,
-			// 	"searching": false,   // Search Box will Be Disabled
-			// 	"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
-			// 	"info": false,
-			// 	"pagingType": "full_numbers"
-			// });
-
-
-				$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
+		
+				
 			});
+
+			$('#mainContainer .bucketListTable').dataTable().fnClearTable();
+    		$('#mainContainer .bucketListTable').dataTable().fnDestroy();
+			$("#mainContainer .bucketListTable tbody").html(str);
+			$('#mainContainer .bucketListTable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+			$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
+
 			postTestBucketFetch();
 		}
 	});
