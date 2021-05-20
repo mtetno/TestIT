@@ -31,119 +31,116 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author deepak
- * This controller takes care of handling all operations related to application
+ * @author deepak This controller takes care of handling all operations related
+ *         to application
  *
  */
 @RestController
 @RequestMapping("/application")
 public class ApplicationController {
 
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	
-	@Value("${project.base.path}") 
-	String projectBasePath;
-	
-    @Autowired
-    ApplicationRepository applicationRepo;
-    
-    @Autowired
-    SubscriptionsRepository subscriptionsRepository;
-    
-    @GetMapping("/{applicationId}")
-    public Optional<Application> findById(@PathVariable(value="applicationId") Long applicationId) {
-    	logger.info("get Application by id="+applicationId);
-        return applicationRepo.findById(applicationId);
-    }
 
-	
+	@Value("${project.base.path}")
+	String projectBasePath;
+
+	@Autowired
+	ApplicationRepository applicationRepo;
+
+	@Autowired
+	SubscriptionsRepository subscriptionsRepository;
+
+	@GetMapping("/{applicationId}")
+	public Optional<Application> findById(@PathVariable(value = "applicationId") Long applicationId) {
+		logger.info("get Application by id=" + applicationId);
+		return applicationRepo.findById(applicationId);
+	}
+
 	@GetMapping("/all")
-    public List<Map<String, Object>> fetchAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-    	logger.info("get all applications by Company");
-        return applicationRepo.fetchAll();
-    }
-    
-    @GetMapping("/allByCompany")
-    public Iterable<Application> findAllByCompany(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        return applicationRepo.findAllByCompanyId(loggedInUser.getCompanyId());
+	public List<Map<String, Object>> fetchAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+		logger.info("get all applications by Company");
+		return applicationRepo.fetchAll();
+	}
+
+	@GetMapping("/allByCompany")
+	public Iterable<Application> findAllByCompany(@AuthenticationPrincipal final LoginUser loggedInUser) {
+		return applicationRepo.findAllByCompanyId(loggedInUser.getCompanyId());
 	}
 
 	@GetMapping("/allByCompany/{companyId}")
-	public Iterable<Application> findAllByCompany(@PathVariable(value="companyId") Long companyId) {
-        return applicationRepo.findAllByCompanyId(companyId);
+	public Iterable<Application> findAllByCompany(@PathVariable(value = "companyId") Long companyId) {
+		return applicationRepo.findAllByCompanyId(companyId);
 	}
-	
+
 	@GetMapping("/allCompany")
-    public Iterable<Subscriptions> findAllCompany() {
-        return subscriptionsRepository.findAll();
-    }
-    
-    @GetMapping("/mapByCompany")
-    public CompanyAppMap mapByCompany() {
-    	Iterable<Subscriptions> companies = subscriptionsRepository.findAll();
-    	Iterable<Application> apps = applicationRepo.findAll();
-    	Map<Long,List<Application>> map = new HashMap<>();
-    	apps.forEach(a -> {
-    		List<Application> list = map.get(a.getCompanyId());
-    		if(null==list) {
-    			list = new ArrayList<>();
-    			map.put(a.getCompanyId(), list);
-    		}
-    		list.add(a);
-    	});
-        
+	public Iterable<Subscriptions> findAllCompany() {
+		return subscriptionsRepository.find();
+	}
+
+	@GetMapping("/mapByCompany")
+	public CompanyAppMap mapByCompany() {
+		Iterable<Subscriptions> companies = subscriptionsRepository.findAll();
+		Iterable<Application> apps = applicationRepo.findAll();
+		Map<Long, List<Application>> map = new HashMap<>();
+		apps.forEach(a -> {
+			List<Application> list = map.get(a.getCompanyId());
+			if (null == list) {
+				list = new ArrayList<>();
+				map.put(a.getCompanyId(), list);
+			}
+			list.add(a);
+		});
+
 		return new CompanyAppMap(companies, map);
-    }
-    
-    /**
-     * Create application object by setting default object 
-     * Update not allowed 
-     * @param application Object to save
-     * @param companyId Company id for creating test & master folder under company base folder 
-     * @param loggedInUser
-     * @return
-     */
-    @PostMapping("/save/{companyId}")
-    public Application save(@RequestBody Application application,@PathVariable(value="companyId")Long companyId,
-    		@AuthenticationPrincipal final LoginUser loggedInUser) {
-    	logger.info("save application = "+application);
-    	application.setStatus(0);
-    	application.setCompanyId(companyId);
-    	application.setUserId(loggedInUser.getUserId());
-    	boolean isNew = null==application.getApplicationId();
-    	Application save = applicationRepo.save(application);
-    	if(isNew) {
+	}
+
+	/**
+	 * Create application object by setting default object Update not allowed
+	 * 
+	 * @param application  Object to save
+	 * @param companyId    Company id for creating test & master folder under
+	 *                     company base folder
+	 * @param loggedInUser
+	 * @return
+	 */
+	@PostMapping("/save/{companyId}")
+	public Application save(@RequestBody Application application, @PathVariable(value = "companyId") Long companyId,
+			@AuthenticationPrincipal final LoginUser loggedInUser) {
+		logger.info("save application = " + application);
+		application.setStatus(0);
+		application.setCompanyId(companyId);
+		application.setUserId(loggedInUser.getUserId());
+		boolean isNew = null == application.getApplicationId();
+		Application save = applicationRepo.save(application);
+		if (isNew) {
 			try {
 				String compnayName = subscriptionsRepository.getName(companyId);
-				Util.createFolders(Paths.get(projectBasePath,Util.COMPANIES_BASE_FOLDER_NAME,
-						compnayName,
-						application.getApplicationName(),Util.TEST_DATA_FOLDER_NAME,Util.MASTER_FOLDER_NAME));
+				Util.createFolders(Paths.get(projectBasePath, Util.COMPANIES_BASE_FOLDER_NAME, compnayName,
+						application.getApplicationName(), Util.TEST_DATA_FOLDER_NAME, Util.MASTER_FOLDER_NAME));
 			} catch (IOException e) {
-				logger.error("Error occure while creating dir structor for application="+application,e);
+				logger.error("Error occure while creating dir structor for application=" + application, e);
 			}
 		}
 		return save;
-    }
-    
-    @DeleteMapping("/{applicationId}")
-    public Boolean delete(@PathVariable(value="applicationId") Long applicationId) {
-    	applicationRepo.deleteById(applicationId);
+	}
+
+	@DeleteMapping("/{applicationId}")
+	public Boolean delete(@PathVariable(value = "applicationId") Long applicationId) {
+		applicationRepo.deleteById(applicationId);
 		return true;
 	}
-	
-	@DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        applicationRepo.updateAll(loggedInUser.getUserId());
-        return true;
-    }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "id") Long id) {
-        logger.info("id"+id);
-        applicationRepo.updateByApplicationId(loggedInUser.getUserId(),id);
-        return true;
-    }
-    
+	@DeleteMapping(value = "/deleteAll")
+	public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
+		applicationRepo.updateAll(loggedInUser.getUserId());
+		return true;
+	}
+
+	@DeleteMapping(value = "/delete/{id}")
+	public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
+		logger.info("id" + id);
+		applicationRepo.updateByApplicationId(loggedInUser.getUserId(), id);
+		return true;
+	}
+
 }

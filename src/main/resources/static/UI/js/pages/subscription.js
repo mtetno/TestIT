@@ -85,6 +85,24 @@ function saveApplicationPaths(dataObj) {
 	});
 }
 
+
+function editApplicationPaths(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/applicationPaths/edit",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			 
+			fetchAllApplicationPaths();
+		}
+	});
+}
+
 function deleteSubscriptions() {
 	$.ajax({
 		type: 'DELETE',
@@ -267,13 +285,24 @@ function fetchAllApplicationPaths() {
 					<span class="geekmark"></span> 
 					</label>
 					</td>
-					<td >`+value.company_name+`</td>
+					<td data-value=`+JSON.stringify(value)+`  data-toggle="modal" data-dismiss="modal" data-target="#editAppPath">`+value.company_name+`</td>
 					<td >`+value.selenium_home+`</td>
 					<td >`+value.test_data_home+`</td>
 					</tr>`;
  
 				$("table.apppathtable tbody").prepend(str);
-			 
+
+				$("table.apppathtable tbody tr td:nth-child(2)").click(function(){
+					var dataValue = JSON.parse($(this).attr("data-value"));
+					console.log(dataValue);
+					$("#application_path_id_edit").val(dataValue.application_path_id);
+					$("#company_name1_edit").val(dataValue.company_id);
+					$("#selenium_home_edit").val(dataValue.selenium_home);
+					$("#screen_shot_home_edit").val(dataValue.screenshot_home);
+					$("#logs_home_edit").val(dataValue.logs_home);
+					$("#test_data_home_edit").val(dataValue.test_data_home);
+					$("#batch_file_home_edit").val(dataValue.batch_file_home);
+					});
 			});
 		}
 	});
@@ -293,7 +322,7 @@ function updateRowListener(){
 		$(".updatescriptmodel #password1").val(editData.pasword);
 		$(".updatescriptmodel #confirmpassword1").val(editData.pasword);
 		$(".updatescriptmodel #email1").val(editData.email);
-		$(".updatescriptmodel #testing_environment1").val(editData.testing_environment_id);
+		$(".updatescriptmodel #testing_environment1").val(editData.testing_environment_id.split(','));
 		$(".updatescriptmodel #startdate1").val(editData.start_date);
 		$(".updatescriptmodel #enddate1").val(editData.end_date);
 		$(".updatescriptmodel #remind_before1").val(editData.remind_before);

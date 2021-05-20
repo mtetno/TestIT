@@ -13,33 +13,38 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
- 
 
 @Repository
-public interface SubscriptionsRepository extends CrudRepository<Subscriptions, Long>{
- 
-    @Transactional
+public interface SubscriptionsRepository extends CrudRepository<Subscriptions, Long> {
+
+	@Transactional
 	@Modifying
 	@Query("update Subscriptions set is_delete = 1 where added_by = :id")
 	void updateAll(Long id);
 
 	@Transactional
 	@Modifying
-	@Query(value = "update subscriptions set company_name=:companyName,username=:username,pasword=:password,email=:email,testing_environment_id=:envId,remind_before=:remindBefore,threads =:threads,end_date=:endDate,start_date=:startDate where id = :id",nativeQuery = true)
-	void update(String companyName,String username,String password,String email,Long envId,Long remindBefore,Long threads, String endDate,String startDate,Long id);
+	@Query(value = "update subscriptions set company_name=:companyName,username=:username,pasword=:password,email=:email,testing_environment_id=:envId,remind_before=:remindBefore,threads =:threads,end_date=:endDate,start_date=:startDate where id = :id", nativeQuery = true)
+	void update(String companyName, String username, String password, String email, String envId, Long remindBefore,
+			Long threads, String endDate, String startDate, Long id);
 
 	@Transactional
-  	@Modifying
-	@Query("update Subscriptions set is_delete = 1 where added_by = :userId AND id = :id")
-    void updateBySubscriptionId(Long userId,Long id);
-	
 	@Modifying
-    @Transactional
-    @Query(value = "SELECT * from subscriptions where is_delete = 0",nativeQuery = true)
+	@Query("update Subscriptions set is_delete = 1 where added_by = :userId AND id = :id")
+	void updateBySubscriptionId(Long userId, Long id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * from subscriptions where is_delete = 0", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * from subscriptions where is_delete = 0", nativeQuery = true)
+	Iterable<Subscriptions> find();
+
 	@Query(value = "SELECT HEX(AES_ENCRYPT(:password,:key))", nativeQuery = true)
-	public abstract String getEncodedPassword(@Param("password") String password,@Param("key") String key);
+	public abstract String getEncodedPassword(@Param("password") String password, @Param("key") String key);
 
 	@Query(value = "SELECT AES_DECRYPT(UNHEX(:password),:key)", nativeQuery = true)
 	public abstract String getDecodePassword(@Param("password") String password, @Param("key") String key);
@@ -52,5 +57,5 @@ public interface SubscriptionsRepository extends CrudRepository<Subscriptions, L
 
 	@Query(value = "select a.company_name,b.selenium_home from subscriptions a join application_paths b where a.id=77 AND a.id = b.company_id", nativeQuery = true)
 	public ISubscription getCompanyInfoForFolder(Long companyId);
-	
+
 }

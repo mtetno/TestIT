@@ -21,7 +21,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,57 +28,57 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)
 public class Subscriptions {
-	
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name="company_name")
+	@Column(name = "company_name")
 	@NotNull
 	private String companyName;
 
-	@Column(name="username")
+	@Column(name = "username")
 	@NotNull
 	private String username;
 
-	@Column(name="pasword")
+	@Column(name = "pasword")
 	@NotNull
 	private String password;
 
-	@Column(name="testing_environment_id")
+	@Column(name = "testing_environment_id")
 	@NotNull
-	private Long testingEnvironmentId;
+	private String testingEnvironmentId;
 
-	@Column(name="email")
+	@Column(name = "email")
 	@NotNull
 	private String email;
 
-	@Column(name="start_date")
+	@Column(name = "start_date")
 	@NotNull
 	private String startDate;
 
-	@Column(name="end_date")
+	@Column(name = "end_date")
 	@NotNull
 	private String endDate;
 
-	@Column(name="remind_before")
+	@Column(name = "remind_before")
 	@NotNull
 	private Long remindBefore;
 
-	@Column(name="threads")
+	@Column(name = "threads")
 	@NotNull
 	private Long threads;
 
-	@Column(name="added_by")
+	@Column(name = "added_by")
 	@NotNull
 	private Long addedBy;
 
-	@Column(name="added_when",insertable=false,updatable=false)
+	@Column(name = "added_when", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date addedWhen;
-	
-	@Column(name="is_delete")
+
+	@Column(name = "is_delete")
 	@NotNull
 	private Integer isDelete;
 
@@ -90,8 +89,6 @@ public class Subscriptions {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
- 
 
 	public String getUsername() {
 		return username;
@@ -109,11 +106,11 @@ public class Subscriptions {
 		this.password = password;
 	}
 
-	public Long getTestingEnvironmentId() {
+	public String getTestingEnvironmentId() {
 		return testingEnvironmentId;
 	}
 
-	public void setTestingEnvironmentId(Long testingEnvironmentId) {
+	public void setTestingEnvironmentId(String testingEnvironmentId) {
 		this.testingEnvironmentId = testingEnvironmentId;
 	}
 
@@ -189,6 +186,4 @@ public class Subscriptions {
 		this.companyName = companyName;
 	}
 
-	 
-	
 }

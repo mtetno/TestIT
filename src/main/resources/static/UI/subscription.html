@@ -166,8 +166,8 @@
                     <div class="col-md-6 mb-2 envlist">
                       <label class="required" >Testing Environment</label>
                       
-                    <select class="form-control border" name="testing_environment" id="testing_environment" required>
-                      <option value="Select Testing Environment">Select Testing Environment</option>
+                    <select class="form-control border" name="testing_environment" id="testing_environment" required multiple="multiple">
+                      <!-- <option value="Select Testing Environment">Select Testing Environment</option> -->
                       
                     </select>
                     </div>
@@ -289,8 +289,8 @@
                     </div>
                     <div class="col-md-6 mb-2 envlist">
                       <label class="required" >Testing Environment</label>
-                      <select class="form-control border" name="testing_environment1" id="testing_environment1" required>
-                        <option value="Select Testing Environment">Select Testing Environment</option>
+                      <select class="form-control border" name="testing_environment1" id="testing_environment1" required multiple="multiple">
+                        <!-- <option value="Select Testing Environment">Select Testing Environment</option> -->
                         
                       </select>
 
@@ -340,6 +340,70 @@
         </div>
       </div>
       <!-- End Edit Subscription Modal-->
+
+
+      <!-- The Edit Application Path Modal -->
+      <div class="modal fade model1" id="editAppPath">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title pl-3">Edit</h4>
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="col-md-12 updatescriptmodel">
+                <form>
+                  <div class="row">
+                    <input type="hidden" name="uprowid" id="uprowid">
+                    <div class="col-md-6 mb-2">
+                      <label class="required">Company</label>
+                      <select class="form-control border" name="company_name1_edit" id="company_name1_edit">
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <label class="required" >Selenium Home</label>
+                      <input  type="hidden" type="text" class="form-control border" name="application_path_id_edit" id="application_path_id_edit">
+                      <input type="text" class="form-control border" name="selenium_home_edit" id="selenium_home_edit" placeholder="Enter Selenium Home">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <label class="required" >Screen shot Home</label>
+                      <input type="text" class="form-control border" name="screen_shot_home_edit" id="screen_shot_home_edit" placeholder="Screen shot Home">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <label class="required" >Logs Home</label>
+                      <input type="text" class="form-control border" name="logs_home_edit" id="logs_home_edit" placeholder="Enter Logs Home">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <label class="required" >Test Data Home</label>
+                      <input type="text" class="form-control border" name="test_data_home_edit" id="test_data_home_edit" placeholder="Enter Test Data Home">
+                    </div>
+                    <div class="col-md-6 mb-2 envlist">
+                      <label class="required" >Batch File Home</label>
+                      <input type="text" class="form-control border" name="batch_file_home_edit" id="batch_file_home_edit" placeholder="Enter Batch File Home">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer btnfooter">
+              <button type="button" class="btn btn-dark" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
+              <button type="button" class="btn btn-primary updateAppPathBtn" data-toggle="modal" data-dismiss="modal" data-target="#editmyModalSucess1"><img src="img/save-24-px-1.png">UPDATE</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- End Edit Application Paths Modal-->
 
       <!-- The Edit Subscription Modal Success-->
       <div class="modal fade" id="editmyModalSucess1">
@@ -412,7 +476,7 @@
           <!-- Modal body -->
           <div class="modal-body model_body">
             <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Subscription deleted Successfully.</p>
+            <p>Subscription Deleted Successfully.</p>
           </div>
 
           <!-- Modal footer -->
@@ -527,7 +591,7 @@
           <!-- Modal body -->
           <div class="modal-body model_body">
             <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Application deleted Successfully.</p>
+            <p>Application Deleted Successfully.</p>
           </div>
 
           <!-- Modal footer -->
@@ -744,7 +808,7 @@
       <!-- Modal body -->
       <div class="modal-body model_body">
         <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-        <p>Application Paths deleted Successfully.</p>
+        <p>Application Paths Deleted Successfully.</p>
       </div>
 
       <!-- Modal footer -->
@@ -798,6 +862,8 @@
     fetchAllApplicationPaths();
 
 
+  
+
     /*---Jquery for Testing Environment select---*/
 
     $("#tabs li").click(function(){
@@ -831,6 +897,11 @@
     $(".main, .subCB").click(function(e){
       e.stopPropagation();
     });
+
+
+    
+			
+
 
     // $(".envlist .subCB input[name='testEnv[]']").click(function(){
     //   var count = $(".envlist .subCB input[name='testEnv[]']:checked").length;
@@ -903,7 +974,7 @@
       var password = $("#password1").val().trim();
 				var confirmpassword = $("#confirmpassword1").val().trim();
 				var email = $("#email1").val().trim();
-				var testing_environment = $("#testing_environment1").val().trim();
+				var testing_environment = $("#testing_environment1").val().length > 0 ?  $("#testing_environment1").val().join(",") : 0;
 				var startdate = $("#startdate1").val().trim();
 				var enddate = $("#enddate1").val().trim();
 				var remind_before = $("#remind_before1").val().trim();
@@ -978,7 +1049,7 @@
       var password = $("#password").val().trim();
 				var confirmpassword = $("#confirmpassword").val().trim();
 				var email = $("#email").val().trim();
-				var testing_environment = $("#testing_environment").val().trim();
+				var testing_environment = $("#testing_environment").val().length > 0 ?  $("#testing_environment").val().join(",") : 0;
 				var startdate = $("#startdate").val().trim();
 				var enddate = $("#enddate").val().trim();
 				var remind_before = $("#remind_before").val().trim();
@@ -1039,12 +1110,9 @@
 				  $("#startdate").val("");
 				  $("#enddate").val("");
 				  $("#remind_before").val("");
-				 $("#threads").val("");
+				  $("#threads").val("");
      
 				$('#myModalSucess1').modal('show'); 
-      
-
-
       });
     
     /*---Jquery for update Application Paths---*/
@@ -1108,25 +1176,25 @@
       var logs_home     = $("#logs_home").val();
       var batch_file_home     = $("#batch_file_home").val();
 
-      if(dataCompnany == 0){
-					alert("Please select valid company");
-					return false;
-			}else if(dataSelenium.length == 0){
-					alert("Please select valid selenium name");
-					return false;
-			}else if(dataTestdata.length == 0){
-					alert("Please select valid test data");
-					return false;
-			}else if(screen_shot_home.length == 0){
-					alert("Please select valid screenshot home");
-					return false;
-			}else if(logs_home.length == 0){
-					alert("Please select valid logs home ");
-					return false;
-			}else if(batch_file_home.length == 0){
-					alert("Please select valid batch file");
-					return false;
-			}
+      // if(dataCompnany == 0){
+			// 		alert("Please select valid company");
+			// 		return false;
+			// }else if(dataSelenium.length == 0){
+			// 		alert("Please select valid selenium name");
+			// 		return false;
+			// }else if(dataTestdata.length == 0){
+			// 		alert("Please select valid test data");
+			// 		return false;
+			// }else if(screen_shot_home.length == 0){
+			// 		alert("Please select valid screenshot home");
+			// 		return false;
+			// }else if(logs_home.length == 0){
+			// 		alert("Please select valid logs home ");
+			// 		return false;
+			// }else if(batch_file_home.length == 0){
+			// 		alert("Please select valid batch file");
+			// 		return false;
+			// }
 
       var dataObj = {};
 			dataObj["companyId"] = dataCompnany;
@@ -1165,6 +1233,70 @@
       
   
     });
+
+
+    $("button.updateAppPathBtn").click(function(){
+      var dataCompnany     = $("#company_name1_edit").val();
+      var dataSelenium     = $("#selenium_home_edit").val();
+      var dataTestdata     = $("#test_data_home_edit").val();
+      var screen_shot_home = $("#screen_shot_home_edit").val();
+      var logs_home     = $("#logs_home_edit").val();
+      var batch_file_home     = $("#batch_file_home_edit").val();
+      var application_path_id_edit = $("#application_path_id_edit").val();
+      // if(dataCompnany == 0){
+			// 		alert("Please select valid company");
+			// 		return false;
+			// }else if(dataSelenium.length == 0){
+			// 		alert("Please select valid selenium name");
+			// 		return false;
+			// }else if(dataTestdata.length == 0){
+			// 		alert("Please select valid test data");
+			// 		return false;
+			// }else if(screen_shot_home.length == 0){
+			// 		alert("Please select valid screenshot home");
+			// 		return false;
+			// }else if(logs_home.length == 0){
+			// 		alert("Please select valid logs home ");
+			// 		return false;
+			// }else if(batch_file_home.length == 0){
+			// 		alert("Please select valid batch file");
+			// 		return false;
+			// }
+
+      var dataObj = {};
+      dataObj["id"]= application_path_id_edit;
+			dataObj["companyId"] = dataCompnany;
+      dataObj["seleniumHome"] = dataSelenium;
+      dataObj["logsHome"] = logs_home;
+      dataObj["testDataHome"] = dataTestdata;
+      dataObj["batchFileHome"] = batch_file_home;
+      dataObj["screenshotHome"] = screen_shot_home;
+      dataObj["isDelete"] = 0;
+
+      // $("a.addRowBtn").css("pointer-events", "");
+			// $("a.addRowBtn").css("opacity", "");
+			// $("#deleteRow").attr("disabled", false);
+			// $("#deleteRow1").attr("disabled", false);
+			// $("#deleteRow2").attr("disabled", false);
+			// $("#execution_environment").val('');
+      // $("button.addApppathBtn").closest(".rowhide").slideUp();
+      
+       
+      
+      $("#company_name1").val(0);
+      $("#selenium_home").val("");
+      $("#test_data_home").val("");
+      $("#screen_shot_home").val("");
+      $("#logs_home").val("");
+      $("#batch_file_home").val("");
+      
+      editApplicationPaths(dataObj);
+
+     
+      
+  
+    });
+
 
 
     /*---Jquery for Cancel row---*/

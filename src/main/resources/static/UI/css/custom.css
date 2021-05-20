@@ -1177,6 +1177,10 @@ input[type="radio"]:checked + label:before {
     text-decoration: underline;
 }
 
+.apppathtable tbody tr td:nth-child(2){
+    text-decoration: underline;
+}
+
 .legendstags ul {
 	display: inline-block;
 	position: relative;

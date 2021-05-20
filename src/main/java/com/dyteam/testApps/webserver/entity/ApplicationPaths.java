@@ -21,7 +21,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,45 +28,45 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 @JsonInclude(Include.NON_NULL)
 public class ApplicationPaths {
-	
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="application_path_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "application_path_id")
 	private Long id;
 
-	@Column(name="company_id")
+	@Column(name = "company_id")
 	@NotNull
 	private Long companyId;
 
-	@Column(name="selenium_home")
+	@Column(name = "selenium_home")
 	@NotNull
 	private String seleniumHome;
 
-	@Column(name="logs_home")
+	@Column(name = "logs_home")
 	@NotNull
 	private String logsHome;
 
-	@Column(name="test_data_home")
+	@Column(name = "test_data_home")
 	@NotNull
 	private String testDataHome;
 
-	@Column(name="screenshot_home")
+	@Column(name = "screenshot_home")
 	@NotNull
 	private String screenshotHome;
 
-	@Column(name="batch_file_home")
+	@Column(name = "batch_file_home")
 	@NotNull
 	private String batchFileHome;
 
-	@Column(name="added_by")
+	@Column(name = "added_by")
 	@NotNull
 	private Long addedBy;
 
-	@Column(name="added_when",insertable=false,updatable=false)
+	@Column(name = "added_when", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date addedWhen;
-	
-	@Column(name="is_delete")
+
+	@Column(name = "is_delete")
 	@NotNull
 	private Integer isDelete;
 
@@ -78,9 +77,6 @@ public class ApplicationPaths {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
-	
 
 	public Long getCompanyId() {
 		return companyId;
@@ -154,6 +150,4 @@ public class ApplicationPaths {
 		this.screenshotHome = screenshotHome;
 	}
 
-		
-	
 }

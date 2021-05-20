@@ -253,6 +253,7 @@ function fetchAllCompanies() {
 			})
 			$("#company_name").html(options);
 			$("#company_name1").html(options);
+			$("#company_name1_edit").html(options);
 		}
 	});
 }

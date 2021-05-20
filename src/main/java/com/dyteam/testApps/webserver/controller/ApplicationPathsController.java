@@ -24,16 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/applicationPaths")
 public class ApplicationPathsController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     ApplicationPathsRepository applicationPathsRepository;
-     
+
     @PostMapping("/save")
-    public ApplicationPaths save(@RequestBody ApplicationPaths applicationPaths, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public ApplicationPaths save(@RequestBody ApplicationPaths applicationPaths,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save ApplicationPaths = " + applicationPaths);
         applicationPaths.setAddedBy(loggedInUser.getUserId());
-       return applicationPathsRepository.save(applicationPaths);
+        return applicationPathsRepository.save(applicationPaths);
+    }
+
+    @PostMapping("/edit")
+    public ApplicationPaths edit(@RequestBody ApplicationPaths applicationPaths,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
+        applicationPathsRepository.deleteById(applicationPaths.getId());
+        logger.info("save ApplicationPaths = " + applicationPaths);
+        applicationPaths.setAddedBy(loggedInUser.getUserId());
+        return applicationPathsRepository.save(applicationPaths);
     }
 
     @DeleteMapping(value = "/deleteAll")
@@ -43,12 +53,12 @@ public class ApplicationPathsController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "id") Long id) {
-        logger.info("id"+id);
-        applicationPathsRepository.updateByApplicationPathId(loggedInUser.getUserId(),id);
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
+        logger.info("id" + id);
+        applicationPathsRepository.updateByApplicationPathId(loggedInUser.getUserId(), id);
         return true;
     }
-    
+
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllApplicationPaths() {
         logger.info("Inside getAllApplicationPaths");
