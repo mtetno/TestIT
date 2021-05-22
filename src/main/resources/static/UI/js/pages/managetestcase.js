@@ -67,8 +67,9 @@ function fetchAllTestMethod() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
+			var str = "";
 			data.map((value) => {
-				var str = `<tr>
+				str = str + `<tr>
 				<td scope="col" class="bucketcheck">
 				<label class="main subCB">
 				<input data-value="`+value.test_method_id+`" type="checkbox"> 
@@ -80,10 +81,23 @@ function fetchAllTestMethod() {
 				<td >`+value.test_method+`</td>
 				<td class="running">`+value.status+`</td>
 				</tr>`;
-				console.log(str);
-				$("table.Testmethodtable tbody").prepend(str);
-			 
 			});
+
+			if(str != ""){
+			$(".TestmethodtableParent .paging_full_numbers").remove()
+
+			$('.Testmethodtable').dataTable().fnClearTable();
+    		$('.Testmethodtable').dataTable().fnDestroy();
+			
+			$(".Testmethodtable tbody").html(str);
+			$('.Testmethodtable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
 		}
 	});
 }

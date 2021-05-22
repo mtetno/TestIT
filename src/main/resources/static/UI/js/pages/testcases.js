@@ -52,7 +52,7 @@ function displayTestcases(){
 
 			// $("#bucketList tbody").html(rows);
 
-			
+			if(rows != ""){
 			$(".testmanagementtableParent .paging_full_numbers").remove()
 			$('.testmanagementtable').dataTable().fnClearTable();
     		$('.testmanagementtable').dataTable().fnDestroy();
@@ -65,6 +65,7 @@ function displayTestcases(){
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}
 			// $(".selectdiv").css("padding-left","4rem")
 			// $(".bucketList_wrapper").css("padding-left","4rem")	
 			// $(".testmanagementtable").css("margin-left","2rem")	

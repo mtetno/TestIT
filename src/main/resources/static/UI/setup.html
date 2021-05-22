@@ -75,7 +75,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png">
           <span>User</span></a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="profile.html">Profile</a>
+          <a class="dropdown-item" href="profileUser.html">Profile</a>
           <a class="dropdown-item" href="login.html">Logout</a>
         </div>
       </div>
@@ -705,7 +705,7 @@ $("#userMenu span").text(uname);
       $("#deleteRow").click(function (e) {
         e.preventDefault();
         var str = '';
-        $("table tbody .subCB input:checked").each(function () {
+        $(".envTable tbody .subCB input:checked").each(function () {
           if (str != '')
             str += ", " + $(this).closest("tr").find("td:nth-child(2)").text();
           else
@@ -713,7 +713,9 @@ $("#userMenu span").text(uname);
         });
 
         $("#deletedItem").text(str);
-        $("#myModal").modal();
+        if($(".envTable  tbody .subCB input:checked").length > 0){
+          $("#myModal").modal();
+        }
       });
 
       $(document).on("click", "#environmentYesbtn", function () {
@@ -732,7 +734,7 @@ $("#userMenu span").text(uname);
       $("#deleteRow1").click(function (e) {
         e.preventDefault();
         var str = '';
-        $("table tbody .subCB input:checked").each(function () {
+        $(".Urltable tbody .subCB input:checked").each(function () {
           if (str != '')
             str += ", " + $(this).closest("tr").find("td:nth-child(4)").text();
           else
@@ -740,7 +742,9 @@ $("#userMenu span").text(uname);
         });
 
         $("#deletedItem1").text(str);
-        $("#myModal1").modal();
+        if($(".Urltable  tbody .subCB input:checked").length > 0){
+          $("#myModal1").modal();
+        }
       });
 
       $(document).on("click", "#urlsYesbtn", function () {
@@ -772,7 +776,7 @@ $("#userMenu span").text(uname);
       $("#deleteRow2").click(function (e) {
         e.preventDefault();
         var str = '';
-        $("table tbody .subCB input:checked").each(function () {
+        $(".Roletable tbody .subCB input:checked").each(function () {
           if (str != '')
             str += ", " + $(this).closest("tr").find("td:nth-child(2)").text();
           else
@@ -780,7 +784,10 @@ $("#userMenu span").text(uname);
         });
 
         $("#deletedItem2").text(str);
-        $("#myModal2").modal();
+        
+        if($(".Roletable  tbody .subCB input:checked").length > 0){
+          $("#myModal2").modal();
+        }
       });
 
       $(document).on("click", "#accessYesbtn", function () {

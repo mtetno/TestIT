@@ -209,10 +209,12 @@ function fetchAllSubscriptions() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			$("#subscriptionsList tbody").html("");
+			$("#subscriptionTable tbody").html("");
+
+			var str = "";
 			data.map((value) => {
 				
-				var str = `<tr data='`+JSON.stringify(value)+`'>
+				str = str + `<tr data='`+JSON.stringify(value)+`'>
 				<td scope="col" class="bucketcheck">
 				  <label class="main subCB">
 					<input data-value="`+value.id+`" type="checkbox"> 
@@ -225,8 +227,24 @@ function fetchAllSubscriptions() {
 				<td >`+value.end_date+`</td>
 			  </tr>`;
  
-				$("#subscriptionsList tbody").prepend(str);
+				// $("#subscriptionsList tbody").prepend(str);
 			});
+			if(str != ""){
+			$(".subscriptionTableParent .paging_full_numbers").remove()
+
+			$('.subscriptionTable').dataTable().fnClearTable();
+    		$('.subscriptionTable').dataTable().fnDestroy();
+			
+			$(".subscriptionTable tbody").html(str);
+			$('.subscriptionTable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
+
 			updateRowListener();
 		}
 	});
@@ -244,9 +262,10 @@ function fetchAllApplications() {
 		},
 		success: function (data) {
 			$(".Apptable tbody").html("");
+			var str = "";
 			data.map((value) => {
 				
-				var str = ` <tr>
+				str = str + ` <tr>
 				<td scope="col" class="bucketcheck">
 				  <label class="main subCB">
 					<input data-value="`+value.application_id+`" type="checkbox"> 
@@ -257,9 +276,24 @@ function fetchAllApplications() {
 				<td >`+value.application_name+`</td>
 			  </tr>`;
  
-				$(".Apptable tbody").prepend(str);
-			 
+				//$(".Apptable tbody").prepend(str);
 			});
+
+			if(str != ""){
+			$(".ApptableParent .paging_full_numbers").remove()
+
+			$('.Apptable').dataTable().fnClearTable();
+    		$('.Apptable').dataTable().fnDestroy();
+			
+			$(".Apptable tbody").html(str);
+			$('.Apptable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
 		}
 	});
 }
@@ -276,9 +310,10 @@ function fetchAllApplicationPaths() {
 		},
 		success: function (data) {
 			$("table.apppathtable tbody").html("");
+			var str = "";
 			data.map((value) => {
 				
-				var str = `<tr data='`+JSON.stringify(value)+`'>
+				str = str + `<tr data='`+JSON.stringify(value)+`'>
 					<td scope="col" class="bucketcheck">
 					<label class="main subCB">
 					<input data-value="`+value.application_path_id+`" type="checkbox"> 
@@ -289,21 +324,36 @@ function fetchAllApplicationPaths() {
 					<td >`+value.selenium_home+`</td>
 					<td >`+value.test_data_home+`</td>
 					</tr>`;
- 
-				$("table.apppathtable tbody").prepend(str);
-
-				$("table.apppathtable tbody tr td:nth-child(2)").click(function(){
-					var dataValue = JSON.parse($(this).attr("data-value"));
-					console.log(dataValue);
-					$("#application_path_id_edit").val(dataValue.application_path_id);
-					$("#company_name1_edit").val(dataValue.company_id);
-					$("#selenium_home_edit").val(dataValue.selenium_home);
-					$("#screen_shot_home_edit").val(dataValue.screenshot_home);
-					$("#logs_home_edit").val(dataValue.logs_home);
-					$("#test_data_home_edit").val(dataValue.test_data_home);
-					$("#batch_file_home_edit").val(dataValue.batch_file_home);
-					});
 			});
+
+			if(str != ""){
+			$(".apppathtableParent .paging_full_numbers").remove()
+
+			$('.apppathtable').dataTable().fnClearTable();
+    		$('.apppathtable').dataTable().fnDestroy();
+			
+			$(".apppathtable tbody").html(str);
+			$('.apppathtable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
+
+			$("table.apppathtable tbody tr td:nth-child(2)").click(function(){
+				var dataValue = JSON.parse($(this).attr("data-value"));
+				console.log(dataValue);
+				$("#application_path_id_edit").val(dataValue.application_path_id);
+				$("#company_name1_edit").val(dataValue.company_id);
+				$("#selenium_home_edit").val(dataValue.selenium_home);
+				$("#screen_shot_home_edit").val(dataValue.screenshot_home);
+				$("#logs_home_edit").val(dataValue.logs_home);
+				$("#test_data_home_edit").val(dataValue.test_data_home);
+				$("#batch_file_home_edit").val(dataValue.batch_file_home);
+				});
+
 		}
 	});
 }

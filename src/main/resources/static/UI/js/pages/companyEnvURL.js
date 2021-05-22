@@ -436,7 +436,7 @@ function displayAllEnvironmentUrls() {
 		
 			
 			
-			
+			if(payload != ""){
 			$(".UrltableParent .paging_full_numbers").remove()
 
 			$('.Urltable').dataTable().fnClearTable();
@@ -454,6 +454,7 @@ function displayAllEnvironmentUrls() {
 				$(".selectdiv").css("padding-left","4rem")
 				$(".bucketList_wrapper").css("padding-left","4rem")	
 				$(".Urltable").css("margin-left","2rem")	
+			}
 				 
 		}
 	});
@@ -514,6 +515,7 @@ function displayAllAccessRoles() {
 				payload += '</tr>';
 			});
 			
+			if(payload != ""){
 			$(".RoletableParent .paging_full_numbers").remove()
 			$('.Roletable').dataTable().fnClearTable();
     		$('.Roletable').dataTable().fnDestroy();
@@ -529,6 +531,7 @@ function displayAllAccessRoles() {
 			$(".selectdiv").css("padding-left","4rem")
 			$(".bucketList_wrapper").css("padding-left","4rem")	
 			$(".Roletable").css("margin-left","2rem")	
+		}
 
 		}
 	});

@@ -12,6 +12,19 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <!--Custom style link-->
   <link rel="stylesheet" href="css/custom.css">
+  <!--Scripts-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/Libraries/jquery.dataTables.js"></script>
+<script src="js/Libraries/dataTables.fixedHeader.js"></script>
+<script src="js/Libraries/dataTables.tableTools.js"></script>
+<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/pages/common.js"></script>
+<script src="js/pages/managetestcase.js"></script>
+
   <style>
     .bucketcheck label {
       padding-left: 5px;
@@ -45,7 +58,7 @@
         <!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="profile.html">Profile</a>
+          <a class="dropdown-item" href="profileAdmin.html">Profile</a>
           <a class="dropdown-item" href="login.html">Logout</a>
         </div>
       </div>
@@ -158,7 +171,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv TestmethodtableParent" style="overflow-x: auto;">
               <table id="bucketList" class="Testmethodtable table selectdiv1">
                 <thead>
                   <tr>
@@ -230,7 +243,7 @@
           <!-- Modal body -->
           <div class="modal-body model_body">
            <h4>Delete Test Methods</h4>
-           <p>Do you want to delete Test Methods?</p>
+           <p>Do you want to Delete Test Methods?</p>
            <p id="deletedItem"></p>
          </div>
 
@@ -288,18 +301,13 @@
 <!-- For sidebar toggle -->
 <a href="#" id="sidebarToggle"><i class="fa fa-caret-right fa-2x" aria-hidden="true"></i></a>
 
-<!--Scripts-->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/moment.js"></script>
-<script src="js/custom.js"></script>
-<script src="js/pages/common.js"></script>
-<script src="js/pages/managetestcase.js"></script>
+
+
 <script>
   $(function(){
 
      
-    fetchAllCompany();
+    fetchAllCompanies();
     fetchAllTestMethod();
 
     $('#company_name').on('change', function (e) {
@@ -447,20 +455,23 @@
       });
 
       $("#deletedItem").text(str);
-      $("#myModal").modal();
+      
+      if($("table  tbody .subCB input:checked").length > 0){
+        $("#myModal").modal();
+      }
+
     });
 
     $(document).on("click", "#yesbtn", function(){
       $(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-      });
 
-      if(str.indexOf(",") > 0){
-        deleteAllTestMethods();
-			}else{
-				deleteTestMethod(testMethodId);
-      }     
+      $('table input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteTestMethod($(val).attr("data-value"));     
+                }
+              }
+		  });    
     });
 
     /*---Jquery for toggle section on click caret-down icon---*/

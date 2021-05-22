@@ -49,7 +49,7 @@
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
-			      <a class="dropdown-item" href="profile.html">Profile</a>
+			      <a class="dropdown-item" href="profileUser.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
 			    </div>
 			</div>
@@ -97,8 +97,8 @@
 							        <span class="geekmark"></span> 
 							    </label>
 					          </th>
-						      <th scope="col" class="Username">TEST CASE <i class="fa fa-angle-down" aria-hidden="true"></i>  <img src="img/search-24-px.png" alt="Imgsearch" class="searchtext"></th>
-						      <th scope="col">APPLICATION  <img src="img/search-24-px.png" alt="Imgsearch" class="searchtext"></th>
+						      <th scope="col" class="Username">TEST CASE <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
+						      <th scope="col">APPLICATION  </th>
 						      <th scope="col">ENVIRONMENT</th>
 						      <th scope="col">AUTOMATION STATUS</th>
 						    </tr>
@@ -643,8 +643,10 @@ $("#userMenu span").text(uname);
 				});
 
 				$("#deletedItem").text(str);
-				$("#myModal").modal();
 
+				if($("table  tbody .subCB input:checked").length > 0){
+				$("#myModal").modal();
+				}
 				
 			});
 
@@ -652,14 +654,13 @@ $("#userMenu span").text(uname);
 			
 
 			$(document).on("click", "#yesbtn", function(){
-
 				$('table tbody .subCB input[type=checkbox]').map((i,val)=>{
 				      if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
 					deleteTestcase($(val).attr("data-value"));     
-                }
-              }
-		    });   
+					}
+				}
+				});   
 			});
             
             /*---Jquery for toggle section on click caret-down icon---*/

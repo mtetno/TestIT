@@ -47,9 +47,9 @@ public class TestcasesController {
     }
 
     @GetMapping(value = "/all")
-    public Iterable<Map<String, Object>> getAllTestcases() {
+    public Iterable<Map<String, Object>> getAllTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAllTestcases");
-        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll();
+        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll(loggedInUser.getCompanyId());
         return testtypes;
     }
 

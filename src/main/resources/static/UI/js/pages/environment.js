@@ -38,6 +38,7 @@ function fetchAllEnvironment(){
 				payload += '</tr>';
 			});
 			
+			if(payload != ""){
 			$(".envTableParent .paging_full_numbers").remove()
 
 			$('.envTable').dataTable().fnClearTable();
@@ -54,6 +55,7 @@ function fetchAllEnvironment(){
 			$(".selectdiv").css("padding-left","4rem")
 			$(".bucketList_wrapper").css("padding-left","4rem")	
 			$(".envTable").css("margin-left","2rem")	
+		}
 			
 		}
 	});

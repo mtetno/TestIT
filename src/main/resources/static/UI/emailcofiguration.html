@@ -45,7 +45,7 @@
         <!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="profile.html">Profile</a>
+          <a class="dropdown-item" href="profileAdmin.html">Profile</a>
           <a class="dropdown-item" href="login.html">Logout</a>
         </div>
       </div>
@@ -96,13 +96,13 @@
             <div class="row addRowData" style="display: none;">
               <div class="col-md-4 rowadjust">
                 <label>Company</label>
-                <select class="form-control border" name="company_name" id="company_name">
+                <!-- <select class="form-control border" name="company_name" id="company_name">
                   <option value="Select Company Name">Select Company Name</option>
                   <option value="SocioMotif LLC">SocioMotif LLC</option>
                   <option value="Sagitech Solution">Sagitech Solution</option>
                   <option value="Infosys">Infosys</option>
                   <option value="Test Pvt Ltd">Test Pvt Ltd</option>
-                </select>
+                </select> -->
               </div>
               <div class="col-md-4 mb-2 rowadjust">
                 <label>Hostname</label>
@@ -126,7 +126,7 @@
               </div>
             </div>
 
-            <div class="row updateRowData" style="display: none;">
+            <!-- <div class="row updateRowData" style="display: none;">
               <input type="hidden" name="uprowid" id="uprowid">
               <div class="col-md-4 rowadjust">
                 <label>Company</label>
@@ -158,9 +158,9 @@
                 <button class="btn btn-primary buttonlink1 updateemailBtn"><img src="img/save-24-px-1.png">SAVE</button>
                 <button class="btn btn-primary buttonlink1 btn-dark updatecancelRow"><img src="img/close-24-px.png">CANCEL</button>
               </div>
-            </div>
+            </div> -->
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv emailconfigTableParent" style="overflow-x: auto;">
               <table id="bucketList" class="emailconfigTable table selectdiv1">
                 <thead>
                   <tr>
@@ -211,7 +211,7 @@
             <div class="row addRowData" style="display: none;">
               <div class="col-md-5 mb-2 rowadjust">
                 <label>Company</label>
-                <select class="form-control border" name="application" id="application">
+                <select class="form-control border" name="company_name" id="company_name">
                    
                 </select>
               </div>
@@ -283,7 +283,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv TempconfigtableParent" style="overflow-x: auto;">
               <table id="bucketList" class="table selectdiv1 Tempconfigtable">
                 <thead>
                   <tr>
@@ -332,7 +332,7 @@
           <!-- Modal body -->
           <div class="modal-body model_body">
            <h4>Delete Email Configuration</h4>
-           <p>Do you want to delete Email Configuration?</p>
+           <p>Do you want to Delete Email Configuration?</p>
            <p id="deletedItem"></p>
          </div>
 
@@ -388,7 +388,7 @@
         <!-- Modal body -->
         <div class="modal-body model_body">
          <h4>Delete Template Configuration</h4>
-         <p>Do you want to delete Template Configuration?</p>
+         <p>Do you want to Delete Template Configuration?</p>
          <p id="deletedItem1"></p>
        </div>
 
@@ -449,6 +449,11 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment.js"></script>
+<script src="js/Libraries/jquery.dataTables.js"></script>
+<script src="js/Libraries/dataTables.fixedHeader.js"></script>
+<script src="js/Libraries/dataTables.tableTools.js"></script>
+<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/pages/emailconfiguration.js"></script>
 <script src="js/pages/common.js"></script>
@@ -456,7 +461,7 @@
   $(function(){
 
     fetchAllCompanies();
-    fetchAllApplications();
+    //fetchAllApplications();
     fetchAllEmailConfiguration();
     fetchAllEmailTemplates();
     /*---Jquery for Add row---*/
@@ -475,13 +480,13 @@
     /*---Jquery for Upadte Email Configuration---*/
 
     $("table.emailconfigTable span.updtRow").click(function(){
-      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
+      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".addRowData").slideToggle();
 
-      $(".updateRowData #uprowid").val($(this).closest("tr").index()+1);
-      $(".updateRowData #company_name1").val($(this).closest("tr").find("td:nth-child(2)").text());
-      $(".updateRowData #hostname1").val($(this).closest("tr").find("td:nth-child(3)").text());  
-      $(".updateRowData #email1").val($(this).closest("tr").find("td:nth-child(4)").text());  
-      $(".updateRowData #port1").val($(this).closest("tr").find("td:last-child").text());    
+      $(".addRowData #uprowid").val($(this).closest("tr").index()+1);
+      $(".addRowData #company_name1").val($(this).closest("tr").find("td:nth-child(2)").text());
+      $(".addRowData #hostname1").val($(this).closest("tr").find("td:nth-child(3)").text());  
+      $(".addRowData #email1").val($(this).closest("tr").find("td:nth-child(4)").text());  
+      $(".addRowData #port1").val($(this).closest("tr").find("td:last-child").text());    
 
       $("a.addRowBtn").css("pointer-events", "none");
       $("a.addRowBtn").css("opacity", ".65");
@@ -492,13 +497,13 @@
     /*---Jquery for Upadte Template Configuration---*/
 
     $("table.Tempconfigtable span.updtRow").click(function(){
-      $("table.Tempconfigtable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
+      $("table.Tempconfigtable span.updtRow").closest(".card-body").find(".addRowData").slideToggle();
 
-      $(".updateRowData #uprowid").val($(this).closest("tr").index()+1);
-      $(".updateRowData #company_nm1").val($(this).closest("tr").find("td:nth-child(3)").text());
-      $(".updateRowData #template_type1").val($(this).closest("tr").find("td:nth-child(4)").text());  
-      $(".updateRowData #text_area1").val($(this).closest("tr").find("td:nth-child(5)").text());  
-      $(".updateRowData #legends_of_tags1").val($(this).closest("tr").find("td:first-child i").attr('class'));    
+      $(".addRowData #uprowid").val($(this).closest("tr").index()+1);
+      $(".addRowData #company_nm1").val($(this).closest("tr").find("td:nth-child(3)").text());
+      $(".addRowData #template_type1").val($(this).closest("tr").find("td:nth-child(4)").text());  
+      $(".addRowData #text_area1").val($(this).closest("tr").find("td:nth-child(5)").text());  
+      $(".addRowData #legends_of_tags1").val($(this).closest("tr").find("td:first-child i").attr('class'));    
 
       $("a.addRowBtn").css("pointer-events", "none");
       $("a.addRowBtn").css("opacity", ".65");
@@ -523,7 +528,13 @@
       dataObj["email"] = dataEmail;
       dataObj["isDelete"] = 0;
       saveEmailConfiguration(dataObj);
-      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".updateRowData").slideToggle();
+      $("table.emailconfigTable span.updtRow").closest(".card-body").find(".addRowData").slideToggle();
+
+      $("#company_name").val(0);
+      $("#hostname").val("");
+      $("#email").val("");
+      $("#port").val("");
+      $("#security_protocol").val("");
     });
 
     /*---Jquery for Upadte Email Configuration---*/
@@ -544,13 +555,21 @@
       $("a.addRowBtn").css("opacity", "");
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow").attr("disabled", false);
-      $(this).closest(".updateRowData").slideUp();
+      $(this).closest(".addRowData").slideUp();
+
+      
+      $("#company_name1").val("");
+      $("#hostname1").val("");
+      $("#email1").val("");
+      $("#port1").val("");
+      $("#security_protocol1").val("");
+      
     });
 
     /*---Jquery for Save Template Configuration---*/
 
     $("button.addTempconfigBtn").click(function(){
-      var dataAppl = $("#application").val();
+      var dataAppl = $("#company_name").val();
       var urlEnvironment = $("#url_environment").val();
       var className = $("#class_name").val();
       var dataTags = $("#legend_of_tag").val();
@@ -571,6 +590,12 @@
       dataObj["isDelete"] = 0;
       
       saveEmailTemplate(dataObj);
+
+      $("#company_name").val(0);
+      $("#url_environment").val(0);
+      $("#class_name").val("");
+      $("#legend_of_tag").val(0);
+
 
       $("a.addRowBtn").css("pointer-events", "");
       $("a.addRowBtn").css("opacity", "");
@@ -597,7 +622,7 @@
       $("a.addRowBtn").css("opacity", "");
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow").attr("disabled", false);
-      $(this).closest(".updateRowData").slideUp();
+      $(this).closest(".addRowData").slideUp();
     });
 
     
@@ -618,7 +643,7 @@
       $("a.addRowBtn").css("opacity", "");
       $("#deleteRow").attr("disabled", false);
       $("#deleteRow1").attr("disabled", false);
-      $(this).closest(".updateRowData").slideUp();
+      $(this).closest(".addRowData").slideUp();
     });
 
 
@@ -632,11 +657,11 @@
      
      
 
-    $(document).on("click", "#yesbtn", function(){
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-      });     
-    });
+    // $(document).on("click", "#yesbtn", function(){
+    //   $("table tbody .subCB input:checked").each(function(){
+    //     $(this).closest("tr").remove();
+    //   });     
+    // });
 
     /*---Jquery for delete Environment URL's row---*/
 
@@ -645,7 +670,7 @@
     $("#deleteRow").click(function(e){
 				e.preventDefault();
 		
-				$("table tbody .subCB input:checked").each(function(){
+				$(".emailconfigTable  tbody .subCB input:checked").each(function(){
           subId = $(this).attr('data-value');
 				if(str!='')
 					str += ", "+$(this).closest("tr").find("td:nth-child(2)").text();
@@ -654,9 +679,10 @@
 				});
 
         $("#deletedItem").text(str);
-        $("#myModal").modal();
 
-				
+        if($(".emailconfigTable  tbody .subCB input:checked").length > 0){
+          $("#myModal").modal();
+        }
 			});
 
 
@@ -672,34 +698,40 @@
 				});
 
         $("#deletedItem1").text(str);
-        $("#myModal1").modal();
 
+        if($(".Tempconfigtable  tbody .subCB input:checked").length > 0){
+          $("#myModal1").modal();
+        }
 				
 			});
 
 
       $(document).on("click", "#myModal #yesbtn", function(){
-        if(str.indexOf(",") > 0){
-					deleteEmailConfiguration();
-				}else{
-					deleteEmailConfigurations(subId);
+        $('.emailconfigTable  tbody .subCB input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteEmailConfigurations($(val).attr("data-value"));     
+					}
 				}
+				}); 
       });
 
     $(document).on("click", "#myModal1 #yesbtn", function(){
-   
-        if(str.indexOf(",") > 0){
-					deleteEmailTemplates();
-				}else{
-					deleteEmailTemplate(subId);
+      $('.Tempconfigtable tbody .subCB input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteEmailTemplate($(val).attr("data-value"));     
+					}
 				}
+				}); 
+
     });
 
-    $(document).on("click", "#yesbtn", function(){
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-      });     
-    });
+    // $(document).on("click", "#yesbtn", function(){
+    //   $("table tbody .subCB input:checked").each(function(){
+    //     $(this).closest("tr").remove();
+    //   });     
+    // });
 
     /*---Jquery for toggle section on click caret-down icon---*/
 

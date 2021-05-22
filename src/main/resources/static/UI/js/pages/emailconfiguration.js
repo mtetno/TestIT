@@ -64,9 +64,10 @@ function fetchAllEmailConfiguration() {
 		},
 		success: function (data) {
 			$(".emailconfigTable  tbody").html("");
+		    var str = "";
 			data.map((value) => {
 				
-				var str = `<tr>
+				str =  str + `<tr>
 				<td scope="col" class="bucketcheck">
 				  <label class="main subCB">
 					<input data-value="`+value.id+`" type="checkbox"> 
@@ -78,10 +79,25 @@ function fetchAllEmailConfiguration() {
 				<td >`+value.email+`</td>
 				<td>`+value.port+`</td>
 			  </tr>`;
- 
-				$(".emailconfigTable  tbody").prepend(str);
 			 
 			});
+
+			if(str != ""){
+			$(".emailconfigTableParent .paging_full_numbers").remove();
+
+			$('.emailconfigTable').dataTable().fnClearTable();
+    		$('.emailconfigTable').dataTable().fnDestroy();
+			
+			$(".emailconfigTable tbody").html(str);
+			$('.emailconfigTable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
+			
 		}
 	});
 }
@@ -146,8 +162,9 @@ function fetchAllEmailTemplates() {
 		},
 		success: function (data) {
 			$(".Tempconfigtable  tbody").html("");
+			var str = "";
 			data.map((value) => {
-				var str = `<tr>
+				str = str + `<tr>
                     <td><i class="`+value.legend+`"></i></td>
                     <td scope="col" class="bucketcheck">
                       <label class="main subCB">
@@ -161,10 +178,24 @@ function fetchAllEmailTemplates() {
                     <td >-</td>
                     <td >Report Issue</td>
                   </tr>`;
- 
-				$(".Tempconfigtable  tbody").prepend(str);
 			 
 			});
+
+			if(str != ""){
+			$(".TempconfigtableParent .paging_full_numbers").remove();
+
+			$('.Tempconfigtable').dataTable().fnClearTable();
+    		$('.Tempconfigtable').dataTable().fnDestroy();
+			
+			$(".Tempconfigtable tbody").html(str);
+			$('.Tempconfigtable').DataTable({
+				"lengthChange": false,
+				"searching": false,   // Search Box will Be Disabled
+				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+				"info": false,
+				"pagingType": "full_numbers"
+			});
+		}
 		}
 	});
 }

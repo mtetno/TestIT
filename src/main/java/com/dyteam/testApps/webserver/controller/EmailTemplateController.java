@@ -22,16 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/emailtemplate")
 public class EmailTemplateController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     EmailTemplateRepository emailTemplateRepository;
-     
+
     @PostMapping("/save")
-    public EmailTemplates save(@RequestBody EmailTemplates emailTemplates, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public EmailTemplates save(@RequestBody EmailTemplates emailTemplates,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save EmailConfigurations = " + emailTemplates);
         emailTemplates.setAddedBy(loggedInUser.getUserId());
-       return emailTemplateRepository.save(emailTemplates);
+        return emailTemplateRepository.save(emailTemplates);
     }
 
     @DeleteMapping(value = "/deleteAll")
@@ -41,12 +42,12 @@ public class EmailTemplateController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "id") Long id) {
-        logger.info("id"+id);
-        emailTemplateRepository.updateByTemplateId(loggedInUser.getUserId(),id);
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
+        logger.info("id" + id);
+        emailTemplateRepository.updateByTemplateId(loggedInUser.getUserId(), id);
         return true;
     }
-    
+
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllEmailTemplates() {
         logger.info("Inside getAllEmailTemplates");

@@ -42,7 +42,7 @@ function fetchAllTestBucket() {
 		success: function (data) {
 			$("table.bucketListTable tbody").html("");
 			$("#executeSummary.bucketListTable tbody").html("");
-			var str,summaryStr;
+			var str="",summaryStr="";
 			data.map((value) => {
                 str += `
                 <tr>
@@ -78,7 +78,7 @@ function fetchAllTestBucket() {
 		
 				
 			});
-
+			if(str != ""){
 			$('#mainContainer .bucketListTable').dataTable().fnClearTable();
     		$('#mainContainer .bucketListTable').dataTable().fnDestroy();
 			$("#mainContainer .bucketListTable tbody").html(str);
@@ -89,6 +89,7 @@ function fetchAllTestBucket() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}
 			$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
 
 			postTestBucketFetch();

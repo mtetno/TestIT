@@ -47,7 +47,7 @@
         <!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="profile.html">Profile</a>
+          <a class="dropdown-item" href="profileAdmin.html">Profile</a>
           <a class="dropdown-item" href="login.html">Logout</a>
         </div>
       </div>
@@ -96,7 +96,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" style="overflow-x: auto;">
+            <div class="row selectdiv" class="subscriptionTableParent" style="overflow-x: auto;">
               <table id="subscriptionsList" class="subscriptionTable table selectdiv1">
                 <thead>
                   <tr>
@@ -499,7 +499,7 @@
               <!-- <label class="subtitle">Applications</label> -->
               <!--Delete row-->
               <button class="btn btn-primary float-right buttonlink" id="deleteRow1"><img src="img/delete-24-px.png">DELETE</button>
-              <a href="#" class="addusetbtn addRowBtn"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+              <a href="#" class="addusetbtn addRowBtnApp"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
             </div>
           </div>
 
@@ -520,7 +520,7 @@
             </div>
           </div>
 
-          <div class="row selectdiv" style="overflow-x: auto;">
+          <div class="row selectdiv ApptableParent" style="overflow-x: auto;">
             <table id="bucketList" class="table selectdiv1 Apptable">
               <thead>
                 <tr>
@@ -613,7 +613,7 @@
               <!-- <label class="subtitle">Application Paths</label> -->
               <!--Delete row-->
               <button class="btn btn-primary float-right buttonlink" id="deleteRow2"><img src="img/delete-24-px.png">DELETE</button>
-              <a href="#" class="addusetbtn addRowBtn"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+              <a href="#" class="addusetbtn addRowBtnPaths"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
             </div>
           </div>
 
@@ -702,7 +702,7 @@
             </div>
           </div>
 
-          <div class="row selectdiv" style="overflow-x: auto;">
+          <div class="row selectdiv apppathtableParent" style="overflow-x: auto;">
             <table id="bucketList" class="table selectdiv1 apppathtable">
               <thead>
                 <tr>
@@ -845,6 +845,11 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/moment.js"></script>
+<script src="js/Libraries/jquery.dataTables.js"></script>
+<script src="js/Libraries/dataTables.fixedHeader.js"></script>
+<script src="js/Libraries/dataTables.tableTools.js"></script>
+<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
+<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/pages/common.js"></script>
 <script src="js/pages/subscription.js"></script>
@@ -874,8 +879,6 @@
     var deleteStr = '';
     $("#deleteRow").click(function(e){
 				e.preventDefault();
- 
-				
 				$("table tbody .subCB input:checked").each(function(){
         deleteId = $(this).attr('data-value');
 				if(deleteStr!='')
@@ -885,7 +888,10 @@
 				});
 
 				$("#deletedItem").text(deleteStr);
-        $("#myModal").modal();
+
+        if($("table  tbody .subCB input:checked").length > 0){
+          $("#myModal").modal();
+        }
  
 			});
 
@@ -913,10 +919,23 @@
     
     /*---Jquery for Add row---*/
 
-    $("a.addRowBtn").click(function(e){
+    $("a.addRowBtnPaths").click(function(e){
       e.preventDefault();
 
-      $("a.addRowBtn").closest(".card-body").find(".addRowData").slideToggle();
+      $("a.addRowBtnPaths").closest(".card-body").find(".addRowData").slideToggle();
+      
+
+      $(this).css("pointer-events", "none");
+      $(this).css("opacity", ".65");
+      $("#deleteRow").attr("disabled", true);
+      $("#deleteRow1").attr("disabled", true);
+      $("#deleteRow2").attr("disabled", true);
+    });
+
+    $("a.addRowBtnApp").click(function(e){
+      e.preventDefault();
+
+      $("a.addRowBtnApp").closest(".card-body").find(".addRowData").slideToggle();
       
 
       $(this).css("pointer-events", "none");
@@ -942,8 +961,8 @@
       $(".updateRowData #selenium_home1").val($(this).closest("tr").find("td:nth-child(3)").text());  
       $(".updateRowData #test_data_home1").val($(this).closest("tr").find("td:nth-child(4)").text());      
 
-      $("a.addRowBtn").css("pointer-events", "none");
-      $("a.addRowBtn").css("opacity", ".65");
+      $("a.addRowBtnPaths").css("pointer-events", "none");
+      $("a.addRowBtnPaths").css("opacity", ".65");
       $("#deleteRow").attr("disabled", true);
       $("#deleteRow1").attr("disabled", true);
       $("#deleteRow2").attr("disabled", true);
@@ -1127,8 +1146,8 @@
       $(".apppathtable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(3)").text(dataSeleniumhome);
       $(".apppathtable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(4)").text(dataTestdata);
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
+      $("a.addRowBtnPaths").css("pointer-events", "");
+      $("a.addRowBtnPaths").css("opacity", "");
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow").attr("disabled", false);
        $("#deleteRow2").attr("disabled", false);
@@ -1154,8 +1173,8 @@
 				dataObj["applicationName"] = dataAppname;
 
       saveApplication(dataObj);
-      $("a.addRowBtn").css("pointer-events", "");
-			$("a.addRowBtn").css("opacity", "");
+      $("a.addRowBtnApp").css("pointer-events", "");
+			$("a.addRowBtnApp").css("opacity", "");
 			$("#deleteRow2").attr("disabled", false);
 			$("#deleteRow").attr("disabled", false);
 			$("#deleteRow1").attr("disabled", false);
@@ -1223,10 +1242,10 @@
       $("#batch_file_home").val("");
       
       saveApplicationPaths(dataObj);
-      $("a.addRowBtn").closest(".card-body").find(".addRowData").slideToggle();
+      $("a.addRowBtnPaths").closest(".card-body").find(".addRowData").slideToggle();
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
+      $("a.addRowBtnPaths").css("pointer-events", "");
+      $("a.addRowBtnPaths").css("opacity", "");
       $("#deleteRow").attr("disabled", false);
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow2").attr("disabled", false);
@@ -1303,8 +1322,10 @@
 
     $("button.cancelRow").click(function(){
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
+      $("a.addRowBtnPaths").css("pointer-events", "");
+      $("a.addRowBtnPaths").css("opacity", "");
+      $("a.addRowBtnApp").css("pointer-events", "");
+      $("a.addRowBtnApp").css("opacity", "");
       $("#deleteRow").attr("disabled", false);
       $("#deleteRow1").attr("disabled", false);
       $("#deleteRow2").attr("disabled", false);
@@ -1314,8 +1335,10 @@
 
     $("button.updatecancelRow").click(function(){
 
-      $("a.addRowBtn").css("pointer-events", "");
-      $("a.addRowBtn").css("opacity", "");
+      $("a.addRowBtnPaths").css("pointer-events", "");
+      $("a.addRowBtnPaths").css("opacity", "");
+      $("a.addRowBtnApp").css("pointer-events", "");
+      $("a.addRowBtnApp").css("opacity", "");
       $("#deleteRow").attr("disabled", false);
       $("#deleteRow1").attr("disabled", false);
       $(this).closest(".updateRowData").slideUp();
@@ -1333,14 +1356,14 @@
      
 
     $(document).on("click", "#myModal #yesbtn", function(){
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-        if(deleteStr.indexOf(",") > 0){
-					deleteSubscriptions();
-				}else{
-					deleteSubscription(deleteId);
+      $('table tbody .subCB input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteSubscription($(val).attr("data-value"));     
+					}
 				}
-      });     
+				}); 
+     
     });
 
     /*---Jquery for delete Application row---*/

@@ -540,7 +540,10 @@ $(document).ready(function() {
 				});
 
 				$("#deletedItem").text(str);
-				$("#myModal").modal();
+
+				if($("table  tbody .subCB input:checked").length > 0){
+					$("#myModal").modal();
+				 }
 			});
 
 			$(document).on("click", "#yesbtn", function(){
