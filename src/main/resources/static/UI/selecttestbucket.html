@@ -141,7 +141,7 @@
 		        <!-- Modal body -->
 		        <div class="modal-body model_body">
 		          	 <h4>Delete Test Bucket</h4>
-		             <p>Do you want to delete Test Bucket?</p>
+		             <p>Do you want to Delete Test Bucket?</p>
 		             <p id="deletedItem"></p>
 		        </div>
 		        
@@ -170,7 +170,7 @@
 		        <!-- Modal body -->
 		        <div class="modal-body model_body">
 		          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-		          <p>Test Bucket deleted Successfully.</p>
+		          <p>Test Bucket Deleted Successfully.</p>
 		        </div>
 		        
 		        <!-- Modal footer -->
@@ -446,7 +446,7 @@
 			var str = '';
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
-				
+				str = '';
 				$("table tbody .subCB input:checked").each(function(){
 				testBucketId = $(this).attr('data-value');
 				if(str!='')

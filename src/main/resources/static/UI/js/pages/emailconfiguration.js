@@ -96,6 +96,9 @@ function fetchAllEmailConfiguration() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.emailconfigTable').dataTable().fnClearTable();
+			$('.emailconfigTable').dataTable().fnDestroy();
 		}
 			
 		}
@@ -195,6 +198,9 @@ function fetchAllEmailTemplates() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.Tempconfigtable').dataTable().fnClearTable();
+			$('.Tempconfigtable').dataTable().fnDestroy();
 		}
 		}
 	});

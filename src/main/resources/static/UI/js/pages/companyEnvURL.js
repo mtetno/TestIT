@@ -454,6 +454,9 @@ function displayAllEnvironmentUrls() {
 				$(".selectdiv").css("padding-left","4rem")
 				$(".bucketList_wrapper").css("padding-left","4rem")	
 				$(".Urltable").css("margin-left","2rem")	
+			}else{
+				$('.Urltable').dataTable().fnClearTable();
+				$('.Urltable').dataTable().fnDestroy();
 			}
 				 
 		}
@@ -531,6 +534,9 @@ function displayAllAccessRoles() {
 			$(".selectdiv").css("padding-left","4rem")
 			$(".bucketList_wrapper").css("padding-left","4rem")	
 			$(".Roletable").css("margin-left","2rem")	
+		}else{
+			$('.Roletable').dataTable().fnClearTable();
+			$('.Roletable').dataTable().fnDestroy();
 		}
 
 		}

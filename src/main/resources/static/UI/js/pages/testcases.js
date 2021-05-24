@@ -65,6 +65,9 @@ function displayTestcases(){
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.testmanagementtable').dataTable().fnClearTable();
+    		$('.testmanagementtable').dataTable().fnDestroy();
 		}
 			// $(".selectdiv").css("padding-left","4rem")
 			// $(".bucketList_wrapper").css("padding-left","4rem")	

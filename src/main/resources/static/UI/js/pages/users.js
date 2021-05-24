@@ -530,7 +530,7 @@ $(document).ready(function() {
 			var deleteId = 0;
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
-				
+				str = '';
 				$("table tbody .subCB input:checked").each(function(){
 					deleteId = $(this).attr('data-value');
 				if(str!='')

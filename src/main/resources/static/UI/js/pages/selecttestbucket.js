@@ -89,6 +89,9 @@ function fetchAllTestBucket() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('#mainContainer .bucketListTable').dataTable().fnClearTable();
+    		$('#mainContainer .bucketListTable').dataTable().fnDestroy();
 		}
 			$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
 

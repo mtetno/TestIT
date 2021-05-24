@@ -273,7 +273,7 @@
         <!-- Modal body -->
         <div class="modal-body model_body">
           <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-          <p>Test Methods deleted Successfully.</p>
+          <p>Test Methods Deleted Successfully.</p>
         </div>
 
         <!-- Modal footer -->
@@ -445,7 +445,7 @@
     var testMethodId = 0;
     $("#deleteRow").click(function(e){
       e.preventDefault();
-      var str = '';
+      str = '';
       $("table tbody .subCB input:checked").each(function(){
         testMethodId = $(this).attr('data-value');
         if(str!='')

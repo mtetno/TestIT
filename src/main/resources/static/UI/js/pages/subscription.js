@@ -243,6 +243,9 @@ function fetchAllSubscriptions() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.subscriptionTable').dataTable().fnClearTable();
+    		$('.subscriptionTable').dataTable().fnDestroy();
 		}
 
 			updateRowListener();
@@ -293,6 +296,9 @@ function fetchAllApplications() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.Apptable').dataTable().fnClearTable();
+    		$('.Apptable').dataTable().fnDestroy();
 		}
 		}
 	});
@@ -340,6 +346,9 @@ function fetchAllApplicationPaths() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.apppathtable').dataTable().fnClearTable();
+    		$('.apppathtable').dataTable().fnDestroy();
 		}
 
 			$("table.apppathtable tbody tr td:nth-child(2)").click(function(){

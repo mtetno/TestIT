@@ -97,6 +97,9 @@ function fetchAllTestMethod() {
 				"info": false,
 				"pagingType": "full_numbers"
 			});
+		}else{
+			$('.Testmethodtable').dataTable().fnClearTable();
+			$('.Testmethodtable').dataTable().fnDestroy();
 		}
 		}
 	});

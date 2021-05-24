@@ -96,7 +96,7 @@
               </div>
             </div>
 
-            <div class="row selectdiv" class="subscriptionTableParent" style="overflow-x: auto;">
+            <div class="selectdiv" class="subscriptionTableParent" style="overflow-x: auto;">
               <table id="subscriptionsList" class="subscriptionTable table selectdiv1">
                 <thead>
                   <tr>
@@ -446,13 +446,13 @@
             <!-- Modal body -->
             <div class="modal-body model_body">
              <h4>Delete Subscription</h4>
-             <p>Do you want to delete Subscription</p>
+             <p>Do you want to Delete Subscription</p>
              <p id="deletedItem"></p>
            </div>
 
            <!-- Modal footer -->
            <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
+            <button type="button"  id="noButton"  class="btn btn-dark" data-dismiss="modal">NO</button>
             <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
           </div>
 
@@ -562,13 +562,13 @@
           <!-- Modal body -->
           <div class="modal-body model_body">
             <h4>Delete Application</h4>
-            <p>Do you want to delete Application?</p>
+            <p>Do you want to Delete Application?</p>
             <p id="deletedItem1"></p>
           </div>
 
           <!-- Modal footer -->
           <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
+            <button type="button" id="noButton" class="btn btn-dark" data-dismiss="modal">NO</button>
             <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalAppSucess">YES</button>
           </div>
 
@@ -779,13 +779,13 @@
         <!-- Modal body -->
         <div class="modal-body model_body">
          <h4>Delete Application Paths</h4>
-         <p>Do you want to delete Application Paths?</p>
+         <p>Do you want to Delete Application Paths?</p>
          <p id="deletedItem2"></p>
        </div>
 
        <!-- Modal footer -->
        <div class="modal-footer btnfooter">
-        <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
+        <button type="button" id="noButton" class="btn btn-dark" data-dismiss="modal">NO</button>
         <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess2">YES</button>
       </div>
 
@@ -869,6 +869,7 @@
 
   
 
+
     /*---Jquery for Testing Environment select---*/
 
     $("#tabs li").click(function(){
@@ -878,6 +879,7 @@
     var deleteId = 0;
     var deleteStr = '';
     $("#deleteRow").click(function(e){
+        deleteStr = "";
 				e.preventDefault();
 				$("table tbody .subCB input:checked").each(function(){
         deleteId = $(this).attr('data-value');
@@ -1370,7 +1372,7 @@
 
     $("#deleteRow1").click(function(e){
       e.preventDefault();
-    
+      deleteStr = "";
       $("table tbody .subCB input:checked").each(function(){
         deleteId = $(this).attr('data-value');
         if(deleteStr!='')
@@ -1384,6 +1386,7 @@
     });
 
     $(document).on("click", "#myModalAppdlt #yesbtn", function(){
+      deleteStr = "";
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
         if(deleteStr.indexOf(",") > 0){
@@ -1412,6 +1415,7 @@
     });
 
     $(document).on("click", "#myModal2 #yesbtn", function(){
+      deleteStr = "";
       $("table tbody .subCB input:checked").each(function(){
         $(this).closest("tr").remove();
         if(deleteStr.indexOf(",") > 0){
@@ -1445,6 +1449,8 @@
         });
       }
     });
+
+   
   </script>
 </body>
 </html>

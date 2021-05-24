@@ -55,6 +55,9 @@ function fetchAllEnvironment(){
 			$(".selectdiv").css("padding-left","4rem")
 			$(".bucketList_wrapper").css("padding-left","4rem")	
 			$(".envTable").css("margin-left","2rem")	
+		}else{
+			$('.envTable').dataTable().fnClearTable();
+			$('.envTable').dataTable().fnDestroy();
 		}
 			
 		}

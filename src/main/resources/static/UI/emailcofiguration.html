@@ -96,13 +96,13 @@
             <div class="row addRowData" style="display: none;">
               <div class="col-md-4 rowadjust">
                 <label>Company</label>
-                <!-- <select class="form-control border" name="company_name" id="company_name">
+                <select class="form-control border" name="company_name" id="company_name">
                   <option value="Select Company Name">Select Company Name</option>
                   <option value="SocioMotif LLC">SocioMotif LLC</option>
                   <option value="Sagitech Solution">Sagitech Solution</option>
                   <option value="Infosys">Infosys</option>
                   <option value="Test Pvt Ltd">Test Pvt Ltd</option>
-                </select> -->
+                </select>
               </div>
               <div class="col-md-4 mb-2 rowadjust">
                 <label>Hostname</label>
@@ -417,7 +417,7 @@
       <!-- Modal body -->
       <div class="modal-body model_body">
         <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-        <p>Template Configuration deleted Successfully.</p>
+        <p>Template Configuration Deleted Successfully.</p>
       </div>
 
       <!-- Modal footer -->
@@ -668,6 +668,7 @@
     var str = '';
 		var subId = 0;
     $("#deleteRow").click(function(e){
+        str = '';
 				e.preventDefault();
 		
 				$(".emailconfigTable  tbody .subCB input:checked").each(function(){

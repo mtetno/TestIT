@@ -394,7 +394,7 @@
 			        <!-- Modal body -->
 			        <div class="modal-body model_body">
 			          	 <h4>Delete Test Case</h4>
-			             <p>You are about to delete Test Case.</p>
+			             <p>You are about to Delete Test Case.</p>
 			             <p>Are you sure you want to proceed?</p>
 			             <!-- <p id="deletedItem"></p> -->
 			        </div>
@@ -616,7 +616,8 @@ $("#userMenu span").text(uname);
 		      var dataTestname = $("#test_case_name1").val();
 		      var dataEnvironment = $("#environment1").val();
 		      var dataApplication = $("#application1").val();
-		      var dataAutStat = $("#automation_status1").val();
+		      
+			  var dataAutStat = $("#automation_status1").val();
 
 
 		      $(".testmanagementtable tbody tr:nth-child("+rowIndx+")").find("td:nth-child(2)").html('<span class="updtRow">'+dataTestname+'</span>');
@@ -633,7 +634,7 @@ $("#userMenu span").text(uname);
 			var testcaseId = 0;
 			$("#deleteRow").click(function(e){
 				e.preventDefault();
-				
+				str = '';
 				$("table tbody .subCB input:checked").each(function(){
 				testcaseId = $(this).attr('data-value');
 				if(str!='')
