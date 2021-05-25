@@ -4,7 +4,17 @@ import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.Subscriptions;
 import com.dyteam.testApps.webserver.entity.User;
+import com.dyteam.testApps.webserver.repository.AccessRoleRepository;
+import com.dyteam.testApps.webserver.repository.ApplicationPathsRepository;
+import com.dyteam.testApps.webserver.repository.ApplicationRepository;
+import com.dyteam.testApps.webserver.repository.EmailConfigurationsRepository;
+import com.dyteam.testApps.webserver.repository.EmailTemplateRepository;
+import com.dyteam.testApps.webserver.repository.EnvironmentRepository;
+import com.dyteam.testApps.webserver.repository.ExecutionDetailsRepository;
 import com.dyteam.testApps.webserver.repository.SubscriptionsRepository;
+import com.dyteam.testApps.webserver.repository.TestBucketRepository;
+import com.dyteam.testApps.webserver.repository.TestMethodRespository;
+import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.repository.UserRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
@@ -35,6 +45,36 @@ public class SubscriptionsController {
 
     @Autowired
     SubscriptionsRepository subscriptionsRepository;
+
+    @Autowired
+    AccessRoleRepository accessRoleRepository;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    ApplicationPathsRepository applicationPathsRepository;
+
+    @Autowired
+    EmailConfigurationsRepository emailConfigurationsRepository;
+
+    @Autowired
+    EmailTemplateRepository emailTemplateRepository;
+
+    @Autowired
+    EnvironmentRepository environmentRepository;
+
+    @Autowired
+    ExecutionDetailsRepository executionDetailsRepository;
+
+    @Autowired
+    TestBucketRepository testBucketRepository;
+
+    @Autowired
+    TestMethodRespository testMethodRespository;
+
+    @Autowired
+    TestcasesRepository testcasesRepository;
 
     @PostMapping("/save")
     public Subscriptions save(@RequestBody Subscriptions subscriptions,
@@ -74,16 +114,21 @@ public class SubscriptionsController {
         return true;
     }
 
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        subscriptionsRepository.updateAll(loggedInUser.getUserId());
-        return true;
-    }
-
     @DeleteMapping(value = "/delete/{id}")
     public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
         logger.info("id" + id);
-        subscriptionsRepository.updateBySubscriptionId(loggedInUser.getUserId(), id);
+        subscriptionsRepository.deleteById(id);
+        accessRoleRepository.deleteByCompanyId(id);
+        applicationRepository.deleteByCompanyId(id);
+        userRepository.deleteByCompanyId(id);
+        applicationPathsRepository.deleteByCompanyId(id);
+        emailConfigurationsRepository.deleteByCompanyId(id);
+        emailTemplateRepository.deleteByCompanyId(id);
+        environmentRepository.deleteByCompanyId(id);
+        executionDetailsRepository.deleteByCompanyId(id);
+        testBucketRepository.deleteByCompanyId(id);
+        testMethodRespository.deleteByCompanyId(id);
+        testcasesRepository.deleteByCompanyId(id);
         return true;
     }
 

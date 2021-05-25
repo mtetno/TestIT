@@ -58,17 +58,11 @@ public class TestBucketController {
         return savedBucket;
     }
 
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        testBucketRepository.updateAll(loggedInUser.getUserId());
-        return true;
-    }
-
     @DeleteMapping(value = "/delete/{testBucketId}")
     public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,
             @PathVariable(value = "testBucketId") Long testBucketId) {
         logger.info("testBucketId" + testBucketId);
-        testBucketRepository.updateByTestBucketId(loggedInUser.getUserId(), testBucketId);
+        testBucketRepository.deleteById(testBucketId);
         return true;
     }
 

@@ -14,15 +14,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestBucketRepository extends CrudRepository<TestBucket, Long> {
-	@Transactional
-	@Modifying
-	@Query("update TestBucket set is_delete = 1 where added_by = :userId")
-	void updateAll(Long userId);
-
-	@Transactional
-	@Modifying
-	@Query("update TestBucket set is_delete = 1 where added_by = :userId AND id = :id")
-	void updateByTestBucketId(Long userId, Long id);
 
 	@Modifying
 	@Transactional
@@ -49,5 +40,9 @@ public interface TestBucketRepository extends CrudRepository<TestBucket, Long> {
 	@Transactional
 	@Query(value = "update test_buckets set name = :bucketName, environment_id = :environmentId, user_role_id = :userRoleId where id = :bucketId ", nativeQuery = true)
 	public void updateBucket(Integer bucketId, String bucketName, Long environmentId, Long userRoleId);
+
+	@Modifying
+	@Transactional
+	Long deleteByCompanyId(Long companyId);
 
 }

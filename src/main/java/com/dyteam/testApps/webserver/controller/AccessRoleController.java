@@ -83,21 +83,20 @@ public class AccessRoleController {
    * @return
    */
   @PostMapping("/save")
-  public boolean save(@RequestBody AccessRole executionUser,
-      @AuthenticationPrincipal final LoginUser loggedInUser) {
+  public boolean save(@RequestBody AccessRole executionUser, @AuthenticationPrincipal final LoginUser loggedInUser) {
     logger.info("save executionUser = " + executionUser);
     executionUser.setCompanyId(loggedInUser.getCompanyId());
     executionUser.setAddedBy(loggedInUser.getUserId());
     String rawPassword = executionUser.getPassword();
     String encodedPassword = subscriptionsRepository.getEncodedPassword(rawPassword, key);
     executionUser.setPassword(encodedPassword);
-    Iterable<AccessRole> executionUsers = executionUserRepo.findAllByName(loggedInUser.getUserId(), 
+    Iterable<AccessRole> executionUsers = executionUserRepo.findAllByName(loggedInUser.getUserId(),
         executionUser.getName());
     boolean isNew = Lists.newArrayList(executionUsers).size() > 0 ? false : true;
-    if(isNew){
+    if (isNew) {
       executionUserRepo.save(executionUser);
-    }else{
-      executionUserRepo.updateByName(loggedInUser.getUserId(),executionUser.getName());
+    } else {
+      executionUserRepo.updateByName(loggedInUser.getUserId(), executionUser.getName());
     }
     return true;
   }
@@ -105,13 +104,8 @@ public class AccessRoleController {
   @DeleteMapping("/{executionId}")
   public Boolean delete(@PathVariable(value = "executionId") Long executionId,
       @AuthenticationPrincipal final LoginUser loggedInUser) {
-    executionUserRepo.updateById(loggedInUser.getUserId(), executionId);
+    executionUserRepo.deleteById(executionId);
     return true;
   }
 
-  @DeleteMapping("/deleteAll")
-  public Boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-    executionUserRepo.updateAll(loggedInUser.getUserId());
-    return true;
-  }
 }

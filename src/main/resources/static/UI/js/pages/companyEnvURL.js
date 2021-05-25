@@ -295,24 +295,7 @@ function saveEnvironment(dataObj) {
 	});
 }
 
-
-
-function deleteAllEnvironment() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/environment/deleteAllEnvionments/" + readCookie("TAuid"),
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllEnvironment();
-		}
-	});
-}
+ 
 
 function deleteSelectedEnvironment(environmentName) {
 	$.ajax({
@@ -463,21 +446,7 @@ function displayAllEnvironmentUrls() {
 	});
 }
 
-// function deleteAllEnvironmentUrls() {
-// 	$.ajax({
-// 		type: 'DELETE',
-// 		contentType: 'application/json',
-// 		dataType: 'json',
-// 		url: base_url + "/companyEnvironUrl/deleteAllEnvionmentUrls",
-// 		beforeSend: function (xhr) {
-// 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-// 		},
-// 		success: function () {
-// 			displayAllEnvironmentUrls();
-// 		}
-// 	});
-// }
-
+ 
 function deleteSelectedEnvironmentUrl(environmentURLId) {
 	$.ajax({
 		type: 'DELETE',

@@ -22,31 +22,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/testMethod")
 public class TestMethodsConstroller {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     TestMethodRespository testMethodRespository;
-     
+
     @PostMapping("/save")
-    public TestMethods save(@RequestBody TestMethods inputTestMethod, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public TestMethods save(@RequestBody TestMethods inputTestMethod,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save testcases = " + inputTestMethod);
         inputTestMethod.setAddedBy(loggedInUser.getUserId());
-       return testMethodRespository.save(inputTestMethod);
-    }
-
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        testMethodRespository.updateAll(loggedInUser.getUserId());
-        return true;
+        return testMethodRespository.save(inputTestMethod);
     }
 
     @DeleteMapping(value = "/delete/{testMethodId}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "testMethodId") Long testMethodId) {
-        logger.info("testMethodId"+testMethodId);
-        testMethodRespository.updateByTestcaseId(loggedInUser.getUserId(),testMethodId);
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,
+            @PathVariable(value = "testMethodId") Long testMethodId) {
+        logger.info("testMethodId" + testMethodId);
+        testMethodRespository.deleteById(testMethodId);
         return true;
     }
-    
+
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllTestMethods() {
         logger.info("Inside getAllTestcases");

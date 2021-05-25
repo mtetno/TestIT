@@ -25,22 +25,7 @@ function saveTestMethods(dataObj) {
 	});
 }
 
-function deleteAllTestMethods() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/testMethod/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllTestMethod();
-		}
-	});
-}
+ 
 
 function deleteTestMethod(id) {
 	$.ajax({

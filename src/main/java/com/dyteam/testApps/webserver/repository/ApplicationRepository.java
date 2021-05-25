@@ -26,21 +26,12 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 
 	Iterable<Application> findAllByCompanyId(Long companyId);
 
-	void deleteByCompanyId(Long companyId);
-
 	@Modifying
 	@Transactional
 	@Query(value = "SELECT a.*,b.company_name from application a join subscriptions b where a.company_id = b.id AND a.is_delete = 0", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 
-	@Transactional
 	@Modifying
-	@Query("update Application set is_delete = 1 where added_by = :userId")
-	void updateAll(Long userId);
-
 	@Transactional
-	@Modifying
-	@Query("update Application set is_delete = 1 where added_by = :userId AND application_id = :id")
-	void updateByApplicationId(Long userId, Long id);
-
+	Long deleteByCompanyId(Long companyId);
 }

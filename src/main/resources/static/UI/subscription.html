@@ -505,13 +505,13 @@
 
           <div class="row addRowData mb-1" style="display: none;">
             <div class="col-md-4 rowadjust">
-              <label>Company Name</label>
+              <label class="required">Company Name</label>
               <select class="form-control border" name="company_name" id="company_name">
                 
               </select>
             </div>
             <div class="col-md-4 rowadjust">
-              <label>Application Name</label>
+              <label class="required">Application Name</label>
               <input type="text" class="form-control border" name="application_name" id="application_name" placeholder="Enter Application Name">
             </div>
             <div class="col-md-3 buttonlink1 btnpadding">
@@ -620,7 +620,7 @@
           <div class="rowhide">
             <div class="row addRowData mb-2" style="display: none;">
               <div class="col-md-4 rowadjust">
-                <label>Company</label>
+                <label class="required">Company</label>
                 <select class="form-control border" name="company_name1" id="company_name1">
                   
                 </select>
@@ -1107,6 +1107,9 @@
 				}else if(threads == 0){
 					alert("Please enter valid threads");
 					return false;
+				}else if(Date.parse(startdate) < Date.parse(enddate)){
+					alert("End date should be after start date");
+					return false;
 				}
         $("#myModal1").modal('toggle');
         
@@ -1197,10 +1200,12 @@
       var logs_home     = $("#logs_home").val();
       var batch_file_home     = $("#batch_file_home").val();
 
-      // if(dataCompnany == 0){
-			// 		alert("Please select valid company");
-			// 		return false;
-			// }else if(dataSelenium.length == 0){
+      if(dataCompnany == 0){
+					alert("Please select valid company");
+					return false;
+			}
+      
+      //else if(dataSelenium.length == 0){
 			// 		alert("Please select valid selenium name");
 			// 		return false;
 			// }else if(dataTestdata.length == 0){
@@ -1358,7 +1363,7 @@
      
 
     $(document).on("click", "#myModal #yesbtn", function(){
-      $('table tbody .subCB input[type=checkbox]').map((i,val)=>{
+      $('#subscriptionsList tbody .subCB input[type=checkbox]').map((i,val)=>{
 				      if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
                   deleteSubscription($(val).attr("data-value"));     
@@ -1387,14 +1392,13 @@
 
     $(document).on("click", "#myModalAppdlt #yesbtn", function(){
       deleteStr = "";
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-        if(deleteStr.indexOf(",") > 0){
-					deleteApplications();
-				}else{
-					deleteApplication(deleteId);
-				}
-      });     
+      $('.Apptable input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteApplication($(val).attr("data-value"));     
+                }
+              }
+		    });    
     });
 
     /*---Jquery for delete Application Paths row---*/
@@ -1416,14 +1420,13 @@
 
     $(document).on("click", "#myModal2 #yesbtn", function(){
       deleteStr = "";
-      $("table tbody .subCB input:checked").each(function(){
-        $(this).closest("tr").remove();
-        if(deleteStr.indexOf(",") > 0){
-					deleteApplicationPaths();
-				}else{
-					deleteApplicationPath(deleteId);
-				}
-      });     
+      $('.apppathtable input[type=checkbox]').map((i,val)=>{
+				      if($(val).attr("data-value")!=undefined){
+                if($(val).prop("checked") == true){
+                  deleteApplicationPath($(val).attr("data-value"));     
+                }
+              }
+		    });
     });
 
     /*---Jquery for toggle section on click caret-down icon---*/

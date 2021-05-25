@@ -46,16 +46,10 @@ public class ApplicationPathsController {
         return applicationPathsRepository.save(applicationPaths);
     }
 
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        applicationPathsRepository.updateAll(loggedInUser.getUserId());
-        return true;
-    }
-
     @DeleteMapping(value = "/delete/{id}")
     public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
         logger.info("id" + id);
-        applicationPathsRepository.updateByApplicationPathId(loggedInUser.getUserId(), id);
+        applicationPathsRepository.deleteById(id);
         return true;
     }
 

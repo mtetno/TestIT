@@ -95,7 +95,7 @@
 
             <div class="row addRowData" style="display: none;">
               <div class="col-md-4 rowadjust">
-                <label>Company</label>
+                <label class="required">Company</label>
                 <select class="form-control border" name="company_name" id="company_name">
                   <option value="Select Company Name">Select Company Name</option>
                   <option value="SocioMotif LLC">SocioMotif LLC</option>
@@ -105,19 +105,19 @@
                 </select>
               </div>
               <div class="col-md-4 mb-2 rowadjust">
-                <label>Hostname</label>
+                <label class="required">Hostname</label>
                 <input type="text" class="form-control border" name="hostname" id="hostname" placeholder="Enter Hostname">
               </div>
               <div class="col-md-4 mb-2 rowadjust">
-                <label>Email</label>
+                <label class="required">Email</label>
                 <input type="email" class="form-control border" name="email" id="email" placeholder="Enter Email">
               </div>
               <div class="col-md-4 mb-2 rowadjust">
-                <label>Port</label>
+                <label class="required">Port</label>
                 <input type="text" class="form-control border" name="port" id="port" placeholder="Enter Port">
               </div>
               <div class="col-md-4 mb-2 rowadjust">
-                <label>Security Protocol</label>
+                <label class="required"> Security Protocol</label>
                 <input type="text" class="form-control border" name="security_protocol" id="security_protocol" placeholder="Enter Security Protocol">
               </div>
               <div class="col-md-3 mb-2 buttonlink1 btnpadding">
@@ -210,13 +210,13 @@
 
             <div class="row addRowData" style="display: none;">
               <div class="col-md-5 mb-2 rowadjust">
-                <label>Company</label>
-                <select class="form-control border" name="company_name" id="company_name">
+                <label class="required">Company</label>
+                <select class="form-control border" name="company_name1" id="company_name1">
                    
                 </select>
               </div>
               <div class="col-md-5 mb-2 rowadjust">
-                <label>Template Type</label>
+                <label class="required">Template Type</label>
                 <select class="form-control border" name="url_environment" id="url_environment">
                   <option value="Select Template Type">Select Template Type</option>
                   <option value="Trigger Execution">Trigger Execution</option>
@@ -224,12 +224,12 @@
                 </select>
               </div>
               <div class="col-md-5 mb-2 rowadjust">
-                <label>Text Area</label>
+                <label class="required">Text Area</label>
                 <textarea class="form-control border" name="class_name" id="class_name" rows="6" placeholder="Sample text here"></textarea>
                 <!-- <input type="text" class="form-control border" name="class_name" id="class_name" placeholder="Sample text here"> -->
               </div>
               <div class="col-md-3 mb-2 rowadjust">
-                <label>Legends of tags</label>
+                <label class="required">Legends of tags</label>
                 <select class="form-control border" name="legend_of_tag" id="legend_of_tag">
                   <option value="Select Legends of tags">Select Legends of tags</option>
                   <option class="highred" value="High">High</option>
@@ -569,7 +569,7 @@
     /*---Jquery for Save Template Configuration---*/
 
     $("button.addTempconfigBtn").click(function(){
-      var dataAppl = $("#company_name").val();
+      var dataAppl = $("#company_name1").val();
       var urlEnvironment = $("#url_environment").val();
       var className = $("#class_name").val();
       var dataTags = $("#legend_of_tag").val();

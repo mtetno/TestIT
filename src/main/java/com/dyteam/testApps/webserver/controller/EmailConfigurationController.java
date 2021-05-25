@@ -3,9 +3,7 @@ package com.dyteam.testApps.webserver.controller;
 import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.EmailConfigurations;
-import com.dyteam.testApps.webserver.entity.TestMethods;
 import com.dyteam.testApps.webserver.repository.EmailConfigurationsRepository;
-import com.dyteam.testApps.webserver.repository.TestMethodRespository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 import org.slf4j.Logger;
@@ -24,31 +22,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/emailConfigurations")
 public class EmailConfigurationController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     EmailConfigurationsRepository emailConfigurationsRepository;
-     
+
     @PostMapping("/save")
-    public EmailConfigurations save(@RequestBody EmailConfigurations emailConfigurations, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public EmailConfigurations save(@RequestBody EmailConfigurations emailConfigurations,
+            @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save EmailConfigurations = " + emailConfigurations);
         emailConfigurations.setAddedBy(loggedInUser.getUserId());
-       return emailConfigurationsRepository.save(emailConfigurations);
-    }
-
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        emailConfigurationsRepository.updateAll(loggedInUser.getUserId());
-        return true;
+        return emailConfigurationsRepository.save(emailConfigurations);
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser,@PathVariable(value = "id") Long id) {
-        logger.info("id"+id);
-        emailConfigurationsRepository.updateByConfigurationId(loggedInUser.getUserId(),id);
+    public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
+        logger.info("id" + id);
+        emailConfigurationsRepository.deleteById(id);
         return true;
     }
-    
+
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllEmailConfigurations() {
         logger.info("Inside getAllEmailConfigurations");

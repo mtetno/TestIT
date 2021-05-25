@@ -130,16 +130,10 @@ public class ApplicationController {
 		return true;
 	}
 
-	@DeleteMapping(value = "/deleteAll")
-	public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-		applicationRepo.updateAll(loggedInUser.getUserId());
-		return true;
-	}
-
 	@DeleteMapping(value = "/delete/{id}")
 	public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
 		logger.info("id" + id);
-		applicationRepo.updateByApplicationId(loggedInUser.getUserId(), id);
+		applicationRepo.deleteById(id);
 		return true;
 	}
 

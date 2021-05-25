@@ -102,23 +102,7 @@ function editApplicationPaths(dataObj) {
 		}
 	});
 }
-
-function deleteSubscriptions() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/subscriptions/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllSubscriptions();
-		}
-	});
-}
+ 
 
 function deleteSubscription(id) {
 	$.ajax({
@@ -135,22 +119,7 @@ function deleteSubscription(id) {
 	});
 }
 
-function deleteApplicationPaths() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/applicationPaths/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllApplicationPaths();
-		}
-	});
-}
+ 
 
 function deleteApplicationPath(id) {
 	$.ajax({
@@ -166,23 +135,7 @@ function deleteApplicationPath(id) {
 		}
 	});
 }
-
-function deleteApplications() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/application/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllApplications();
-		}
-	});
-}
+ 
 
 function deleteApplication(id) {
 	$.ajax({

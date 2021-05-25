@@ -1,20 +1,4 @@
-function deleteAllTestBuckets() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/testBucket/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllTestBucket();
-		}
-	});
-}
-
+ 
 function deleteTestBucket(id) {
 	$.ajax({
 		type: 'DELETE',

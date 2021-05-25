@@ -21,23 +21,6 @@ function saveEmailConfiguration(dataObj) {
 	});
 }
 
-function deleteEmailConfiguration() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/emailConfigurations/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllEmailConfiguration();
-		}
-	});
-}
-
 function deleteEmailConfigurations(id) {
 	$.ajax({
 		type: 'DELETE',
@@ -122,22 +105,7 @@ function saveEmailTemplate(dataObj) {
 	});
 }
 
-function deleteEmailTemplates() {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/emailtemplate/deleteAll",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$(this).closest("tr").remove();
-			$(".selectdiv").find(".mainCB input[type=checkbox]").prop("checked", false);
-			fetchAllEmailTemplates();
-		}
-	});
-}
+ 
 
 function deleteEmailTemplate(id) {
 	$.ajax({

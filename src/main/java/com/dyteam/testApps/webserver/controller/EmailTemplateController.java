@@ -35,16 +35,10 @@ public class EmailTemplateController {
         return emailTemplateRepository.save(emailTemplates);
     }
 
-    @DeleteMapping(value = "/deleteAll")
-    public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
-        emailTemplateRepository.updateAll(loggedInUser.getUserId());
-        return true;
-    }
-
     @DeleteMapping(value = "/delete/{id}")
     public boolean delete(@AuthenticationPrincipal final LoginUser loggedInUser, @PathVariable(value = "id") Long id) {
         logger.info("id" + id);
-        emailTemplateRepository.updateByTemplateId(loggedInUser.getUserId(), id);
+        emailTemplateRepository.deleteById(id);
         return true;
     }
 

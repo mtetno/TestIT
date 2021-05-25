@@ -21,16 +21,6 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 	@Query(value = "SELECT a.testcase_id,a.testcase_name,b.application_name,c.environment_name,d.status from testcases a join application b on b.application_id = a.application_id join environment c on a.environment_id = c.environment_id join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll(Long companyId);
 
-	@Transactional
-	@Modifying
-	@Query("update Testcases set is_delete = 1 where added_by = :userId")
-	void updateAll(Long userId);
-
-	@Transactional
-	@Modifying
-	@Query("update Testcases set is_delete = 1 where added_by = :userId AND testcase_id = :id")
-	void updateByTestcaseId(Long userId, Long id);
-
 	@Query("select e from Testcases e where e.companyId = :companyId AND e.isDelete = 0")
 	List<Testcases> findAllByCompanyId(Long companyId);
 
@@ -60,5 +50,9 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 
 	@Query(value = "SELECT c.application_name as name,e.application_id as id from testcases e join application c where e.application_id = c.application_id group by e.application_id", nativeQuery = true)
 	List<INames> getAllApplicationNames();
+
+	@Modifying
+	@Transactional
+	Long deleteByCompanyId(Long companyId);
 
 }
