@@ -64,8 +64,9 @@ function fetchAllEmailConfiguration() {
 			  </tr>`;
 			 
 			});
-
+			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
+			
 			$(".emailconfigTableParent .paging_full_numbers").remove();
 
 			$('.emailconfigTable').dataTable().fnClearTable();
@@ -151,8 +152,9 @@ function fetchAllEmailTemplates() {
                   </tr>`;
 			 
 			});
-
+			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
+			
 			$(".TempconfigtableParent .paging_full_numbers").remove();
 
 			$('.Tempconfigtable').dataTable().fnClearTable();

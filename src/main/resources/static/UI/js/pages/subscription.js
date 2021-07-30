@@ -105,6 +105,7 @@ function editApplicationPaths(dataObj) {
  
 
 function deleteSubscription(id) {
+	showLoader();
 	$.ajax({
 		type: 'DELETE',
 		contentType: 'application/json',
@@ -114,7 +115,7 @@ function deleteSubscription(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			fetchAllSubscriptions();
+			window.location.href = window.location.href;
 		}
 	});
 }
@@ -162,6 +163,7 @@ function fetchAllSubscriptions() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
+			hideLoader();
 			$("#subscriptionTable tbody").html("");
 
 			var str = "";
@@ -182,7 +184,9 @@ function fetchAllSubscriptions() {
  
 				// $("#subscriptionsList tbody").prepend(str);
 			});
+			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
+				
 			$(".subscriptionTableParent .paging_full_numbers").remove()
 
 			$('.subscriptionTable').dataTable().fnClearTable();
@@ -234,8 +238,9 @@ function fetchAllApplications() {
  
 				//$(".Apptable tbody").prepend(str);
 			});
-
+			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
+			
 			$(".ApptableParent .paging_full_numbers").remove()
 
 			$('.Apptable').dataTable().fnClearTable();
@@ -284,9 +289,10 @@ function fetchAllApplicationPaths() {
 					<td >`+value.test_data_home+`</td>
 					</tr>`;
 			});
-
+			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-			$(".apppathtableParent .paging_full_numbers").remove()
+			
+			$(".apppathtableParent .paging_full_numbers").remove();
 
 			$('.apppathtable').dataTable().fnClearTable();
     		$('.apppathtable').dataTable().fnDestroy();
@@ -341,3 +347,15 @@ function updateRowListener(){
 		$(".updatescriptmodel #no_of_threads1").val(editData.threads);  
 	});
   } 
+
+
+
+  function showLoader(){
+	$("#loader").addClass("loading");
+	}
+	
+	function hideLoader(){
+	$("#loader").removeClass("loading");
+	}
+	  
+	

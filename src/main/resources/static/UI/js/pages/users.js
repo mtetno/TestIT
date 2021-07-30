@@ -127,7 +127,7 @@ function deleteuser(userId)
 			},
 			success: function(response)
 			{
-				window.location.href= window.location.href;
+				fetchUsers();
 			}
 		});
 }
