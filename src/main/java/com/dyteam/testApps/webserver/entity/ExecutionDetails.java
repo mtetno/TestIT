@@ -41,13 +41,21 @@ public class ExecutionDetails {
 	@NotNull
 	private Long companyId;
 
-	@Column(name="execution_name")
+	@Column(name="application_name")
 	@NotNull
-	private String executionName;
+	private String applicationName;
 
 	@Column(name="environment_id")
 	@NotNull
 	private Long environmentId;
+
+	@Column(name="execution_id")
+	@NotNull
+	private Long executionId;
+
+	@Column(name="execution_name")
+	@NotNull
+	private String executionName;
 
 	@Column(name="testing_environment_id")
 	@NotNull
@@ -94,6 +102,16 @@ public class ExecutionDetails {
 	@NotNull
 	private Integer isDelete;
 
+
+
+	public String getExecutionName() {
+		return this.executionName;
+	}
+
+	public void setExecutionName(String executionName) {
+		this.executionName = executionName;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -106,18 +124,27 @@ public class ExecutionDetails {
 		return companyId;
 	}
 
+	public Long getExecutionId() {
+		return this.executionId;
+	}
+
+	public void setExecutionId(Long executionId) {
+		this.executionId = executionId;
+	}
+
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
-	public String getExecutionName() {
-		return executionName;
+
+	public String getApplicationName() {
+		return this.applicationName;
 	}
 
-	public void setExecutionName(String executionName) {
-		this.executionName = executionName;
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
 	}
-
+ 
 	public Long getEnvironmentId() {
 		return environmentId;
 	}

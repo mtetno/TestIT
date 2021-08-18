@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.dyteam.testApps.webserver.model.RunTestCases;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -53,7 +54,7 @@ public class TestBucket {
 	private Long userRoleId;
 
 	@Transient
-	private ArrayList<Long> testcasesId;
+	private ArrayList<RunTestCases> runTestCases;
 
 	@Column(name="added_when",insertable=false,updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -133,13 +134,17 @@ public class TestBucket {
 		this.isDelete = isDelete;
 	}
 
-	public ArrayList<Long> getTestcasesId() {
-		return testcasesId;
+
+	public ArrayList<RunTestCases> getRunTestCases() {
+		return this.runTestCases;
 	}
 
-	public void setTestcasesId(ArrayList<Long> testcasesId) {
-		this.testcasesId = testcasesId;
+	public void setRunTestCases(ArrayList<RunTestCases> runTestCases) {
+		this.runTestCases = runTestCases;
 	}
+
+
+	 
 
 	
  

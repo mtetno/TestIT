@@ -1,46 +1,48 @@
 var optiontc = [];
-var appId = new Array(); 
-var tcId = new Array(); 
-var tcNames = new Array(); 
-var appNames = new Array(); 
-var selectedTestCases = new Array();
-var selectedApplications = new Array();
-var selectedTestCasesName = new Array();
-var selectedApplicationsName = new Array();
+// var appId = new Array(); 
+// var tcId = new Array(); 
+// var tcNames = new Array(); 
+// var appNames = new Array(); 
+// var selectedTestCases = new Array();
+// var selectedApplications = new Array();
+// var selectedTestCasesName = new Array();
+// var selectedApplicationsName = new Array();
+var selectedApplicationDetails = new Array();
 var comEnvURL;
 
 
-function addApplicationId(obj){
+function addApplicationId(obj,item){
 	var allCheckedBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]:checked');
 	var allBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]');
 	var selectedApp = obj.closest('.selectdiv ').find('input[type=checkbox]')[0];
 	var applicationId = $(selectedApp).attr('data-id');
 	var applicationName = $(selectedApp).attr('data-value');
-	if(selectedApplications.includes(applicationId) == false){
+	// if(selectedApplications.includes(applicationId) == false){
 		$(selectedApp).prop("checked",true);
-		selectedApplications.push(applicationId);
-		selectedApplicationsName.push(applicationName);
-	}
+		item['applicationId'] = applicationId;
+		item['applicationName'] = applicationName;
+		selectedApplicationDetails.push(item);
+	// }
 
 	if(allCheckedBoxesInGroup.length == allBoxesInGroup.length){
 		$(selectedApp).attr("checked","checked");
 	}
 }
 
-function removeApplicationId(obj){
-	var allCheckedBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]:checked');
-	var selectedApp = obj.closest('.selectdiv ').find('input[type=checkbox]')[0];
-	var applicationId = $(selectedApp).attr('data-id');
-	var applicationName = $(selectedApp).attr('data-value');
+// function removeApplicationId(obj){
+// 	var allCheckedBoxesInGroup = obj.closest('.submaindiv').find('input[type=checkbox]:checked');
+// 	var selectedApp = obj.closest('.selectdiv ').find('input[type=checkbox]')[0];
+// 	var applicationId = $(selectedApp).attr('data-id');
+// 	var applicationName = $(selectedApp).attr('data-value');
 
-	if(allCheckedBoxesInGroup.length == 0){
-		$(selectedApp).prop("checked",false)
-		if(selectedApplications.includes(applicationId)){
-			_.remove(selectedApplications, (e)=>e == applicationId);
-			_.remove(selectedApplicationsName, (e)=>e == applicationName);
-		}
-	}
-}
+// 	if(allCheckedBoxesInGroup.length == 0){
+// 		$(selectedApp).prop("checked",false)
+// 		if(selectedApplications.includes(applicationId)){
+// 			_.remove(selectedApplications, (e)=>e == applicationId);
+// 			_.remove(selectedApplicationsName, (e)=>e == applicationName);
+// 		}
+// 	}
+// }
 
 
 function attachClickListeners(){
@@ -48,16 +50,18 @@ function attachClickListeners(){
 		console.log("inside attachClickListeners");
 		if($(this).prop("checked")==true)
 		{	
-			selectedTestCases.push($(this).attr('data-id'));
-			selectedTestCasesName.push($(this).attr('data-value'));
-			console.log(selectedTestCases);
-			addApplicationId($(this));
+			var item = 
+			{
+				"testCase": $(this).attr('data-id'),
+				"testCaseName": $(this).attr('data-value')
+			};
+			// console.log(selectedTestCases);
+			addApplicationId($(this),item);
 		}
 		else{	
-			_.remove(selectedTestCases, (e)=>e == $(this).attr('data-id'));
-			_.remove(selectedTestCasesName, (e)=>e == $(this).attr('data-value'));
-			console.log(selectedTestCases);
-			removeApplicationId($(this));
+			_.remove(selectedApplicationDetails, (e) => e.testCase == $(this).attr('data-id'));
+			// console.log(selectedTestCases);
+			// removeApplicationId($(this));
 		}
 	});
 
@@ -66,25 +70,25 @@ function attachClickListeners(){
 		if($(this).prop("checked")==true)
 		{
 			console.log("selected")	;
-			selectedApplications.push($(this).attr('data-id'));
-			selectedApplicationsName.push($(this).attr('data-value'));
+			var item = {
+				"applicationId": $(this).attr('data-id'),
+				"applicationName":$(this).attr('data-value')
+			};
 			$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	
 			$(this).closest(".selectdiv1").find(".submaindiv input[type=checkbox]").each((i,obj)=> {
-				selectedTestCases.push($(obj).attr('data-id'));
-				selectedTestCasesName.push($(obj).attr('data-value'));
+				item['testCase'] = $(obj).attr('data-id') ;
+				item['testCaseName'] = $(obj).attr('data-value');
+				selectedApplicationDetails.push(item);
 				}
 			);
-
 		}
 		else
 		{	
 			console.log("not selected")	;
-			_.remove(selectedApplications, (e)=>e == $(this).attr('data-id'));
-			_.remove(selectedApplicationsName, (e)=>e == $(this).attr('data-value'));
 			$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	
 			$(this).closest(".selectdiv1").find(".submaindiv input[type=checkbox]").each((i,obj)=> {
-				_.remove(selectedTestCases, (e)=>e == $(obj).attr('data-id'));
-				_.remove(selectedTestCasesName, (e)=>e == $(obj).attr('data-value'));
+				_.remove(selectedApplicationDetails, (e)=> e.testCase == $(obj).attr('data-id'));
+				// _.remove(selectedTestCasesName, (e)=>e == $(obj).attr('data-value'));
 				}
 			);
 		}
@@ -276,35 +280,21 @@ $(document).ready(function() {
 			});
 		},
 		complete: function(data) {
-			
 			$('#btNext').click(()=>{
-				if(selectedTestCases.length == 0){
+				if(selectedApplicationDetails.length == 0){
 					alert(MESSAGE_ENTER_VALID_TESTCASES);
 					return false;
 				}
-				console.log(selectedTestCases);
-				saveItem(RUNTESTS_SELECTED_TESTCASES_ID,JSON.stringify(selectedTestCases));
-				saveItem(RUNTESTS_SELECTED_APPLICATIONS_ID,JSON.stringify(selectedApplications));
-				saveItem(RUNTESTS_SELECTED_TESTCASES_NAME,JSON.stringify(selectedTestCasesName));
-				saveItem(RUNTESTS_SELECTED_APPLICATIONS_NAME,JSON.stringify(selectedApplicationsName));
+				console.log(selectedApplicationDetails);
+				saveItem(RUNTESTS_SELECTED_DATA,JSON.stringify(selectedApplicationDetails));
+				// saveItem(RUNTESTS_SELECTED_APPLICATIONS_ID,JSON.stringify(selectedApplications));
+				// saveItem(RUNTESTS_SELECTED_TESTCASES_NAME,JSON.stringify(selectedTestCasesName));
+				// saveItem(RUNTESTS_SELECTED_APPLICATIONS_NAME,JSON.stringify(selectedApplicationsName));
 				window.open("finalizeexecution.html","_self");
 			})
-
-
-			 
 			/*---Jquery for section display none/block on click icon file-text---*/
-		}
-		
-		
-		
-		
+		}	
 	});
-	
-	
-	
-
-	
-	
 	
 
 	//serialize object function

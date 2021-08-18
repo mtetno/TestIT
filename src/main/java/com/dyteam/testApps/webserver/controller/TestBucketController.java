@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.TestBucket;
 import com.dyteam.testApps.webserver.entity.TestBucketTestcases;
+import com.dyteam.testApps.webserver.model.RunTestCases;
 import com.dyteam.testApps.webserver.repository.TestBucketRepository;
 import com.dyteam.testApps.webserver.repository.TestBucketTestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
@@ -38,8 +39,7 @@ public class TestBucketController {
     public TestBucket saveTestBucket(@RequestBody TestBucket testBucketParam,
             @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside saveTestBucket");
-        ;
-        ArrayList<Long> bucketTestCaseId = testBucketParam.getTestcasesId();
+        ArrayList<RunTestCases> bucketTestCaseId = testBucketParam.getRunTestCases();
         logger.info("Inside bucketTestCaseId size" + bucketTestCaseId.size());
         TestBucket testBucket = new TestBucket();
         testBucket.setCompanyId(loggedInUser.getUserId());
@@ -49,10 +49,10 @@ public class TestBucketController {
         testBucket.setIsDelete(0);
         testBucket.setAddedBy(loggedInUser.getUserId());
         TestBucket savedBucket = testBucketRepository.save(testBucket);
-        for (Long testcaseid : bucketTestCaseId) {
+        for (RunTestCases testcaseid : bucketTestCaseId) {
             TestBucketTestcases testBucketTestcases = new TestBucketTestcases();
             testBucketTestcases.setBucketId(savedBucket.getId());
-            testBucketTestcases.setTestcaseId(testcaseid);
+            testBucketTestcases.setTestcaseId(testcaseid.getTestCase());
             testBucketTestcasesRepository.save(testBucketTestcases);
         }
         return savedBucket;

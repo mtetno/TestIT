@@ -639,7 +639,7 @@
 			payload['name'] = $('#inputbox').val();
 			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
 			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
-			payload['testcasesId'] = JSON.parse(getItem(RUNTESTS_SELECTED_TESTCASES_ID));
+			payload['runTestCases'] = JSON.parse(getItem(RUNTESTS_SELECTED_DATA));
 			creatTestBucket(payload);
 
 			var payload = {};
@@ -651,7 +651,7 @@
 			payload['threads'] = getItem(RUNTESTS_THREAD);
 			payload['scheduleDate'] = getItem(RUNTESTS_DATE);
 			payload['scheduleTime'] = getItem(RUNTESTS_TIME);
-			payload['testcasesId'] = getItem(RUNTESTS_SELECTED_TESTCASES_ID);
+			payload['runTestCases'] = getItem(RUNTESTS_SELECTED_DATA);
 			createExecution(payload);
 		});
 

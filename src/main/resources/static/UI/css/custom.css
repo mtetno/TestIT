@@ -1150,7 +1150,7 @@ input[type="radio"]:checked + label:before {
 
 /*------ Manage Test Cases -----*/
 
-.Testmethodtable tbody tr td:nth-child(4) {
+.Testmethodtable tbody tr td:nth-child(2) {
     text-decoration: underline;
 }
 
