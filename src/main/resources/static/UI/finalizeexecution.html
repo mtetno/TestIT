@@ -81,7 +81,7 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="row selectdiv">
-					<div class="col-md-12 col-sm-12 col-xs-12 selectdiv2">
+					<div class="col-md-12 col-sm-12 col-xs-12 selectdiv2 create-test-bucket">
 						<label class="main">Create Test Bucket 
 							<!--For checkbox select-->
 					        <input id="isCreateTestBucket" type="checkbox"> 
@@ -147,7 +147,7 @@
 				          		</div>
 				          	</div>
 				          	<div class="col-md-12 text-center">
-				          		 <p>Do you want to Create Test Bucket?</p>
+				          		 <p>Are You Sure You Want To Continue?</p>
 				          	</div>
 				          </div>
 				        </div>
@@ -558,7 +558,7 @@
 				$("#scheduleExecution").text("Execute")
 			}
 
-			fetchCompany();     
+			//fetchCompany();     
 
 			$(".main, .subCB").click(function(e){
 				e.stopPropagation();
@@ -577,7 +577,12 @@
                 $('#inputbox, #btncreate').attr("disabled", false);
 			});
 
-		 
+			$(".create-test-bucket input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				{	$("#scheduleExecution").text("Create")	}
+				else
+				{	$("#scheduleExecution").text("Execute")	}
+			});
 
 			$('input:checkbox').click(function () {
 			  if ($(this).is(':checked')) {
@@ -635,28 +640,31 @@
 		});
 
 		$('#executionYesbtn').click(function(){
-			var payload = {};
-			payload['name'] = $('#inputbox').val();
-			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
-			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
-			payload['runTestCases'] = JSON.parse(getItem(RUNTESTS_SELECTED_DATA));
-			creatTestBucket(payload);
+			var testBucketPayload = {};
+			testBucketPayload['name'] = $('#inputbox').val();
+			testBucketPayload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
+			testBucketPayload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
+			testBucketPayload['runTestCases'] = JSON.parse(getItem(RUNTESTS_SELECTED_DATA));
 
-			var payload = {};
-			payload['name'] = $('#inputbox').val();
-			payload['executionName'] = getItem(RUNTESTS_NAME);
-			payload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
-			payload['testingEnvironmentId'] = getItem(RUNTESTS_TESTING_ENVIRONMENT_ID);
-			payload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
-			payload['threads'] = getItem(RUNTESTS_THREAD);
-			payload['scheduleDate'] = getItem(RUNTESTS_DATE);
-			payload['scheduleTime'] = getItem(RUNTESTS_TIME);
-			payload['runTestCases'] = getItem(RUNTESTS_SELECTED_DATA);
-			createExecution(payload);
-		});
 
-		$('#closeSuccessModel').click(function() {
-			window.open("runtest.html","_self");
+			var executionBucketPayload = {};
+			executionBucketPayload['name'] = $('#inputbox').val();
+			executionBucketPayload['executionName'] = getItem(RUNTESTS_NAME);
+			executionBucketPayload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);
+			executionBucketPayload['testingEnvironmentId'] = getItem(RUNTESTS_TESTING_ENVIRONMENT_ID);
+			executionBucketPayload['userRoleId'] = getItem(RUNTESTS_USER_ROLE_ID);
+			executionBucketPayload['threads'] = getItem(RUNTESTS_THREAD);
+			executionBucketPayload['scheduleDate'] = getItem(RUNTESTS_DATE);
+			executionBucketPayload['scheduleTime'] = getItem(RUNTESTS_TIME);
+			executionBucketPayload['runTestCases'] = JSON.parse(getItem(RUNTESTS_SELECTED_DATA));
+
+
+			if($('#inputbox').val().trim() === ''){
+				createExecution(executionBucketPayload);
+			}else{
+				createTestBucketAndExecution(testBucketPayload,executionBucketPayload);
+			}
+			
 		});
 	</script>
 </body>

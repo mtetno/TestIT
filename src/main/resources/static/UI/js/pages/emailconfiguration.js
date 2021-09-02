@@ -66,7 +66,7 @@ function fetchAllEmailConfiguration() {
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-			
+			$(".emailconfigTableParent").html($(".emailconfigTable").get(0).outerHTML)
 			$(".emailconfigTableParent .paging_full_numbers").remove();
 
 			$('.emailconfigTable').dataTable().fnClearTable();
@@ -144,7 +144,7 @@ function fetchAllEmailTemplates() {
                         <span class="geekmark"></span> 
                       </label>
                     </td>
-                    <td ><span class="updtRow">`+value.application_name+`</span></td>
+                    <td ><span class="updtRow">`+value.company_name+`</span></td>
                     <td >`+value.template_type+`</td>
                     <td>`+value.content+`</td>
                     <td >-</td>
@@ -154,7 +154,7 @@ function fetchAllEmailTemplates() {
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-			
+			$(".TempconfigtableParent").html($(".Tempconfigtable").get(0).outerHTML)
 			$(".TempconfigtableParent .paging_full_numbers").remove();
 
 			$('.Tempconfigtable').dataTable().fnClearTable();

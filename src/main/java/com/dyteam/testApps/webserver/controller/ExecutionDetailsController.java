@@ -1,6 +1,7 @@
 package com.dyteam.testApps.webserver.controller;
 
 import com.dyteam.testApps.webserver.entity.ExecutionDetails;
+import com.dyteam.testApps.webserver.entity.ExecutionDetailsRequest;
 import com.dyteam.testApps.webserver.entity.ExecutionQueues;
 
 import com.dyteam.testApps.webserver.repository.ExecutionDetailsRepository;
@@ -30,26 +31,34 @@ public class ExecutionDetailsController {
     ExecutionQueuesRepository executionQueuesRepository;
      
     @PostMapping("/save")
-    public ExecutionDetails saveExecutionDetails(@RequestBody ExecutionDetails executionDetailsParam, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public boolean saveExecutionDetails(@RequestBody ExecutionDetailsRequest executionDetailsRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("inside saveExecutionDetails");
         ExecutionQueues executionQueue = new ExecutionQueues();
-        executionQueue.setExecutionName(executionDetailsParam.getExecutionName());
+        executionQueue.setExecutionName(executionDetailsRequest.getExecutionName());
         executionQueue.setUserRoleId(0);
         ExecutionQueues savedExecutionQueues = executionQueuesRepository.save(executionQueue);
-        ExecutionDetails executionDetails = new ExecutionDetails();
-        executionDetails.setCompanyId(loggedInUser.getCompanyId());
-        executionDetails.setExecutionId(savedExecutionQueues.getId());
-        // setApplicatioName
-        executionDetails.setEnvironmentId(executionDetailsParam.getEnvironmentId());
-        executionDetails.setTestingEnvironmentId(executionDetailsParam.getTestingEnvironmentId());
-        executionDetails.setUserRoleId(executionDetailsParam.getUserRoleId());
-        executionDetails.setThreads(executionDetailsParam.getThreads());
-        executionDetails.setScheduleDate(executionDetailsParam.getScheduleDate());
-        executionDetails.setScheduleTime(executionDetailsParam.getScheduleTime());
-        // executionDetails.setTestcasesId(executionDetailsParam.getTestcasesId());
-        executionDetails.setTriggeredBy(loggedInUser.getUserId());
-        executionDetails.setIsDelete(0);
-       return executionDetailsRepository.save(executionDetails);
+
+        for(int i=0;i<executionDetailsRequest.getRunTestCases().size();i++){
+            ExecutionDetails executionDetails = new ExecutionDetails();
+            executionDetails.setApplicationName(executionDetailsRequest.getRunTestCases().get(i).getApplicationName());
+            executionDetails.setTestcasesId(executionDetailsRequest.getRunTestCases().get(i).getTestCase());
+            executionDetails.setExecutionName(executionDetailsRequest.getExecutionName());
+
+            executionDetails.setCompanyId(loggedInUser.getCompanyId());
+            executionDetails.setExecutionId(savedExecutionQueues.getId());
+            // setApplicatioName
+            executionDetails.setEnvironmentId(executionDetailsRequest.getEnvironmentId());
+            executionDetails.setTestingEnvironmentId(executionDetailsRequest.getTestingEnvironmentId());
+            executionDetails.setUserRoleId(executionDetailsRequest.getUserRoleId());
+            executionDetails.setThreads(executionDetailsRequest.getThreads());
+            executionDetails.setScheduleDate(executionDetailsRequest.getScheduleDate());
+            executionDetails.setScheduleTime(executionDetailsRequest.getScheduleTime());
+            // executionDetails.setTestcasesId(executionDetailsParam.getTestcasesId());
+            executionDetails.setTriggeredBy(loggedInUser.getUserId());
+            executionDetails.setIsDelete(0);
+            executionDetailsRepository.save(executionDetails);
+        }
+       return true;
     }
     
 }

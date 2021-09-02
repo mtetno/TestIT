@@ -183,6 +183,33 @@
 		  </div>
 		<!-- End of Modal Success 1-->
 
+		<!-- The Modal myModalSucess2-->
+		<div class="modal fade" id="myModalSucess2">
+		    <div class="modal-dialog modal-dialog-centered">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header model_head">
+		          <h4 class="modal-title"></h4>
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        
+		        <!-- Modal body -->
+		        <div class="modal-body model_body">
+		          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
+		          <p>Test bucket scheduled Successfully.</p>
+		        </div>
+		        
+		        <!-- Modal footer -->
+		        <div class="modal-footer btnfooter">
+		          <button type="button" id="redirect" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
+		        </div>
+		        
+		      </div>
+		    </div>
+		  </div>
+		<!-- End of Modal myModalSucess2-->
+
 		<!-- The Modal 2-->
 		  <div class="modal fade model1" id="myModal1">
 		    <div class="modal-dialog">
@@ -286,7 +313,7 @@
 		        <!-- Modal footer -->
 		        <div class="modal-footer btnfooter">
 		        	<button type="button" class="btn btn-dark" data-dismiss="modal">CANCEL</button>
-		            <button type="button" id="schedulebtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess1">SCHEDULE</button>
+		            <button type="button" id="schedulebtn" class="btn btn-primary" data-toggle="modal">EXECUTE</button>
 		        </div>
 		        
 		      </div>
@@ -295,7 +322,7 @@
 		  <!-- End of Modal 3-->
 
 		  <!-- The Modal Success 2-->
-		  <div class="modal fade" id="myModalSucess1">
+		  <div class="modal fade" id="myModalSucess2">
 		    <div class="modal-dialog modal-dialog-centered">
 		      <div class="modal-content">
 		      
@@ -331,6 +358,39 @@
 		</div>
 	</div>
 	<!--Main Content End-->
+
+
+	<!-- The Warning Model-->
+	<div class="modal fade model1" id="confirmationModel">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+		  
+			<!-- Modal Header -->
+			<div class="modal-header">
+			  <h4 class="modal-title">Summary Of Test Buckets</h4>
+			  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+			</div>
+			
+			<!-- Modal body -->
+			<div class="modal-body">
+			  <div class="row">
+				  <div class="col-md-12 text-center">
+					   <p>Are You Sure You Want To Continue?</p>
+				  </div>
+			  </div>
+			</div>
+			
+			<!-- Modal footer -->
+			<div class="modal-footer btnfooter">
+				<button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
+				<!-- Show view text bucket button on this yes button click -->
+				<button type="button" id="executionYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess2">YES</button>
+			</div>
+			
+		  </div>
+		</div>
+	  </div>
+	  <!-- End of Warning Model-->
 
 	<!--Footer Start-->
 	<footer id="footer" class="container-fluid pull-right">
@@ -374,6 +434,16 @@
 			});
 
 			$("#submitButton").click(function(){
+				var summaryStr= '';
+				for(i=0;i<availableBucket.length;i++){
+					if(selectedBucket.includes(availableBucket[i].id.toString())){
+						summaryStr = summaryStr + availableBucket[i].value;
+					}
+				}
+
+				$("#executeSummary .bucketListTable tbody").html(summaryStr);
+				$("#executeSummary input[type=checkbox]").prop("checked", true);
+				
 				$("#myModal2").modal("show");
 				$("#summaryLabel1").text(getItem(TESTBUCKET_EXECUTION_NAME));
 				$("#summaryLabel2").text(getItem(TESTBUCKET_TESTING_ENVIRONMENT_NAME));
@@ -381,7 +451,7 @@
 			});
 
 
-			$("#schedulebtn").click(function(){
+			$('#executionYesbtn').click(function(){
 				if($("#executeSummary table tbody .subCB input:checked").length == 0 ){
 					alert("Please select testbuckets");
 					return false;
@@ -418,10 +488,16 @@
 							payload['scheduleDate'] = date
 							payload['scheduleTime'] = time
 							payload['testcasesId'] = JSON.stringify(data.map((i)=>i.testcase_id));
-							createExecution(payload);
+							// createExecution(payload);
 						}
 					});
 					});	
+			});
+
+
+			$("#schedulebtn").click(function(){
+				$("#myModal2").hide();
+				$("#confirmationModel").modal("show");
 			})
 
 			$(".mainCB input[type=checkbox]").click(function(){

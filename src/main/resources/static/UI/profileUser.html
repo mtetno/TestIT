@@ -96,15 +96,15 @@
 						    <input type="email" class="form-control col-md-10" name="email" id="email" value="">
 						</div>
 
-						<div class="form-group form-inline pb-2">
+						<!-- <div class="form-group form-inline pb-2">
 						    <label class="col-md-2">PASSWORD</label>
 						    <input type="password" class="form-control col-md-10" name="password" id="password" value="">
-						</div>
+						</div> -->
 
-						<div class="form-group form-inline pb-2">
+						<!-- <div class="form-group form-inline pb-2">
 						    <label class="col-md-2">ROLE</label>
 						    <input type="text" class="form-control col-md-10" name="role" id="role" value="">
-						</div>
+						</div> -->
 
 						<!-- <div class="form-group form-inline pb-2 mb-5 radiobtn">
 						      <label class="col-md-2">THEME</label>
@@ -134,10 +134,10 @@
 			          		<form>
 			          			<div class="row">
 			          				<div class="col-md-2 mb-4 imgupload">
-										<img src="img/user-icon.png">
+										<img src="img/user-icon.png" id="profileImage" style="">
 									</div>
 									<div class="col-md-10 mb-4 imgupload">
-										<input type="file" id="myImage" class="form-control border" accept="image/x-png,image/gif,image/jpeg" name="file" placeholder="upload profile photo">
+										<input type="file" id="myImage" class="form-control border" accept="image/x-png,image/gif,image/jpeg" name="file" placeholder="upload profile photo" onchange="onProfileImageSelected()">
 										<i class="fa fa-folder-open"></i>
 									</div>
 								</div>
@@ -171,7 +171,7 @@
 										<input type="password" class="form-control border" name="confirmpassword" value="">
 									</div>
 								</div>
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-md-12">
 										<label class="required" >Role</label>
 										<input type="text" id="f4" class="form-control border" name="role" value="">
@@ -183,7 +183,7 @@
 									  <label for="light">Light</label>
 									  <input type="radio" id="dark" name="gender" value="dark">
 									  <label for="dark">Dark</label>
-								</div>
+								</div> -->
 			          		</form>
 			          	</div>
 			        </div>
@@ -191,7 +191,7 @@
 			        <!-- Modal footer -->
 			        <div class="modal-footer btnfooter">
 			        	<button type="button" class="btn btn-dark" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
-			            <button type="button" class="btn btn-primary saveBtn" data-toggle="modal" data-dismiss="modal" data-target="#editmyModalSucess1"><img src="img/save-24-px-1.png">SAVE</button>
+			            <button type="button" class="btn btn-primary saveBtn" data-toggle="modal" data-dismiss="modal" ><img src="img/save-24-px-1.png">SAVE</button>
 			        </div>
 			        
 			      </div>
@@ -251,10 +251,10 @@
 
 			$(document).ready(function() {	
 
-var uname = readCookie("TAuname");
-$("#userMenu span").text(uname);
+			var uname = readCookie("TAuname");
+			$("#userMenu span").text(uname);
 
-});
+			});
 
             /*---Jquery for toggle section on click caret-down icon---*/
 
@@ -278,6 +278,9 @@ $("#userMenu span").text(uname);
 					$(this).toggleClass("toggleIcon");
 				});
 			}
+
+			
+
 		});
 	</script>
 </body>

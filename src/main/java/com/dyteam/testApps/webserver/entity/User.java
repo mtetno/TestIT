@@ -76,6 +76,9 @@ public class User {
 	@NotNull
 	private Long refUserId;
 
+	@Column(name = "profile_image")
+	private String profileImage;
+
 	@Column(name = "createdat", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -95,6 +98,32 @@ public class User {
 		this.email = email;
 		this.address = address;
 	}
+
+
+	public String getFName() {
+		return this.fName;
+	}
+
+	public void setFName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getLName() {
+		return this.lName;
+	}
+
+	public void setLName(String lName) {
+		this.lName = lName;
+	}
+
+	public String getProfileImage() {
+		return this.profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
+
 
 	public User(Long userId) {
 		this.userId = userId;

@@ -67,6 +67,7 @@ final class LoginController {
 
 	@PostMapping("/login")
 	LoginUser login(@RequestParam("username") final String username, @RequestParam("password") final String password) {
+		logger.info("Password : "+passwordEncoder.encode(password));
 		LoginUser login = authenticationService.login(username, password);
 		if (null == login) {
 			throw new RuntimeException("invalid login and/or password");

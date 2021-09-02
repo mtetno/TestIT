@@ -719,13 +719,23 @@ $("#userMenu span").text(uname);
       });
 
       $(document).on("click", "#environmentYesbtn", function () {
+        $("#myModal").modal('hide');
+        var allAjax = [];
         $('.envTable input[type=checkbox]').map((i,val)=>{
 				      if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
-                deleteSelectedEnvironment($(val).attr("data-value"));     
+                allAjax.push(deleteSelectedEnvironment($(val).attr("data-value")));     
                 }
               }
 		    });
+
+        Promise.all(allAjax).then(() => {
+          console.log("All environment deleted successfully");
+          fetchAllEnvironment();
+        }).catch(() => {
+          console.log("Error in deleting all environments");
+        })
+
       });
 
       /*---Jquery for delete Environment URL's row---*/

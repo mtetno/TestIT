@@ -1,3 +1,4 @@
+var uploadedImageBase64 = undefined;
 var specialKeys = new Array();
 specialKeys.push(8); //Backspace
 specialKeys.push(9); //Tab
@@ -14,47 +15,35 @@ function IsAlphaNumeric(e) {
 }	
 function addUser(userId=0){
 	$(".errmsg").hide();
-	$firstname = $('input[name=firstname]').val();
-	$lastname = $('input[name=lastname]').val();
-	//$usercontact = $('input[name=contact]').val();
-	$usercontact = "9876543210";
-	//$user_type = $("select[name=role] option:selected").val();
-	$user_type = $("input[name=role]").val();
-	$useremail = $('input[name=email]').val();
-	//$Address = $('textarea[name=address]').val();
+	$firstname = $('.updateusermodel input[name=firstname]').val();
+	$lastname = $('.updateusermodel input[name=lastname]').val();
+	$user_type = $(".updateusermodel input[name=role]").val();
+	$useremail = $('.updateusermodel input[name=email]').val();
 	$Address = "TestAddress";
-	$loginid = $('input[name=username]:visible').val();
-	$password = $('input[name=password]:visible').val();
-	if($('input[name=password]:visible').val() != $('input[name=confirmpassword]:visible').val()){
-		showError();
+	$loginid = $('.updateusermodel input[name=username]:visible').val();
+	$password = $('.updateusermodel input[name=password]:visible').val();
+	if($('.updateusermodel input[name=password]:visible').val() != $('.updateusermodel input[name=confirmpassword]:visible').val()){
+		alert("Password entered does not match")
 		return false;
 	}
 	if($useremail == '' || $firstname == '' || $lastname == '' || $useremail == '')
 	{
-	   showError();
+		alert("Please enter valid form data")
 	   return false;
 	}
+	$("#editmyModalSucess1").modal('hide');
 	var dataObj = {};
 	dataObj["fName"]= $firstname;
 	dataObj["lName"]= $lastname;
 	dataObj["email"]= $useremail;
 	dataObj["address"]= $Address;
-	dataObj["contact"]= $usercontact;
+	dataObj["contact"]= "";
 	dataObj["userName"] = $loginid;
+	dataObj["password"] = $password;	
+	if(uploadedImageBase64 != undefined){
+		dataObj["profileImage"] = uploadedImageBase64;
+	}
 	
-	//**************************HARD CODED VALUES***************************//
-	/*dataObj["description"] = "";
-	dataObj["designation"] = "";
-	dataObj["status"] = 1;
-	dataObj["passStatus"] = 1;
-	//dataObj["addedBy"] = 1;
-	
-	dataObj["profileImg"] = "";
-	//dataObj["companyId"] = 1;
-	//dataObj["refUserId"] = 1;
-	dataObj["addedByName"] = "";*/
-	//**************************HARD CODED VALUES***************************//
-	//alert(JSON.stringify(dataObj));
 	$.ajax({
 		type: 'POST',
 		data: JSON.stringify(dataObj),
@@ -65,9 +54,9 @@ function addUser(userId=0){
 		},
 		url: base_url+"/user/updateProfile",
 			success: function(msg){
-				//window.location.href= window.location.href;
 				$('#res').html("<span style='color:red;text-transform:capitalize;font-size:14px'>Profile updated successfully..!</span>").show();
 				$('#res span').fadeIn().fadeOut(3000);
+				fetchUserProfile();
 			}
 	});
 }
@@ -79,12 +68,27 @@ $(document).ready(function() {
 			return false;
 		}
 	});
+
 	$(".saveBtn").click(function(){
 		addUser(readCookie("TAuid"));
 	});
+
 	$(".successmod").on('hidden.bs.modal', function () {
-		location.reload();
+		$("#editmyModalSucess1").modal('hide');
 	})
+
+	fetchUserProfile();
+
+ 
+	 
+
+});
+
+
+ 
+
+
+function fetchUserProfile(){
 	$.ajax({
 		url: base_url+"/user/"+readCookie("TAuid"), 
 		method: "get",
@@ -98,13 +102,39 @@ $(document).ready(function() {
 				case 2: role = "Company"; break;
 				case 3: role = "Tester"; break;
 			}
+	
 			$('input[name=name]').val(response.fName+" "+response.lName);
 			$('input[name=firstname]').val(response.fName);
 			$('input[name=lastname]').val(response.lName);
 			$('input[name=role]').val(role);
 			$('input[name=email]').val(response.email);
 			$('input[name=username]').val(response.userName);
-			$('input[name=password]').val(response.password);			
+			// $('input[name=password]').val(response.password);			
+			// $('input[name=confirmpassword]').val(response.password);			
+			document.getElementById('profileImage').setAttribute(
+				'src', response.profileImage
+			);
 		}
 	});
+}
+
+
+function onProfileImageSelected(){
+	var file = document.querySelector('input[type=file]')['files'][0];
+	var reader = new FileReader();
+	var baseString;
+	reader.onloadend = function () {
+		uploadedImageBase64 = reader.result;
+		document.getElementById('profileImage').setAttribute(
+			'src', uploadedImageBase64
+		);
+	};
+	reader.readAsDataURL(file);
+}
+
+
+$("#addusetbtn").click(function(){
+	$("#myImage").val("")
+	$('input[name=password]').val("");			
+	$('input[name=confirmpassword]').val("");		
 });

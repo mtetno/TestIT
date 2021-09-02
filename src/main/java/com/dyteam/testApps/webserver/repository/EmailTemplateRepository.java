@@ -17,7 +17,7 @@ public interface EmailTemplateRepository extends CrudRepository<EmailTemplates, 
 
 	@Modifying
 	@Transactional
-	@Query(value = "SELECT email_templates.*, application.application_name, subscriptions.company_name FROM email_templates JOIN application ON email_templates.company_id = application.company_id JOIN subscriptions ON email_templates.company_id = subscriptions.id where email_templates.is_delete = 0", nativeQuery = true)
+	@Query(value = "SELECT email_templates.*, subscriptions.company_name FROM email_templates JOIN subscriptions ON email_templates.company_id = subscriptions.id  where email_templates.is_delete = 0", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 
 	@Modifying

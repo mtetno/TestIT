@@ -1,4 +1,7 @@
  
+var availableBucket=[];
+var selectedBucket=[];
+
 function deleteTestBucket(id) {
 	$.ajax({
 		type: 'DELETE',
@@ -42,7 +45,7 @@ function fetchAllTestBucket() {
                     <td><img src="img/flip.png" class="addrow" alt="3" title="Clone"> <img src="img/visibility-24-px.png" alt="3" data-toggle="modal" class="viewBucket" title="View"></td>
 				</tr>`;
 				
-				summaryStr += `
+				summaryStr = `
                 <tr>
                     <td scope="col" class="bucketcheck">
                     <label class="main subCB">
@@ -56,6 +59,8 @@ function fetchAllTestBucket() {
 					<td><img src="img/visibility-24-px.png" alt="3" data-toggle="modal" class="viewBucket" title="View"></td>
                 </tr>`;
  
+				availableBucket.push({"id":value.id, "value": summaryStr});
+
 				// $("#mainContainer .bucketListTable tbody").prepend(str);
 
 			// $("#mainContainer .bucketListTableParent .paging_full_numbers").remove()
@@ -63,6 +68,7 @@ function fetchAllTestBucket() {
 				
 			});
 			if(str != ""){
+			//$(".TestmethodtableParent").html($(".Testmethodtable").get(0).outerHTML)
 			$('#mainContainer .bucketListTable').dataTable().fnClearTable();
     		$('#mainContainer .bucketListTable').dataTable().fnDestroy();
 			$("#mainContainer .bucketListTable tbody").html(str);
@@ -77,7 +83,6 @@ function fetchAllTestBucket() {
 			$('#mainContainer .bucketListTable').dataTable().fnClearTable();
     		$('#mainContainer .bucketListTable').dataTable().fnDestroy();
 		}
-			$("#executeSummary .bucketListTable tbody").prepend(summaryStr);
 
 			postTestBucketFetch();
 		}
@@ -145,6 +150,19 @@ function postTestBucketFetch(){
 			});
 		});
 	});
+
+
+	// Click listner for each row
+	$(".bucketListTable  input[type=checkbox]").click(function(){
+		var selectedVal = $(this).attr('data-value')
+		console.log("bucketListTable clicked"+selectedVal);
+		if($(this).prop("checked")==true){
+			selectedBucket.push(selectedVal)
+		}else{
+			selectedBucket = _.without(selectedBucket, selectedVal);
+		}
+	});
+	
 	
 	
 	

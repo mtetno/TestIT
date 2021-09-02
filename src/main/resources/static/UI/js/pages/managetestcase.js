@@ -69,6 +69,7 @@ function fetchAllTestMethod() {
 			});
 
 			if(str != ""){
+			$(".TestmethodtableParent").html($(".Testmethodtable").get(0).outerHTML)
 			$(".TestmethodtableParent .paging_full_numbers").remove()
 
 			$('.Testmethodtable').dataTable().fnClearTable();

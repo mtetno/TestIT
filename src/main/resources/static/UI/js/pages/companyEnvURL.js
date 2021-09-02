@@ -20,45 +20,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$.ajax({
-		url: base_url + "/environment/all",
-		method: "get",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function (data) {
-			envData = data;
-			var payload = "";
-			$.each(data, function (key, value) {
-				payload += '<div class="form-group">';
-				payload += '<label for="exampleInputEmail1">' + value.environmentName + '</label>';
-				payload += '<input class="form-control" data-envurl-id="" data-env-id="' + value.environmentId + '" name="' + value.environmentName + '" placeholder="' + value.environmentName + '" type="text">';
-				payload += '</div>';
-			});
-			$('#modal_ajax .panel-body .modal-body .col-md-12').append(payload);
-			$("select[name=application_id]").on("change", function () {
-				$('#modal_ajax input').val('');
-				$('#modal_ajax textarea').val('');
-				if (this.value != "") {
-					$.ajax({
-						url: base_url + "/companyEnvironUrl/getAllByCompanyId/" + $("select[name=application_id]").val(),
-						method: "get",
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-						},
-						success: function (data) {
-							aldta = data;
-							var payload = "";
-							$.each(data.companyEnvironUrls, function (key, value) {
-								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').val(value.envUrl);
-								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').attr("data-envurl-id", value.companyEnvironUrlId);
-							});
-						}
-					});
-				}
-			});
-		}
-	});
+	fetchAllEnvironmentData();
 
 
 	//serialize object function
@@ -104,6 +66,53 @@ $(document).ready(function () {
 
 	//new $.fn.dataTable.FixedHeader(tableFixed);
 });
+
+
+function fetchAllEnvironmentData(){
+	$.ajax({
+		url: base_url + "/environment/all",
+		method: "get",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			envData = data;
+			var payload = "";
+			$.each(data, function (key, value) {
+				payload += '<div class="form-group">';
+				payload += '<label for="exampleInputEmail1">' + value.environmentName + '</label>';
+				payload += '<input class="form-control" data-envurl-id="" data-env-id="' + value.environmentId + '" name="' + value.environmentName + '" placeholder="' + value.environmentName + '" type="text">';
+				payload += '</div>';
+			});
+			$('#modal_ajax .panel-body .modal-body .col-md-12').append(payload);
+			$("select[name=application_id]").on("change", function () {
+				$('#modal_ajax input').val('');
+				$('#modal_ajax textarea').val('');
+				if (this.value != "") {
+					$.ajax({
+						url: base_url + "/companyEnvironUrl/getAllByCompanyId/" + $("select[name=application_id]").val(),
+						method: "get",
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+						},
+						success: function (data) {
+							aldta = data;
+							var payload = "";
+							$.each(data.companyEnvironUrls, function (key, value) {
+								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').val(value.envUrl);
+								$('#modal_ajax .panel-body .modal-body .col-md-12 input[name=' + value.environment.environmentName + ']').attr("data-envurl-id", value.companyEnvironUrlId);
+							});
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
+
+
+
 function addCompanyEnvironUrlId(companyEnvironUrlId = 0) {
 	if ($("select[name=application_id]:visible").val() == "") {
 		showError();
@@ -298,17 +307,17 @@ function saveEnvironment(dataObj) {
  
 
 function deleteSelectedEnvironment(environmentName) {
-	$.ajax({
+	return $.ajax({
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
-		async: false,
 		url: base_url + "/environment/" + readCookie("TAuid") + "/" + environmentName,
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			$(this).closest("tr").remove();
+			console.log("ENVIRONMENT DELETED")
+			//$(this).closest("tr").remove();
 		}
 	});
 }
@@ -420,6 +429,7 @@ function displayAllEnvironmentUrls() {
 			
 			
 			if(payload != ""){
+			$(".UrltableParent").html($(".Urltable").get(0).outerHTML)
 			$(".UrltableParent .paging_full_numbers").remove()
 
 			$('.Urltable').dataTable().fnClearTable();
@@ -488,6 +498,7 @@ function displayAllAccessRoles() {
 			});
 			
 			if(payload != ""){
+			$(".RoletableParent").html($(".Roletable").get(0).outerHTML)
 			$(".RoletableParent .paging_full_numbers").remove()
 			$('.Roletable').dataTable().fnClearTable();
     		$('.Roletable').dataTable().fnDestroy();

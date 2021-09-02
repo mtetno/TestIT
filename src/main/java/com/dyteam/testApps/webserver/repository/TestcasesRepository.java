@@ -18,7 +18,7 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "SELECT a.testcase_id,a.testcase_name,b.application_name,c.environment_name,d.status from testcases a join application b on b.application_id = a.application_id join environment c on a.environment_id = c.environment_id join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId", nativeQuery = true)
+	@Query(value = "SELECT a.testcase_id,a.testcase_name,a.description,a.class_name,a.test_method,a.environment_id,a.application_id,a.testtype_id,a.foundin_build,a.auto_status_id,a.auto_progress_id,b.application_name,c.environment_name,d.status from testcases a join application b on b.application_id = a.application_id join environment c on a.environment_id = c.environment_id join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll(Long companyId);
 
 	@Query("select e from Testcases e where e.companyId = :companyId AND e.isDelete = 0")

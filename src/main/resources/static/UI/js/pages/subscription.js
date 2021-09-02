@@ -186,7 +186,7 @@ function fetchAllSubscriptions() {
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-				
+			$(".subscriptionTableParent").html($(".subscriptionTable").get(0).outerHTML)
 			$(".subscriptionTableParent .paging_full_numbers").remove()
 
 			$('.subscriptionTable').dataTable().fnClearTable();
@@ -240,12 +240,10 @@ function fetchAllApplications() {
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-			
+			$(".ApptableParent").html($(".Apptable").get(0).outerHTML)
 			$(".ApptableParent .paging_full_numbers").remove()
-
 			$('.Apptable').dataTable().fnClearTable();
     		$('.Apptable').dataTable().fnDestroy();
-			
 			$(".Apptable tbody").html(str);
 			$('.Apptable').DataTable({
 				"lengthChange": false,
@@ -276,26 +274,27 @@ function fetchAllApplicationPaths() {
 			$("table.apppathtable tbody").html("");
 			var str = "";
 			data.map((value) => {
-				
-				str = str + `<tr data='`+JSON.stringify(value)+`'>
+				var selectedData = JSON.stringify(value);
+				str = str + `<tr data='`+selectedData+`'>
 					<td scope="col" class="bucketcheck">
 					<label class="main subCB">
 					<input data-value="`+value.application_path_id+`" type="checkbox"> 
 					<span class="geekmark"></span> 
 					</label>
 					</td>
-					<td data-value=`+JSON.stringify(value)+`  data-toggle="modal" data-dismiss="modal" data-target="#editAppPath">`+value.company_name+`</td>
+					<td data-value='`+selectedData+`' data-toggle="modal" data-dismiss="modal" data-target="#editAppPath">`+value.company_name+`</td>
 					<td >`+value.selenium_home+`</td>
 					<td >`+value.test_data_home+`</td>
 					</tr>`;
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
 			if(str != ""){
-			
+			$(".apppathtableParent").html($(".apppathtable").get(0).outerHTML)
 			$(".apppathtableParent .paging_full_numbers").remove();
 
 			$('.apppathtable').dataTable().fnClearTable();
     		$('.apppathtable').dataTable().fnDestroy();
+			
 			
 			$(".apppathtable tbody").html(str);
 			$('.apppathtable').DataTable({

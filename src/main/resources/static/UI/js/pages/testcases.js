@@ -1,3 +1,6 @@
+var isEditTestCases = false;
+var selectedTestCase = {};
+
 function saveTestcases(dataObj) {
 	$.ajax({
 		type: 'POST',
@@ -5,6 +8,29 @@ function saveTestcases(dataObj) {
 		contentType: 'application/json',
 		dataType: 'json',
 		url: base_url + "/testcases/save",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			$('#myModalSucess1').modal('show'); 
+			displayTestcases();	
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(jqXHR);
+			console.log(textStatus);
+			console.log(errorThrown);
+			alert(jqXHR.responseJSON.errorMessage);
+		}
+	});
+}
+
+function editTestcases(dataObj) {
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(dataObj),
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/testcases/edit",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -42,7 +68,7 @@ function displayTestcases(){
 					  <span class="geekmark"></span> 
 				  </label>
 				</td>
-				<td>`+value.testcase_name+`</td>
+				<td class="rowTestCase" data-value=`+ JSON.stringify(value) +` >`+value.testcase_name+`</td>
 				<td>`+value.application_name+`</td>
 				<td>`+value.environment_name+`</td>
 				<td>`+value.status+`</td>
@@ -53,9 +79,10 @@ function displayTestcases(){
 			// $("#bucketList tbody").html(rows);
 
 			if(rows != ""){
+			$(".testmanagementtableParent").html($(".testmanagementtable").get(0).outerHTML)
 			$(".testmanagementtableParent .paging_full_numbers").remove()
 			$('.testmanagementtable').dataTable().fnClearTable();
-    		$('.testmanagementtable').dataTable().fnDestroy();
+    		$('.testmanagementtable').dataTable().fnDestroy();	
 
 			$(".testmanagementtable tbody").html(rows);
 			$('.testmanagementtable').DataTable({
@@ -73,7 +100,28 @@ function displayTestcases(){
 			// $(".bucketList_wrapper").css("padding-left","4rem")	
 			// $(".testmanagementtable").css("margin-left","2rem")	
 
+		postDisplayTestCases();	
+
 		}
+	});
+}
+
+function postDisplayTestCases(){
+	$(".rowTestCase").click(function(){
+		isEditTestCases = true;
+		var dataValue = JSON.parse($(this).attr("data-value"));
+		selectedTestCase = dataValue;
+		$("#myModal1").modal('show');
+		 $("#test_case_name").val(dataValue.testcase_name);
+		 $("#description").val(dataValue.description);
+		 $("#classname").val(dataValue.class_name);
+		 $("#test_method").val(dataValue.test_method);
+		 $("#environment").val(dataValue.environment_id);
+		 $("#application").val(dataValue.application_id);
+		 $("#type").val(dataValue.testtype_id);
+		 $("#found_in_build").val(dataValue.foundin_build);
+		 $("#automation_status").val(dataValue.auto_status_id);
+		 $("#automation_progress").val(dataValue.auto_progress_id);
 	});
 }
 
@@ -114,3 +162,6 @@ function showMessage(message) {
 	$("#valiationModel .model_body").html('<p>' + message + '</p>');
 	$("#valiationModel").modal('toggle');
 }
+
+
+

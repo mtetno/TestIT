@@ -236,7 +236,7 @@ function updateUser(userId=0){
 			success: function(msg){
 				$('#myModal1').modal('hide');
 				$('#modal_ajax').modal('hide');
-				$("#myModalSucess1").modal();
+				$("#myModalSucess2").modal();
 				
 				fetchUsers();
 				
@@ -550,7 +550,6 @@ $(document).ready(function() {
 				chkArr.forEach(function(index, val){
 						deleteuser(index);
 				});
-		
 			});
             
             

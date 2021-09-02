@@ -76,7 +76,7 @@ $.ajax({
 }
 
 
-function creatTestBucket(payload){
+function creatTestBucket(payload,executionBucketPayload){
 $.ajax({
 		type: 'POST',
 		data: JSON.stringify(payload),
@@ -87,6 +87,8 @@ $.ajax({
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
+            console.log("Inside creatTestBucket")
+            createExecution(executionBucketPayload);
 		}
 	});
 }
@@ -102,6 +104,13 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
+                console.log("Inside createExecution")
+                window.location.href = "runtest.html";
             }
         });
-    }
+}
+
+function createTestBucketAndExecution(testBucketPayload,executionBucketPayload){
+    console.log("Inside creatTestBucket")
+    creatTestBucket(testBucketPayload,executionBucketPayload);
+}

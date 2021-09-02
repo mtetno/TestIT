@@ -206,12 +206,17 @@ public class UserController {
 	@PostMapping("/updateProfile")
 	public User updateProfile(@RequestBody User user, @AuthenticationPrincipal final LoginUser loggedInUser) {
 		logger.info("updating the logged in user profile");
+		logger.info("User profile Image input"+user.getProfileImage());
 		User userDb = userRepo.findById(loggedInUser.getUserId()).get();
 		userDb.setfName(user.getfName());
 		userDb.setlName(user.getlName());
+		userDb.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDb.setEmail(user.getEmail());
 		userDb.setContact(user.getContact());
 		userDb.setAddress(user.getAddress());
+		if(user.getProfileImage()!=null){
+		userDb.setProfileImage(user.getProfileImage());
+		}
 		return userRepo.save(userDb);
 	}
 

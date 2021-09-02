@@ -39,6 +39,7 @@ function fetchAllEnvironment(){
 			});
 			
 			if(payload != ""){
+			$(".envTableParent").html($(".envTable").get(0).outerHTML)
 			$(".envTableParent .paging_full_numbers").remove()
 
 			$('.envTable').dataTable().fnClearTable();

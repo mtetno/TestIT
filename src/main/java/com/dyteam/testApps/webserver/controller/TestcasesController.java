@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.dyteam.testApps.webserver.entity.Testcases;
 import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
@@ -44,6 +45,26 @@ public class TestcasesController {
         testcases.setAddedBy(loggedInUser.getUserId());
         Testcases save = testcasesRepo.save(testcases);
         return save;
+    }
+
+    @PostMapping("/edit")
+    public Testcases edit(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("edit testcases = " + testcases);
+        Optional<Testcases> foundcases = testcasesRepo.findById(testcases.getTestcasesId());
+        if(foundcases.isPresent()){
+            Testcases save = foundcases.get();
+            save.setApplicationId(testcases.getApplicationId());
+            save.setAutoProgressId(testcases.getAutoProgressId());
+            save.setAutoStatusId(testcases.getAutoStatusId());
+            save.setClassName(testcases.getClassName());
+            save.setDescription(testcases.getDescription());
+            save.setEnvironmentId(testcases.getEnvironmentId());
+            save.setFoundInBuild(testcases.getFoundInBuild());
+            save.setTestMethod(testcases.getTestMethod());
+            save.setTestcaseName(testcases.getTestcaseName());
+            return testcasesRepo.save(save);
+        }
+        return null;
     }
 
     @GetMapping(value = "/all")

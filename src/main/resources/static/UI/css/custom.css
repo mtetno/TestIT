@@ -1051,8 +1051,9 @@ input[type="radio"]:checked + label:before {
 
 .updateusermodel img {
     padding: 10px;
-    background-color: black;
     border-radius: 50%;
+	width: 45px;
+	height: 45px;
 }
 
 .updateusermodel .imgupload i {
