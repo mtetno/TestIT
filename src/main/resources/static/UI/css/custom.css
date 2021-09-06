@@ -987,6 +987,10 @@ canvas {
     text-decoration: underline;
 }
 
+.testmanagementAssignmentTable tbody tr td:nth-child(1){
+    text-decoration: underline;
+}
+
 .Username {
 	border-bottom: 3px solid #007bff !important;
 }

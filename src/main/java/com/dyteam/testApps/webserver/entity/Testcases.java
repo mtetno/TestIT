@@ -43,11 +43,9 @@ public class Testcases {
 	private String description;
 
 	@Column(name="class_name")
-	@NotNull
 	private String className;
 
 	@Column(name="test_method")
-	@NotNull
 	private String testMethod;
 
 	@Column(name="environment_id")
@@ -67,12 +65,13 @@ public class Testcases {
 	private Long foundInBuild;
 	
 	@Column(name="auto_status_id")
-	@NotNull
 	private Long autoStatusId;
 
 	@Column(name="auto_progress_id")
-	@NotNull
 	private Long autoProgressId;
+
+	@Column(name="expected")
+	private String expected;
 	
 	@Column(name="added_by")
 	@NotNull
@@ -94,6 +93,14 @@ public class Testcases {
 		this.testcasesId=testcasesId;
 		this.testcaseName=testcaseName;
 		this.className=className;
+	}
+
+	public String getExpected() {
+		return this.expected;
+	}
+
+	public void setExpected(String expected) {
+		this.expected = expected;
 	}
 
 	public Testcases() {

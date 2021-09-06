@@ -62,6 +62,7 @@ public class TestcasesController {
             save.setFoundInBuild(testcases.getFoundInBuild());
             save.setTestMethod(testcases.getTestMethod());
             save.setTestcaseName(testcases.getTestcaseName());
+            save.setExpected(testcases.getExpected());
             return testcasesRepo.save(save);
         }
         return null;
@@ -70,7 +71,14 @@ public class TestcasesController {
     @GetMapping(value = "/all")
     public Iterable<Map<String, Object>> getAllTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAllTestcases");
-        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll(loggedInUser.getCompanyId());
+        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAllByCid(loggedInUser.getCompanyId());
+        return testtypes;
+    }
+
+    @GetMapping(value = "/superuser/all")
+    public Iterable<Map<String, Object>> getAllSuperTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("Inside getAllSuperTestcases");
+        Iterable<Map<String, Object>> testtypes = testcasesRepo.fetchAll();
         return testtypes;
     }
 

@@ -71,7 +71,7 @@ function displayTestcases(){
 				<td class="rowTestCase" data-value=`+ JSON.stringify(value) +` >`+value.testcase_name+`</td>
 				<td>`+value.application_name+`</td>
 				<td>`+value.environment_name+`</td>
-				<td>`+value.status+`</td>
+				<td>`+value.status +`</td>
 			  </tr>`
 			 rows = rows + savestr;
 			});			 
@@ -119,6 +119,7 @@ function postDisplayTestCases(){
 		 $("#environment").val(dataValue.environment_id);
 		 $("#application").val(dataValue.application_id);
 		 $("#type").val(dataValue.testtype_id);
+		 $("#expected").val(dataValue.expected);
 		 $("#found_in_build").val(dataValue.foundin_build);
 		 $("#automation_status").val(dataValue.auto_status_id);
 		 $("#automation_progress").val(dataValue.auto_progress_id);

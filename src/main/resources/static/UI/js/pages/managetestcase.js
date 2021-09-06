@@ -1,82 +1,133 @@
-function saveTestMethods(dataObj) {
-	$.ajax({
-		type: 'POST',
-		data: JSON.stringify(dataObj),
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/testMethod/save",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			$("a.addRowBtn").css("pointer-events", "");
-			$("a.addRowBtn").css("opacity", "");
-			$("#deleteRow").attr("disabled", false);
-			$("#deleteRow1").attr("disabled", false);
-			$("#deleteRow2").attr("disabled", false);
-			$("#test_method").val('');
-			$("#test_method").val('');
-			$("#test_method").val('');
-			$("#company_name").val(0);
-			$("#application").val(0);
-			$("button.addtestmethodBtn").closest(".addRowData").slideUp();
-			fetchAllTestMethod();
-		}
-	});
-}
+var testcasesAssignments = {};
+var selectedTestCase = {};
+// function saveTestMethods(dataObj) {
+// 	$.ajax({
+// 		type: 'POST',
+// 		data: JSON.stringify(dataObj),
+// 		contentType: 'application/json',
+// 		dataType: 'json',
+// 		url: base_url + "/testMethod/save",
+// 		beforeSend: function (xhr) {
+// 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+// 		},
+// 		success: function () {
+// 			$("a.addRowBtn").css("pointer-events", "");
+// 			$("a.addRowBtn").css("opacity", "");
+// 			$("#deleteRow").attr("disabled", false);
+// 			$("#deleteRow1").attr("disabled", false);
+// 			$("#deleteRow2").attr("disabled", false);
+// 			$("#test_method").val('');
+// 			$("#test_method").val('');
+// 			$("#test_method").val('');
+// 			$("#company_name").val(0);
+// 			$("#application").val(0);
+// 			$("button.addtestmethodBtn").closest(".addRowData").slideUp();
+// 			fetchAllTestMethod();
+// 		}
+// 	});
+// }
 
  
 
-function deleteTestMethod(id) {
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/testMethod/delete/" + id,
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function () {
-			fetchAllTestMethod();
-		}
-	});
-}
+// function deleteTestMethod(id) {
+// 	$.ajax({
+// 		type: 'DELETE',
+// 		contentType: 'application/json',
+// 		dataType: 'json',
+// 		url: base_url + "/testMethod/delete/" + id,
+// 		beforeSend: function (xhr) {
+// 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+// 		},
+// 		success: function () {
+// 			fetchAllTestMethod();
+// 		}
+// 	});
+// }
 
-function fetchAllTestMethod() {
+// function fetchAllTestMethod() {
+// 	$.ajax({
+// 		type: 'GET',
+// 		contentType: 'application/json',
+// 		dataType: 'json',
+// 		url: base_url + "/testMethod/all",
+// 		beforeSend: function (xhr) {
+// 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+// 		},
+// 		success: function (data) {
+// 			var str = "";
+// 			data.map((value) => {
+// 				str = str + `<tr>
+// 				<td scope="col" class="bucketcheck">
+// 				<label class="main subCB">
+// 				<input data-value="`+value.test_method_id+`" type="checkbox"> 
+// 				<span class="geekmark"></span> 
+// 				</label>
+// 				</td>
+// 				<td >`+value.company_name+`</td>
+// 				<td >`+value.application_name+`</td>
+// 				<td >`+value.test_method+`</td>
+// 				<td class="running">`+value.status+`</td>
+// 				</tr>`;
+// 			});
+
+// 			if(str != ""){
+// 			$(".TestmethodtableParent").html($(".Testmethodtable").get(0).outerHTML)
+// 			$(".TestmethodtableParent .paging_full_numbers").remove()
+
+// 			$('.Testmethodtable').dataTable().fnClearTable();
+//     		$('.Testmethodtable').dataTable().fnDestroy();
+			
+// 			$(".Testmethodtable tbody").html(str);
+// 			$('.Testmethodtable').DataTable({
+// 				"lengthChange": false,
+// 				"searching": false,   // Search Box will Be Disabled
+// 				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+// 				"info": false,
+// 				"pagingType": "full_numbers"
+// 			});
+// 		}else{
+// 			$('.Testmethodtable').dataTable().fnClearTable();
+// 			$('.Testmethodtable').dataTable().fnDestroy();
+// 		}
+// 		}
+// 	});
+// }
+
+
+function displayTestcases(){
 	$.ajax({
-		type: 'GET',
-		contentType: 'application/json',
-		dataType: 'json',
-		url: base_url + "/testMethod/all",
+		url: base_url + "/testcases/superuser/all",
+		method: "GET",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var str = "";
+			console.log(data);
+			$("#bucketList tbody").html("");
+			var rows = "";
 			data.map((value) => {
-				str = str + `<tr>
-				<td scope="col" class="bucketcheck">
-				<label class="main subCB">
-				<input data-value="`+value.test_method_id+`" type="checkbox"> 
-				<span class="geekmark"></span> 
-				</label>
-				</td>
-				<td >`+value.company_name+`</td>
-				<td >`+value.application_name+`</td>
-				<td >`+value.test_method+`</td>
-				<td class="running">`+value.status+`</td>
-				</tr>`;
-			});
+				console.log("value"+value);
+				var companies = _.join(_.map(_.filter(testcasesAssignments, { 'testcase_id': value.testcase_id}),'company_name'), [separator=',']);
+				var savestr = `<tr>
+				<td class="rowTestCase" data-value=`+ JSON.stringify(value) +` >`+value.testcase_name+`</td>
+				<td>`+value.application_name+`</td>
+				<td>`+value.environment_name+`</td>
+				<td>`+value.status +`</td>
+				<td>`+ companies +`</td>
+			  </tr>`
+			 rows = rows + savestr;
+			});			 
 
-			if(str != ""){
-			$(".TestmethodtableParent").html($(".Testmethodtable").get(0).outerHTML)
-			$(".TestmethodtableParent .paging_full_numbers").remove()
+			// $("#bucketList tbody").html(rows);
 
-			$('.Testmethodtable').dataTable().fnClearTable();
-    		$('.Testmethodtable').dataTable().fnDestroy();
-			
-			$(".Testmethodtable tbody").html(str);
-			$('.Testmethodtable').DataTable({
+			if(rows != ""){
+			$(".testmanagementAssignmentTableParent").html($(".testmanagementAssignmentTable").get(0).outerHTML)
+			$(".testmanagementAssignmentTableParent .paging_full_numbers").remove()
+			$('.testmanagementAssignmentTable').dataTable().fnClearTable();
+    		$('.testmanagementAssignmentTable').dataTable().fnDestroy();	
+
+			$(".testmanagementAssignmentTable tbody").html(rows);
+			$('.testmanagementAssignmentTable').DataTable({
 				"lengthChange": false,
 				"searching": false,   // Search Box will Be Disabled
 				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
@@ -84,9 +135,45 @@ function fetchAllTestMethod() {
 				"pagingType": "full_numbers"
 			});
 		}else{
-			$('.Testmethodtable').dataTable().fnClearTable();
-			$('.Testmethodtable').dataTable().fnDestroy();
+			$('.testmanagementAssignmentTable').dataTable().fnClearTable();
+    		$('.testmanagementAssignmentTable').dataTable().fnDestroy();
 		}
+		postDisplayTestCases();
 		}
 	});
 }
+
+
+function fetchTestcasesAssignments(){
+	$.ajax({
+		url: base_url + "/testcasesAssignments/all",
+		method: "GET",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			console.log(data);
+			testcasesAssignments = data;
+			displayTestcases();     
+       		fetchAllCompanies();
+		}
+	});
+}
+
+function postDisplayTestCases(){
+	$(".rowTestCase").click(function(){
+		var dataValue = JSON.parse($(this).attr("data-value"));
+		selectedTestCase = dataValue;
+		console.log(dataValue);
+		$("#selectedTestCaseName").html(dataValue.testcase_name);
+		$("#selectedApplication").html(dataValue.application_name);
+		$("#selectedEnvironment").html(dataValue.environment_name);
+		$("#selectedAutomationStatus").html(dataValue.status);
+		$("#updateTestAssignmentsModal").modal();
+	});
+}
+
+
+
+
+

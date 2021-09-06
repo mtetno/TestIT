@@ -163,13 +163,19 @@
 									<textarea class="form-control border" name="description" id="description" rows="1" placeholder="Enter Description" required></textarea>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12 mb-2">
+									<label>Expected</label>
+									<textarea class="form-control border" name="expected" id="expected" rows="1"  required></textarea>
+								</div>
+							</div>
 		          			<div class="row">
 								<div class="col-md-6 mb-2">
-									<label class="required" >Class Name</label>
+									<label>Class Name</label>
 									<input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
 								</div>
 								<div class="col-md-6 mb-2">
-									<label class="required" >Test Method</label>
+									<label>Test Method</label>
 									<input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
 								</div>
 							</div>
@@ -202,7 +208,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-6">
-									<label class="required">Automation Status</label>
+									<label>Automation Status</label>
 									<select class="form-control border" name="automation_status" id="automation_status">
 										<option value="">Select Automation Status</option>
 										<option value="Not yet automated">Not yet automated</option>
@@ -210,7 +216,7 @@
 									</select>
 								</div>
 								<div class="col-md-6">
-									<label class="required">Automation Progress</label>
+									<label>Automation Progress</label>
 									<select class="form-control border" name="automation_progress" id="automation_progress">
 										<option value="">Select Automation Progress</option>
 										<option value="Backing">Backing</option>
@@ -285,6 +291,12 @@
 									<div class="col-md-12 mb-2">
 										<label class="required">Description</label>
 										<textarea class="form-control border" name="description1" id="description1" rows="1"  required>Description entered by user</textarea>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 mb-2">
+										<label>Expected</label>
+										<textarea class="form-control border" name="expected" id="expected" rows="1"  required></textarea>
 									</div>
 								</div>
 								<div class="row">
@@ -536,6 +548,7 @@ $("#userMenu span").text(uname);
 				var foundInBuild = $("#found_in_build").val().trim();
 				var autoStatusId = $("#automation_status").val().trim();
 				var autoProgressId = $("#automation_progress").val().trim();
+				var expected = $("#expected").val().trim();
 				var isDelete = 0
 
 				if(testcaseName.length == 0){
@@ -543,12 +556,6 @@ $("#userMenu span").text(uname);
 					return false;
 				}else if(description.length == 0){
 					alert("Please enter valid description");
-					return false;
-				}else if(className.length == 0){
-					alert("Please enter valid classname");
-					return false;
-				}else if(testMethod.length == 0){
-					alert("Please enter valid test method");
 					return false;
 				}else if(environmentId == 0){
 					alert("Please enter valid environment");
@@ -561,12 +568,6 @@ $("#userMenu span").text(uname);
 					return false;
 				}else if(foundInBuild == '' || parseInt(foundInBuild) <= 0){
 					alert("Please enter valid foundin build no");
-					return false;
-				}else if(autoStatusId == 0){
-					alert("Please enter valid auto status");
-					return false;
-				}else if(autoProgressId == 0){
-					alert("Please enter valid auto progress");
 					return false;
 				}
 				$("#myModal1").modal('toggle');
@@ -581,6 +582,7 @@ $("#userMenu span").text(uname);
 				dataObj["foundInBuild"] = foundInBuild;
 				dataObj["autoStatusId"] = autoStatusId;
 				dataObj["autoProgressId"] = autoProgressId;
+				dataObj["expected"] = expected;
 				dataObj["isDelete"] = isDelete;
 				if(isEditTestCases){
 					dataObj["testcasesId"] = selectedTestCase.testcase_id;
@@ -602,6 +604,7 @@ $("#userMenu span").text(uname);
 				$("#application").val(0)
 				$("#type").val(0);
 				$("#found_in_build").val("");
+				$("#expected").val("");
 				$("#automation_status").val(0);
 				$("#automation_progress").val(0);
 			}
