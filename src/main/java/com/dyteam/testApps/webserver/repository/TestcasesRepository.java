@@ -56,8 +56,22 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 	@Query(value = "SELECT c.application_name as name,e.application_id as id from testcases e join application c where e.application_id = c.application_id group by e.application_id", nativeQuery = true)
 	List<INames> getAllApplicationNames();
 
+	@Query(value = "select a.testcase_id,b.company_name,c.application_name,a.testcase_name,a.description,a.class_name,a.test_method from testcases a join subscriptions b on b.id = a.company_id join application c on c.application_id = a.application_id where a.company_id = :companyId AND a.application_id = :applicationId", nativeQuery = true)
+	List<Map<String, Object>> downloadTestcases(Long companyId,Long applicationId);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "REPLACE INTO testcases (testcase_id, testcase_name, description, test_method, class_name,company_id,application_id) VALUES(:testcase_id , :testcase_name , :description , :test_method , :class_name, :companyId, :applicationId)", nativeQuery = true)
+	void updateBulkTestcases(Long testcase_id,String testcase_name,String description,String test_method, String class_name,Long companyId,Long applicationId);
+
+	@Modifying
+	@Transactional
+	@Query(value = "insert into testcases (testcase_name,description,test_method,class_name,company_id,application_id) values (:testcase_name,:description,:test_method,:class_name,:company_id,:application_id)", nativeQuery = true)
+	void insertBulkTestcases(String testcase_name,String description,String test_method, String class_name,Long company_id,Long application_id);
+
+
 	@Modifying
 	@Transactional
 	Long deleteByCompanyId(Long companyId);
-
 }

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <!--Custom style link-->
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/loader.css">
   <!--Scripts-->
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -81,6 +82,7 @@
 
     <!--Main Contebt Start-->
     <div id="main-content" class="container-fluid pull-right">
+      <div id="loader"></div>
       <!--Page Title-->
       <!-- <h1 id="page-title">Manage Test Cases</h1> -->
 
@@ -202,46 +204,74 @@
       <div id="importcases" class="tab-pane fade">
         <div class="card">
           <div class="card-body">
+            
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
                 <!--Page subtitle-->
-                <!-- <label class="subtitle">Import Test Cases</label> -->
+                <label class="subtitle">Download Testcases</label> 
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-4 buttonlink1 btnpadding">
+              <div class="col-md-12 buttonlink1 btnpadding">
                 <div class="row addRowData mb-1">
                   <div class="col-md-4 rowadjust">
                     <label class="required">Company Name</label>
                     <select class="form-control border" name="company_name1" id="company_name1">
-                      
                     </select>
                   </div>
                   <div class="col-md-4 rowadjust">
                     <label class="required">Application Name</label>
-                    <input type="text" class="form-control border" name="application_name" id="application_name" placeholder="Enter Application Name">
+                    <select class="form-control border" name="application1" id="application1">
+                    </select>
                   </div>
                   <div class="col-md-3 buttonlink1 btnpadding">
                     <button id="filedownload" class="btn btn-primary"><i class="fa fa-download"></i>  Download .xslx</button>
                   </div>
                 </div>                
+             </div> 
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-md-4">
+                <p id="downloadNotification" style="display:none"><i class="fa fa-check-circle"></i>. xls file downloaded successfully.</p>
               </div>
-              
-              
-              <div class="col-md-4 buttonlink1 btnpadding">
-                <button id="OpenxlsUpload" class="btn btn-primary"><i class="fa fa-upload"></i>  Upload .xslx</button>
+            </div>
+
+
+            <br/><br/><br/>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
+                <!--Page subtitle-->
+                <label class="subtitle">Upload Testcases</label> 
               </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 buttonlink1 btnpadding">
+                <div class="row addRowData mb-1">
+                  <div class="col-md-4 rowadjust">
+                    <label class="required">Company Name</label>
+                    <select class="form-control border" name="company_name2" id="company_name2">
+                    </select>
+                  </div>
+                  <div class="col-md-4 rowadjust">
+                    <label class="required">Application Name</label>
+                    <select class="form-control border" name="application2" id="application2">
+                    </select>
+                  </div>
+                  <div class="col-md-3 buttonlink1 btnpadding">
+                    <button id="OpenxlsUpload" class="btn btn-primary"><i class="fa fa-upload"></i>  Upload .xslx</button>
+                  </div>
+                </div>                
+             </div> 
             </div>
 
 
             <div class="row mt-2">
               <div class="col-md-4">
-                <p id="fdmsg" style="display:none"><i class="fa fa-check-circle"></i>. xls file downloaded successfully.</p>
-              </div>
-              <div class="col-md-4">
                 <input type="file" id="xlsupload" style="display:none"/> 
-                <p id="fumsg" style="display:none"><i class="fa fa-check-circle"></i>. xls file uploaded successfully.</p>
+                <p id="uploadNotification" style="display:none"><i class="fa fa-check-circle"></i>. xls file uploaded successfully.</p>
               </div>
             </div>
 
@@ -410,6 +440,51 @@ $(document).ready(function() {
 		}
 	});
   });
+
+
+  $('#company_name1').on('change', function (e) {
+    var valueSelected = this.value;
+    fetchAllApplicationsByCompanyId(valueSelected);
+  });
+
+
+  $('#company_name2').on('change', function (e) {
+   var valueSelected = this.value;
+   fetchAllApplicationsByCompanyId(valueSelected);
+  });
+
+  document.getElementById('xlsupload').addEventListener('change', readSingleFile, false);
+      
+
+      function readSingleFile(e) {
+      showLoader();
+      var file = e.target.files[0];
+      if (!file) {
+        return;
+      }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contents = e.target.result;
+          displayParsed(contents);
+          var companyId = $("#company_name1").val();
+          var applicationId = $("#application1").val();
+        };
+        reader.readAsText(file);
+      }
+
+      function displayParsed(contents) {
+        console.log(contents);
+        var data = contents.split("\n");
+        var sheetData = [];
+        for(var i=1;i<data.length;i++){
+          var item = data[i].split(",");
+          if(item.length == 7)
+          sheetData.push(item);
+        }
+        console.log(sheetData);
+        uploadTestcases(sheetData,$('#company_name2').val(),$('#application2').val());
+      }
 });  
 
 
@@ -511,15 +586,20 @@ $(document).ready(function() {
     //   $(this).closest(".updateRowData").slideUp();
     // });
 
-    $('#OpenxlsUpload').click(function(){ $('#xlsupload').trigger('click'); });
+    $('#OpenxlsUpload').click(function(){ 
+      $('#xlsupload').trigger('click'); 
+    });
+
+    $('#xlsupload').click(function(){ 
+       this.value = null;
+    });
 
     $("#filedownload").click(function(){
-      $("#fdmsg").show();
+      var companyId = $("#company_name1").val();
+      var applicationId = $("#application1").val();
+      downloadTestcases(companyId,applicationId);
     });
 
-    $("#OpenxlsUpload").click(function(){
-      $("#fumsg").show();
-    });
 
     /*---Jquery for Cancel row---*/
 

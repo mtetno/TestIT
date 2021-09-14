@@ -171,6 +171,8 @@ function fetchAllApplicationsByCompanyId(id) {
 				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
 			})
 			$("#application").html(options);
+			$("#application1").html(options);
+			$("#application2").html(options);
 		}
 	});
 }
@@ -247,12 +249,13 @@ function fetchAllCompanies() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var options = '<option value="0">Select Testing Environment</option>';
+			var options = '<option value="0">Select Company</option>';
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.companyName + '</option>';
 			})
 			$("#company_name").html(options);
 			$("#company_name1").html(options);
+			$("#company_name2").html(options);
 			$("#company_name1_edit").html(options);
 		}
 	});

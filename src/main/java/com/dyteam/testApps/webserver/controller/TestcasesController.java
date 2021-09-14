@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.entity.UploadTestcasesRequest;
 import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
 import com.dyteam.testApps.webserver.projection.INames;
 import com.dyteam.testApps.webserver.projection.IStackBar;
@@ -155,9 +156,35 @@ public class TestcasesController {
 
     @GetMapping(value = "/getTestcasesStackedApplicationData/applications")
     public Iterable<INames> getTestcasesStackedApplications() {
-
         return testcasesRepo.getAllApplicationNames();
-
     }
+
+    @GetMapping(value = "/downloadTestcases/{companyId}/{applicationId}")
+    public List<Map<String, Object>> downloadTestcases(@PathVariable(value = "companyId") Long companyId,@PathVariable(value = "applicationId") Long applicationId) {
+        return testcasesRepo.downloadTestcases(companyId,applicationId);
+    }
+
+    @PostMapping("/uploadTestcases/{companyId}/{applicationId}")
+    public boolean uploadTestcases(@PathVariable(value = "companyId") Long companyId,@PathVariable(value = "applicationId") Long applicationId,
+        @RequestBody UploadTestcasesRequest uploadTestcasesRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
+
+        
+        for (ArrayList<String> item : uploadTestcasesRequest.getData() ) {
+                Long testcase_id = Long.parseLong(item.get(0).trim().equals("") ? "0" : item.get(0).trim());
+                String testcase_name = item.get(1) != null ? item.get(1) : "" ;
+                String description = item.get(2) != null ? item.get(2) : "";
+                String test_method = item.get(3) != null ? item.get(3) : "";
+                String company_name= item.get(4)!= null ? item.get(4) : "";
+                String application_name = item.get(5)!= null ? item.get(5) : "";
+                String class_name = item.get(6)!= null ? item.get(6) : "";
+                if(testcase_id > 0){
+                    testcasesRepo.updateBulkTestcases(testcase_id, testcase_name, description, test_method, class_name,companyId,applicationId);
+                }else{
+                    testcasesRepo.insertBulkTestcases(testcase_name, description, test_method, class_name, companyId, applicationId);
+                }
+    }
+    return true;
+
+}
 
 }

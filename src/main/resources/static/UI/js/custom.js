@@ -88,6 +88,11 @@ $(document).ready(function() {
 	// 		});
 	// 	});
 	// });
+
+	
+	
+
+
 	$.ajaxSetup({
 		cache: false,
         error: function (x, status, error) {
@@ -178,3 +183,11 @@ $(".mainbtn input[type=checkbox]").click(function(){
      $("form#profileform .form-group label").css("color", "Black !important");
 	}
 });
+
+	function showLoader(){
+	$("#loader").addClass("loading");
+	}
+	
+	function hideLoader(){
+	$("#loader").removeClass("loading");
+	}

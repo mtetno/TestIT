@@ -173,7 +173,75 @@ function postDisplayTestCases(){
 	});
 }
 
+function downloadTestcases(companyId,applicationId){
+	$.ajax({
+		url: base_url + "/testcases/downloadTestcases/"+companyId+"/"+applicationId,
+		method: "GET",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			console.log(data);
+			var sheetData = [];
+			
+			sheetData.push(['testcase_id','testcase_name','description','test_method','company_name','application_name','class_name']);
+			
+			data.map((item)=>{
+			sheetData.push([
+				item.testcase_id,
+				item.testcase_name,
+				item.descrpition,
+				item.test_method,
+				item.company_name,
+				item.application_name,
+				item.class_name
+			]);
+			});				
 
+			let csvContent = "data:text/csv;charset=utf-8," 
+    		+ sheetData.map(e => e.join(",")).join("\n");
+			var encodedUri = encodeURI(csvContent);
 
+			var downloadLink = document.createElement("a");
+    
+			downloadLink.href = encodedUri;
+			downloadLink.download = "testcases.csv";
+
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+
+			$("#downloadNotification").show();
+			setTimeout(function(){ 
+			$("#downloadNotification").hide();
+			 }, 3000);
+		}
+	});
+}
+
+function uploadTestcases(sheetData,companyId,applicationId){
+		var dataObj = {};
+		dataObj["data"] = sheetData;
+		
+		$.ajax({
+			url: base_url+"/testcases/uploadTestcases/"+companyId+"/"+applicationId,
+			type: "POST",
+			contentType: 'application/json',
+			dataType: 'json',
+			data: JSON.stringify(dataObj),
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: function(response)
+			{
+				hideLoader();
+				$("#uploadNotification").show();
+				setTimeout(function(){ 
+				$("#uploadNotification").hide();
+				
+				 }, 3000);
+			}
+		});
+}
 
 
