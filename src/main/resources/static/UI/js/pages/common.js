@@ -249,9 +249,9 @@ function fetchAllCompanies() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var options = '<option value="0">Select Company</option>';
+			var options = '<option value="0" title="Select Company"   >Select Company</option>';
 			data.map((item) => {
-				options = options + '<option value="' + item.id + '">' + item.companyName + '</option>';
+				options = options + '<option value="' + item.id + '"   title="'+item.companyName+'" >      ' + item.companyName + '</option>';
 			})
 			$("#company_name").html(options);
 			$("#company_name1").html(options);

@@ -13,6 +13,7 @@
   <!--Custom style link-->
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/loader.css">
+  <link rel="stylesheet" href="css/multiselect.css">
   <!--Scripts-->
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -83,6 +84,7 @@
     <!--Main Contebt Start-->
     <div id="main-content" class="container-fluid pull-right">
       <div id="loader"></div>
+
       <!--Page Title-->
       <!-- <h1 id="page-title">Manage Test Cases</h1> -->
 
@@ -365,37 +367,40 @@
             <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           </div>
 
+         
+
           <div class="modal-body">
             <div class="col-md-12 updateTestAssignments">
               <form>
           <div class="row">
             <div class="col-md-12 mb-2">
               <label>Test Case Name: </label>
-              <label id="selectedTestCaseName"></label>
+              <input type="text" class="form-control border" name="selectedTestCaseName" id="selectedTestCaseName">
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 mb-2">
               <label>Application: </label>
-              <label id="selectedApplication"></label>
+              <input type="text" class="form-control border" name="selectedApplication" id="selectedApplication">
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 mb-2">
               <label>Environment: </label>
-              <label id="selectedEnvironment"></label>
+              <input type="text" class="form-control border" name="selectedEnvironment" id="selectedEnvironment">
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mb-2">
               <label>Automation Status: </label>
-              <label id="selectedAutomationStatus"></label>
+              <input type="text" class="form-control border" name="selectedAutomationStatus" id="selectedAutomationStatus">
             </div>
           </div>
+          
           <div class="row">
             <div class="col-md-6 mb-2">
               <label>Compaines</label>
-              <select class="form-control border" name="company_name" id="company_name" required class="overflow: hidden;" multiple="multiple">
+              <select name="company_name" id="company_name" required multiple>
               </select>
             </div>
           </div>

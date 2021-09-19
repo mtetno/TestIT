@@ -28,6 +28,7 @@ public class TestcasesAssignmentsController {
     @PostMapping("/save")
     public boolean save(@RequestBody TestcasesAssignmentsRequest testcasesAssignmentsRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save testcases assignments");
+    testcasesAssignementsRepository.deleteAssignmentsWithTestCaseId(testcasesAssignmentsRequest.getTestCaseId());
         for (Long compId : testcasesAssignmentsRequest.getCompanyId()) {
             testcasesAssignementsRepository.insertInto(compId, testcasesAssignmentsRequest.getTestCaseId());
         }

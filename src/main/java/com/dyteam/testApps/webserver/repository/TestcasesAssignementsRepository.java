@@ -21,6 +21,12 @@ public interface TestcasesAssignementsRepository extends CrudRepository<Testcase
 	@Transactional
 	@Query(value = "INSERT INTO  testcases_assignments (company_id, testcase_id) SELECT :companyId,:testCaseId WHERE (SELECT COUNT(*) FROM testcases_assignments WHERE company_id=:companyId AND testcase_id=:testCaseId) = 0", nativeQuery = true)
 	public void insertInto(Long companyId,Long testCaseId);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from testcases_assignments where testcase_id=:testCaseId", nativeQuery = true)
+	public void deleteAssignmentsWithTestCaseId(Long testCaseId);
 
 	@Modifying
 	@Transactional

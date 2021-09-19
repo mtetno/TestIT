@@ -26,3 +26,6 @@ While uploading if TestCaseID is null then insert data into testcases table and 
 
 https://jsfiddle.net/3an24jmw/25/
 https://helpdeskgeek.com/windows-10/getting-the-parameter-is-incorrect-error-in-windows-10-5-ways-to-fix/
+
+
+https://stackoverflow.com/questions/41396945/multi-select-drop-down-with-checkbox

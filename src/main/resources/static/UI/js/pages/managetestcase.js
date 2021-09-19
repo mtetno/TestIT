@@ -165,10 +165,28 @@ function postDisplayTestCases(){
 		var dataValue = JSON.parse($(this).attr("data-value"));
 		selectedTestCase = dataValue;
 		console.log(dataValue);
-		$("#selectedTestCaseName").html(dataValue.testcase_name);
-		$("#selectedApplication").html(dataValue.application_name);
-		$("#selectedEnvironment").html(dataValue.environment_name);
-		$("#selectedAutomationStatus").html(dataValue.status);
+		$('option').mousedown(function(e) {
+			e.preventDefault();
+			var originalScrollTop = $(this).parent().scrollTop();
+			console.log(originalScrollTop);
+			$(this).prop('selected', $(this).prop('selected') ? false : true);
+			var self = this;
+			$(this).parent().focus();
+			setTimeout(function() {
+				$(self).parent().scrollTop(originalScrollTop);
+			}, 0);
+			
+			return false;
+		});
+		var companiesIds = _.join(_.map(_.filter(testcasesAssignments, { 'testcase_id': dataValue.testcase_id}),'company_id'), [separator=',']);
+		companiesIds = companiesIds.split(',');
+		console.log("companiesIds")
+		console.log(companiesIds)
+		$("#selectedTestCaseName").val(dataValue.testcase_name);
+		$("#selectedApplication").val(dataValue.application_name);
+		$("#selectedEnvironment").val(dataValue.environment_name);
+		$("#selectedAutomationStatus").val(dataValue.status);
+		$("#company_name").val(companiesIds);
 		$("#updateTestAssignmentsModal").modal();
 	});
 }

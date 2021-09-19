@@ -57,11 +57,9 @@ public class Testcases {
 	private Long applicationId;
 
 	@Column(name="testtype_id")
-	@NotNull
 	private Long testTypeId;
 
 	@Column(name="foundin_build")
-	@NotNull
 	private Long foundInBuild;
 	
 	@Column(name="auto_status_id")
