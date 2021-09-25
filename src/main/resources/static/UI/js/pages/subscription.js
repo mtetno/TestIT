@@ -44,7 +44,7 @@ function updateSubscription(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			 
+			showSuccessToast("The Subscription Updated Successfully.");
 			fetchAllSubscriptions();
 		}
 	});
@@ -115,6 +115,7 @@ function deleteSubscription(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Subscription Deleted Successfully.");
 			window.location.href = window.location.href;
 		}
 	});
@@ -132,6 +133,7 @@ function deleteApplicationPath(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Application Paths Deleted Successfully.");
 			fetchAllApplicationPaths();
 		}
 	});
@@ -148,6 +150,7 @@ function deleteApplication(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Application Deleted Successfully.");
 			fetchAllApplications();
 		}
 	});

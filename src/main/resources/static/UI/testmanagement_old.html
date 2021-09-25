@@ -85,7 +85,7 @@
 							<!-- <label class="subtitle">Manage Test</label> -->
 							<!--Delete row-->
 							<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
-							<a href="#" class="addusetbtn" data-toggle="modal"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+							<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
 						</div>
 					</div>
 					<div class="row selectdiv testmanagementtableParent" style="overflow-x: auto;">
@@ -152,48 +152,61 @@
 		        <div class="modal-body">
 		          	<div class="col-md-12 addusermodel">
 		          		<form>
-
+		          			<div class="row">
+								<div class="col-md-12 mb-2">
+									<label class="required">Test Case Name</label>
+									<input type="text" class="form-control border" name="test_case_name" id="test_case_name" placeholder="Enter Test Case Name Here" required>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-md-12 mb-2">
-									<label class="required">Test Method</label>
+									<label class="required">Description</label>
+									<textarea class="form-control border" name="description" id="description" rows="1" placeholder="Enter Description" required></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-2">
+									<label>Expected</label>
+									<textarea class="form-control border" name="expected" id="expected" rows="1"  required></textarea>
+								</div>
+							</div>
+		          			<div class="row">
+								<div class="col-md-6 mb-2">
+									<label>Class Name</label>
+									<input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
+								</div>
+								<div class="col-md-6 mb-2">
+									<label>Test Method</label>
 									<input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
 								</div>
 							</div>
-
-		          			<div class="row">
-								<div class="col-md-12 mb-2">
-									<label class="required">Objective</label>
-									<input type="text" class="form-control border" name="objective" id="objective" placeholder="Please enter objective" required>
+							<div class="row">
+								<div class="col-md-6 mb-2">
+									<label class="required" >Environment</label>
+									<select class="form-control border" name="environment" id="environment" required>
+									</select>
+								</div>
+								<div class="col-md-6 mb-2">
+									<label class="required" >Application</label>
+									<select class="form-control border" name="application" id="application" required>
+										<option value="Select Application">Select Application</option>
+										<option value="ITSM">ITSM</option>
+									</select>
 								</div>
 							</div>
-
 							<div class="row">
-							<div class="col-md-12 mb-2">
-								<label class="required" >Application</label>
-								<select class="form-control border" name="application" id="application" required>
-									<option value="Select Application">Select Application</option>
-									<option value="ITSM">ITSM</option>
-								</select>
-							</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label>Type</label>
 									<select class="form-control border" name="type" id="type">
 										<option value="">Select Type</option>
 										<option value="Smoke">Smoke</option>
 									</select>
 								</div>
-							</div>
-
-							<div class="row">
 								<div class="col-md-6 mb-2">
-									<label>Class Name</label>
-									<input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
+									<label>Found In Build</label>
+									<input class="form-control border" name="found_in_build" id="found_in_build" placeholder="Enter Here" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
 								</div>
 							</div>
-
 							<div class="row">
 								<div class="col-md-6">
 									<label>Automation Status</label>
@@ -211,14 +224,6 @@
 									</select>
 								</div>
 							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
-									<label>Comments</label>
-									<textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
-								</div>
-							</div>
-							
 		          		</form>
 		          	</div>
 		        </div>
@@ -427,11 +432,6 @@ var uname = readCookie("TAuname");
 $("#userMenu span").text(uname);
 $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
-$(".addusetbtn").click(function(){
-		//clearAddTestCasePopupData();
-		window.location.href = "addTests.html";
-	 });
-
 });
 
 
@@ -625,7 +625,9 @@ $(".addusetbtn").click(function(){
 			}
 		});
 
-	 
+	 $("#addusetbtn").click(function(){
+		clearAddTestCasePopupData();
+	 });
 
 	</script>
 </body>

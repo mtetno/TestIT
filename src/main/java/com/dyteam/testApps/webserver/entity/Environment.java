@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
@@ -50,6 +51,9 @@ public class Environment {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
+	@Transient
+	private boolean isNew;
+
 	public Environment(Long environmentId, String environmentName) {
 		this.environmentId=environmentId;
 		this.environmentName=environmentName;
@@ -61,6 +65,20 @@ public class Environment {
 	public Environment(long environmentId) {
 		this.environmentId=environmentId;
 	}
+
+	public boolean isIsNew() {
+		return this.isNew;
+	}
+
+	public boolean getIsNew() {
+		return this.isNew;
+	}
+
+	public void setIsNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+
 
 	public Long getEnvironmentId() {
 		return environmentId;

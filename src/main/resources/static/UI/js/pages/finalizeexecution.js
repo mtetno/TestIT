@@ -2,8 +2,8 @@
 
 function fetchCompany(){
 
-    var selectedApplicationIds = JSON.parse(getItem(RUNTESTS_SELECTED_APPLICATIONS_ID));
-    var selectedTestcasesIds = JSON.parse(getItem(RUNTESTS_SELECTED_TESTCASES_ID));
+    var selectedApplicationIds = JSON.parse(getItem(RUNTESTS_SELECTED_DATA)).map(item => item.applicationId);
+    var selectedTestcasesIds = JSON.parse(getItem(RUNTESTS_SELECTED_DATA)).map(item => item.testCase);
 
 $.ajax({
     url: base_url+"/application/allByCompany", 
@@ -104,6 +104,7 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
+                showSuccessToast("The Test Bucket Created Successfully.");
                 console.log("Inside createExecution")
                 window.location.href = "runtest.html";
             }

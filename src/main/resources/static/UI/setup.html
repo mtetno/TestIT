@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <!--Custom style link-->
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/jquery.toast.min.css">
   <style>
     .bucketcheck label {
       padding-left: 5px;
@@ -29,6 +30,7 @@
   <script src="js/Libraries/dataTables.tableTools.js"></script>
   <script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
   <script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+  <script src="js/Libraries/jquery.toast.min.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/pages/environment.js" type="text/javascript"></script>
   <script src="js/pages/companyEnvURL.js"></script>
@@ -60,10 +62,8 @@
             AppSettings</a></li>
         <li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png"> Test
             Management</a></li>
-        <li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Run Tests</a>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png">
-            Test Bucket</a></li>
+        <li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Execute Test Plan</a></li>
+				<li class="nav-item"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Logical Group</a></li>
         <li class="nav-item"><a class="nav-link" href="reports.html"><img src="img/pie-chart-24-px.png"> Reports</a>
         </li>
         <!-- <li class="nav-item"><a class="nav-link" href="subscription.html">Subscriptions</a></li> -->
@@ -72,7 +72,7 @@
       <!--User Menu Start-->
       <div id="userMenu" class="dropdown">
         <!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png">
           <span>User</span></a>
         <div class="dropdown-menu">
           <a class="dropdown-item" href="profileUser.html">Profile</a>
@@ -184,17 +184,17 @@
 
             <div class="row addRowData" style="display: none;">
               <div class="col-md-2 rowadjust">
-                <label>Application</label>
+                <label class="required">Application</label>
                 <select class="form-control border" name="application" id="application">
                 </select>
               </div>
               <div class="col-md-2 rowadjust">
-                <label>Environment</label>
+                <label class="required">Environment</label>
                 <select class="form-control border" name="url_environment" id="url_environment">
                 </select>
               </div>
               <div class="col-md-4 rowadjust">
-                <label>URL</label>
+                <label class="required">URL</label>
                 <input type="text" class="form-control border" name="url" id="url" placeholder="Enter URL">
               </div>
               <div class="col-md-3 buttonlink1 btnpadding">
@@ -246,22 +246,22 @@
 
             <div class="row addRowData" style="display: none;">
               <div class="col-md-2 rowadjust">
-                <label>Username</label>
+                <label class="required" >Username</label>
                 <input type="text" class="form-control border" name="username" id="username"
                   placeholder="Enter Username">
               </div>
               <div class="col-md-2 rowadjust">
-                <label>Password</label>
+                <label class="required">Password</label>
                 <input type="password" class="form-control border" name="password" id="password"
                   placeholder="Enter Password">
               </div>
               <div class="col-md-2 rowadjust">
-                <label>Confirm Password</label>
+                <label class="required">Confirm Password</label>
                 <input type="password" class="form-control border" name="confirm_password" id="confirm_password"
                   placeholder="Enter Confirm Password">
               </div>
               <div class="col-md-3 rowadjust">
-                <label>Role</label>
+                <label class="required">Role</label>
                 <input type="text" class="form-control border" name="role" id="role" placeholder="Enter Role">
               </div>
               <div class="col-md-3 buttonlink1 btnpadding">
@@ -318,7 +318,7 @@
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
             <button type="button" id="environmentYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
-              data-target="#myModalSucess">YES</button>
+            >YES</button>
           </div>
 
         </div>
@@ -327,141 +327,8 @@
     <!-- End of Row Delete Modal 1-->
 
 
-    <!-- The Row Delete Modal Execution Environment Success -->
-    <div class="modal fade" id="myModalSucess">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Execution Environment Deleted Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success -->
 
 
-    <!-- The Row Delete Modal Execution Environment Success -->
-    <div class="modal fade" id="savedEnvironmentUrl">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Environment Url Saved Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success -->
-
-    <!-- The Row Add Modal Environment Success -->
-    <div class="modal fade" id="executionEnvironmentAddition">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Execution Environment Added Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success -->
-
-    <!-- The Row Add Role Success -->
-    <div class="modal fade" id="addRoleModal">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Access Role Added Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success -->
-
-     <!-- The Delete Role Success -->
-     <div class="modal fade" id="deletedRoleModal">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Access Role Deleted Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Delete Added role Modal Success -->
 
     <!-- The Row Delete Environment URL's Modal 1-->
     <div class="modal fade model1" id="myModal1">
@@ -484,7 +351,7 @@
           <div class="modal-footer btnfooter">
             <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
             <button type="button" id="urlsYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
-              data-target="#myModalSucess1">YES</button>
+              >YES</button>
           </div>
 
         </div>
@@ -492,32 +359,6 @@
     </div>
     <!-- End of Row Delete Modal 1-->
 
-    <!-- The Row Delete Modal Environment URL's Success 1-->
-    <div class="modal fade" id="myModalSucess1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header model_head">
-            <h4 class="modal-title"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body model_body">
-            <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-            <p>Environment URL's Deleted Successfully.</p>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer btnfooter">
-            <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!-- End of Row Delete Modal Success 1-->
 
     <!-- The Row Delete Access Role Modal 1-->
     <div class="modal fade model1" id="myModal2">
@@ -559,7 +400,7 @@
     <div class="pull-left footer-logo"><img src="img/logo-11.png"></div>
     <div class="pull-right footer-text">
       <!-- &copy <script>document.write((new Date()).getFullYear());</script>   -->
-      Copyright @ 2021 Test IT(“UI automation Studio”). All Rights Reserved.
+      Copyright @ 2021 Test IT. All Rights Reserved.
     </div>
   </footer>
   <!--Footer End-->
@@ -583,6 +424,7 @@ $(document).ready(function() {
 
 var uname = readCookie("TAuname");
 $("#userMenu span").text(uname);
+$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 });  
 
@@ -626,7 +468,7 @@ $("#userMenu span").text(uname);
       $("button.addEnvBtn").click(function () {
         var dataVal = $("#execution_environment").val();
         if (dataVal == '') {
-          alert("Please enter valid environment name");
+          showWarningToast("Please enter valid environment name");
           return;
         }
         var dataObj = {};
@@ -664,19 +506,19 @@ $("#userMenu span").text(uname);
         var dataRole = $("#role").val().trim();
 
         if(dataUsername.length == 0){
-          alert("Please select valid application name");
+          showWarningToast("Please select valid username name");
           return false;
         }else if(password.length == 0){
-          alert("Please select valid password");
+          showWarningToast("Please select valid password");
           return false;
         }else if(confirmPassword.length == 0){
-          alert("Please select valid confirm password");
+          showWarningToast("Please select valid confirm password");
           return false;
         }else if(password.localeCompare(confirmPassword) != 0){
-          alert("Password enter does not match");
+          showWarningToast("Password enter does not match");
           return false;
         }else if(dataRole.length == 0){
-          alert("Please select valid role");
+          showWarningToast("Please select valid role");
           return false;
         }
 
@@ -731,6 +573,7 @@ $("#userMenu span").text(uname);
 
         Promise.all(allAjax).then(() => {
           console.log("All environment deleted successfully");
+          showSuccessToast("Execution Environment Deleted Successfully.");
           fetchAllEnvironment();
         }).catch(() => {
           console.log("Error in deleting all environments");
@@ -774,6 +617,7 @@ $("#userMenu span").text(uname);
                 }
               }
 		    });
+        showSuccessToast("Environment URL's Deleted Successfully.");
         setTimeout(function(){ displayAllEnvironmentUrls(); }, 500);
         
         // window.location.href= window.location.href;
@@ -808,7 +652,6 @@ $("#userMenu span").text(uname);
                 }
               }
 		    });
-        $("#deletedRoleModal").modal();
       });
 
       /*---Jquery for toggle section on click caret-down icon---*/

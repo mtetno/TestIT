@@ -13,6 +13,7 @@
 	<!--Custom style link-->
 	<!-- <link rel="stylesheet" href="css/custom.css"> -->
 	<link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" href="css/jquery.toast.min.css">
 </head>
 <body>
 
@@ -85,6 +86,8 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/custom.js"></script>
+	<script src="js/Libraries/jquery.toast.min.js"></script>
+	<script src="js/pages/localstorage.js"></script>
 	<script>
 		$("#passwordshow").click(function(){
              if ($("#loginPassword").attr("type") === "password") {
@@ -172,6 +175,8 @@
 						createCookie("TAaccess", response.id, 60);
 						createCookie("TAuid", response.userId, 60);
 						createCookie("TAuname", response.username, 60);
+						// createCookie("profileImage", response.profileImage, 60);
+						saveItem("profileImage",response.profileImage)
 						//createCookie("TImage", response., 60);
 						createCookie("TAurole", response.authorities[0].authority, 60);
 						if(response.companyId == 0){

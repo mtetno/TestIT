@@ -96,8 +96,10 @@ public class EnvironmentController {
                     }
                 });
             }
+            savedEnvironment.setIsNew(true);
         } else {
             savedEnvironment = findByEnvironmentName.get(0);
+            savedEnvironment.setIsNew(false);
             environmentRepo.updateByEnvironmentName(loggedInUser.getUserId(), environment.getEnvironmentName());
         }
         return savedEnvironment;

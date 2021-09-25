@@ -35,9 +35,9 @@
 				<li class="nav-item"><a class="nav-link" href="dashboard.html"><img src="img/insert-chart-outlined-24-px.png"> Monitor App</a></li>
 				<li class="nav-item"><a class="nav-link" href="users.html"><img src="img/person-outline-24-px-1.png"> Subscribers</a></li>
 				<li class="nav-item"><a class="nav-link" href="setup.html"><img src="img/settings-24-px.png"> AppSettings</a></li>
-				<li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png"> Test Management</a></li>
-				<li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Run Tests</a></li>
-				<li class="nav-item active"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Test Bucket</a></li>
+				<li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png">  Library </a></li>
+				<li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Execute Test Plan</a></li>
+				<li class="nav-item active"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Logical Group</a></li>
 				<li class="nav-item"><a class="nav-link" href="reports.html"><img src="img/pie-chart-24-px.png"> Reports</a></li>
 				<!-- <li class="nav-item"><a class="nav-link" href="subscription.html">Subscriptions</a></li> -->
 			</ul>
@@ -45,7 +45,7 @@
 			<!--User Menu Start-->
 			<div id="userMenu" class="dropdown">
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
 			      <a class="dropdown-item" href="profileUser.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
@@ -127,7 +127,7 @@
 		<div class="pull-left footer-logo"><img src="img/logo-11.png"></div>
 		<div class="pull-right footer-text">
 			<!-- &copy <script>document.write((new Date()).getFullYear());</script>   -->
-			Copyright @ 2021 Test IT(“UI automation Studio”). All Rights Reserved.
+			Copyright @ 2021 Test IT. All Rights Reserved.
 		</div>
 	</footer>
     <!--Footer End-->
@@ -154,6 +154,7 @@ $(document).ready(function() {
 
 var uname = readCookie("TAuname");
 $("#userMenu span").text(uname);
+$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 });
 
@@ -170,6 +171,7 @@ $("#userMenu span").text(uname);
 
 			$(".nextbtn").click(function(){
 				
+				
 				var executionName = $("#execution_name").val().trim();
 				var testingEnvironment = $("#testing_environment").val();
 				var scheduleDate = $("#date").val().trim();
@@ -178,10 +180,10 @@ $("#userMenu span").text(uname);
 				var testingEnvironmentName = $('#testing_environment').find(":selected").text().trim();
 		
 				if(executionName.length == 0){
-					alert(MESSAGE_ENTER_VALID_EXECUTION_NAME)
+					showWarningToast(MESSAGE_ENTER_VALID_EXECUTION_NAME)
 					return false;
 				}else if(testingEnvironment == 0){
-					alert(MESSAGE_ENTER_VALID_TESTING_ENVIRONMENT)
+					showWarningToast(MESSAGE_ENTER_VALID_TESTING_ENVIRONMENT)
 					return false;
 				} 
 

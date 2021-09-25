@@ -127,6 +127,7 @@ function deleteuser(userId)
 			},
 			success: function(response)
 			{
+				showSuccessToast("The Subscriber Deleted Successfully.");
 				fetchUsers();
 			}
 		});
@@ -176,15 +177,15 @@ function updateUser(userId=0){
 	}
 	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
 	{
-		alert("Please enter valid fields");
+		showWarningToast("Please enter valid fields");
 		return false;
 	}
 	if($('input[name=password]:visible').val() != $('input[name=confirmpassword]:visible').val()){
-		alert("Password did not matched");
+		showWarningToast("Password did not matched");
 		return false;
 	}
 	else if($('input[name=password1]:visible').val() != $('input[name=confirmpassword1]:visible').val()){
-		alert("Password did not matched");
+		showWarningToast("Password did not matched");
 		return false;
 	}
 	if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email]:visible').val())) {
@@ -194,7 +195,7 @@ function updateUser(userId=0){
 	   console.log('passed');
 	}
 	else {
-		alert("Enter valid email address");
+		showWarningToast("Enter valid email address");
 		return false;
 	}
 	var dataObj = {};
@@ -236,7 +237,7 @@ function updateUser(userId=0){
 			success: function(msg){
 				$('#myModal1').modal('hide');
 				$('#modal_ajax').modal('hide');
-				$("#myModalSucess2").modal();
+				showSuccessToast("The Subscriber Updated Successfully.");
 				
 				fetchUsers();
 				
@@ -253,7 +254,7 @@ function updateUser(userId=0){
 				console.log(jqXHR);
 				console.log(textStatus);
 				console.log(errorThrown);
-				alert(jqXHR.responseJSON.errorMessage);
+				showWarningToast(jqXHR.responseJSON.errorMessage);
 			}
 	});
 }
@@ -287,17 +288,17 @@ function addUser(userId=0){
 		
 		
 	}
-	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' )
+	if($firstname == '' || $lastname == '' || $useremail == '' || $loginid == '' || $password == '' ||  $confirm == '' )
 	{
-		alert("Please enter valid fields");
+		showWarningToast("Please enter valid fields");
 		return false;
 	}
 	if($('input[name=password]:visible').val() != $('input[name=confirmpassword]:visible').val()){
-		alert("Password did not matched");
+		showWarningToast("Password did not matched");
 		return false;
 	}
 	else if($('input[name=password1]:visible').val() != $('input[name=confirmpassword1]:visible').val()){
-		alert("Password did not matched");
+		showWarningToast("Password did not matched");
 		return false;
 	}
 	if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email]:visible').val())) {
@@ -307,7 +308,7 @@ function addUser(userId=0){
 	   console.log('passed');
 	}
 	else {
-		alert("Enter valid email address");
+		showWarningToast("Enter valid email address");
 		return false;
 	}
 	var dataObj = {};
@@ -319,7 +320,7 @@ function addUser(userId=0){
 	dataObj["lName"] = $lastname;
 	dataObj["userName"] = $loginid;
 	dataObj["password"] = $password;
-	dataObj["userType"] = $user_type;
+	dataObj["userType"] = $user_type == undefined ? "0" : $user_type;
 	if(userId!=0){
 		dataObj["userId"] = userId;
 	}
@@ -349,24 +350,20 @@ function addUser(userId=0){
 			success: function(msg){
 				$('#myModal1').modal('hide');
 				$('#modal_ajax').modal('hide');
-				$("#myModalSucess1").modal();
-				
 				fetchUsers();
-		
-
-		 $('.addusermodel input[name=firstname]').val("");
-		 $('.addusermodel input[name=lastname]').val("");
-		 $('#f4').val("");
-		 $('.addusermodel input[name=username]').val("");
-		 $('.addusermodel input[name=email]').val("");
-		 $('.addusermodel input[name=password]').val("");
-		 $('.addusermodel input[name=confirmpassword]').val("");
-
+				$('.addusermodel input[name=firstname]').val("");
+				$('.addusermodel input[name=lastname]').val("");
+				$('#f4').val("");
+				$('.addusermodel input[name=username]').val("");
+				$('.addusermodel input[name=email]').val("");
+				$('.addusermodel input[name=password]').val("");
+				$('.addusermodel input[name=confirmpassword]').val("");
+				showSuccessToast("The Subscriber Added Successfully.");
 			},error: function(jqXHR, textStatus, errorThrown){
 				console.log(jqXHR);
 				console.log(textStatus);
 				console.log(errorThrown);
-				alert(jqXHR.responseJSON.errorMessage);
+				showErrorToast("Something went wrong");
 			}
 	});
 }
@@ -375,6 +372,7 @@ $(document).ready(function() {
 
 	var uname = readCookie("TAuname");
 	$("#userMenu span").text(uname);
+$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 	fetchUsers();
 
@@ -392,7 +390,59 @@ $(document).ready(function() {
 		$('.table input[type=checkbox]').prop("checked", !(isCheckedAll));
 	})
 
-	function fetchUsers(){
+	
+	$(".successmod").on('hidden.bs.modal', function () {
+		location.reload();
+	})
+	
+	$(window).keydown(function(event){
+		if(event.keyCode == 13) {
+			event.preventDefault();
+			return false;
+		}
+	});
+	
+	
+	//serialize object function
+	$.fn.serializeObject = function() {
+		var o = {};
+		var a = this.serializeArray();
+		$.each(a, function() {
+			if (o[this.name]) {
+				if (!o[this.name].push) {
+					o[this.name] = [o[this.name]];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
+	};
+	
+	$.delete = function(url, data, callback, type){
+	 
+	  if ( $.isFunction(data) ){
+		type = type || callback,
+			callback = data,
+			data = {}
+	  }
+	 
+	  return $.ajax({
+		url: url,
+		type: 'DELETE',
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: callback,
+		data: data,
+		contentType: type
+	  });
+	}
+	
+});
+
+function fetchUsers(){
 	$.ajax({
 		url: base_url+"/user/allByCompany",
 		type: "get",
@@ -430,6 +480,16 @@ $(document).ready(function() {
 					payload += '</tr>';
 				}
 			});
+
+			if($("#bucketList").get(0) != undefined){
+				$("#bucketListParent").html($("#bucketList").get(0).outerHTML)
+				$("#bucketListParent .paging_full_numbers").remove()
+			}
+
+			$('#bucketList').dataTable().fnClearTable();
+    		$('#bucketList').dataTable().fnDestroy();
+
+
 			$("#bucketList tbody").html(payload);
 			$('#bucketList').DataTable({
 				"lengthChange": false,
@@ -556,54 +616,3 @@ $(document).ready(function() {
 		}
 	});
 }
-	
-	$(".successmod").on('hidden.bs.modal', function () {
-		location.reload();
-	})
-	
-	$(window).keydown(function(event){
-		if(event.keyCode == 13) {
-			event.preventDefault();
-			return false;
-		}
-	});
-	
-	
-	//serialize object function
-	$.fn.serializeObject = function() {
-		var o = {};
-		var a = this.serializeArray();
-		$.each(a, function() {
-			if (o[this.name]) {
-				if (!o[this.name].push) {
-					o[this.name] = [o[this.name]];
-				}
-				o[this.name].push(this.value || '');
-			} else {
-				o[this.name] = this.value || '';
-			}
-		});
-		return o;
-	};
-	
-	$.delete = function(url, data, callback, type){
-	 
-	  if ( $.isFunction(data) ){
-		type = type || callback,
-			callback = data,
-			data = {}
-	  }
-	 
-	  return $.ajax({
-		url: url,
-		type: 'DELETE',
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: callback,
-		data: data,
-		contentType: type
-	  });
-	}
-	
-});

@@ -290,7 +290,7 @@ function saveEnvironment(dataObj) {
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
-		success: function () {
+		success: function (data) {
 			$("a.addRowBtn").css("pointer-events", "");
 			$("a.addRowBtn").css("opacity", "");
 			$("#deleteRow").attr("disabled", false);
@@ -298,7 +298,12 @@ function saveEnvironment(dataObj) {
 			$("#deleteRow2").attr("disabled", false);
 			$("#execution_environment").val('');
 			$("button.addEnvBtn").closest(".addRowData").slideUp();
-			$("#executionEnvironmentAddition").modal();
+			if(data.isNew){
+				showSuccessToast("Execution Environment Added Successfully.")
+			}else{
+				showWarningToast("Execution Environment Already exists.")
+			}
+			
 			fetchAllEnvironment();
 		}
 	});
@@ -371,7 +376,7 @@ function saveEnvironmentUrl(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			$("#savedEnvironmentUrl").modal();
+			showSuccessToast("Environment Url Saved Successfully");
 			closeEnvironmentUrlInput();
 			displayAllEnvironmentUrls();
 			// window.location.href= window.location.href;
@@ -534,7 +539,7 @@ function saveAccessRoles(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			$("#addRoleModal").modal();
+			showSuccessToast("Access Role Added Successfully.");
 			closeAccessRoleInput();
 			displayAllAccessRoles();
 		}
@@ -565,6 +570,7 @@ function deleteSelectedAccessRole(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Access Role Deleted Successfully.");
 			displayAllAccessRoles();
 		}
 	});

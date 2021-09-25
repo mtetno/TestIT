@@ -112,15 +112,18 @@ function postTestBucketFetch(){
 	
 	$(".addrow").click(function(e){
 		e.preventDefault();
-		var closestTr = $(this).closest('tr')[0]
+		var closestTr = $(this).closest('tr')[0];
+		var bucketName = $($(this).closest('tr').find("td")[1]).html()
+		var envId = $($(this).closest('tr').find("td")[2]).attr('data-value')
+		var roleId = $($(this).closest('tr').find("td")[3]).attr('data-value')
 		var cloneBucketSourceId = $($(closestTr).find('input')).attr('data-value');
 		saveItem("cloneBucketSourceId",cloneBucketSourceId);
 		var str = `<tr>
 		<td></td>
-		<td><input type="text" id="cloneBucketName" class="form-control border" name="" placeholder="Enter Bucket Name"></td>
-		<td><select id="environment" class="form-control border" name="">
+		<td><input type="text" id="cloneBucketName" class="form-control border" name="" placeholder="Enter Bucket Name" value="${bucketName}"></td>
+		<td><select id="environment" class="form-control border" name="" value="${envId}">
 			</select></td>
-		<td><select id="user_role" class="form-control border" name="">
+		<td><select id="user_role" class="form-control border" name="" value="${roleId}">
 			</select></td>
 		<td><img src="img/save-24-px.png" alt="1" id="saveRec"> <img src="img/cancel-24-px.png" alt="1" id="cancelRec"></td>
 		</tr>`;				
@@ -135,6 +138,16 @@ function postTestBucketFetch(){
 				var bucketId = getItem("cloneBucketSourceId");
 				var environment = $("#environment").val();
 				var userRole =  $("#user_role").val();
+
+				if(bucketName.trim().length == 0){
+					showWarningToast("Select valid bucket name");
+				}else if(bucketId == 0){
+					showWarningToast("Cloned bucket is not valid");
+				}else if(environment == 0){
+					showWarningToast("Select valid environment");
+				}else if(userRole == 0){
+					showWarningToast("Select valid role");
+				}
 
 				$.ajax({
 				type: 'GET',
@@ -171,7 +184,13 @@ function postTestBucketFetch(){
 	$(document).on("click", "#cancelRec", function(){
 		$(this).closest("tr").remove();		    
 	});
+	
+	attachViewButtonClickListener();
+	
+}
 
+
+function attachViewButtonClickListener(){
 	$('.viewBucket').click(function(){
 		
 		var closestTr = $(this).closest('tr')[0]
@@ -239,4 +258,3 @@ function postTestBucketFetch(){
 	   
    });
 }
-

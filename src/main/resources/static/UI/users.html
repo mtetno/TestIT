@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!--Custom style link-->
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/jquery.toast.min.css">
 	<style>
 		.bucketcheck label {
 			    padding-left: 5px;
@@ -37,9 +38,9 @@
 				<li class="nav-item"><a class="nav-link" href="dashboard.html"><img src="img/insert-chart-outlined-24-px.png"> Monitor App</a></li>
 				<li class="nav-item active"><a class="nav-link" href="users.html"><img src="img/person-outline-24-px-1.png"> Subscribers</a></li>
 				<li class="nav-item"><a class="nav-link" href="setup.html"><img src="img/settings-24-px.png"> AppSettings</a></li>
-				<li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png"> Test Management</a></li>
-				<li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Run Tests</a></li>
-				<li class="nav-item"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Test Bucket</a></li>
+				<li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png">  Library </a></li>
+				<li class="nav-item"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Execute Test Plan</a></li>
+				<li class="nav-item"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Logical Group</a></li>
 				<li class="nav-item"><a class="nav-link" href="reports.html"><img src="img/pie-chart-24-px.png"> Reports</a></li>
 				<!-- <li class="nav-item"><a class="nav-link" href="subscription.html">Subscriptions</a></li> -->
 			</ul>
@@ -47,7 +48,7 @@
 			<!--User Menu Start-->
 			<div id="userMenu" class="dropdown">
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
 			      <a class="dropdown-item" href="profileUser.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
@@ -84,10 +85,10 @@
 							<!-- <label class="subtitle">Users</label> -->
 							<!--Delete row-->
 							<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
-							<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+							<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink" id="addButton"><img src="img/add-24-px-2.png">ADD</button></a>
 						</div>
 					</div>
-					<div class="row selectdiv" style="overflow-x: auto;">
+					<div id="bucketListParent" class="row selectdiv" style="overflow-x: auto;">
 						<table id="bucketList" class="table selectdiv1 usertable">
 						  <thead>
 						    <tr>
@@ -178,58 +179,6 @@
 		  </div>
 		  <!-- End of Modal 2-->
 
-		  <!-- The Row Delete Modal Success 1-->
-			  <div class="modal fade successmod" id="myModalSucess1">
-			    <div class="modal-dialog modal-dialog-centered">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header model_head">
-			          <h4 class="modal-title"></h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body model_body">
-			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The Subscriber Added Successfully.</p>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer btnfooter">
-			          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
-			<!-- End of Row Delete Modal Success 1-->
-			
-			<div class="modal fade successmod" id="myModalSucess2">
-			    <div class="modal-dialog modal-dialog-centered">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header model_head">
-			          <h4 class="modal-title"></h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body model_body">
-			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The Subscriber Updated Successfully.</p>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer btnfooter">
-			          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-			        </div>			        
-			      </div>
-			    </div>
-			  </div>
-
-
 			<!-- The Edit Modal 1-->
 			  <div class="modal fade model1" id="editmyModal1">
 			    <div class="modal-dialog">
@@ -291,32 +240,6 @@
 			  </div>
 			  <!-- End of Modal 2-->
 
-			  <!-- The Row Delete Modal Success 1-->
-			  <div class="modal fade successmod" id="editmyModalSucess1">
-			    <div class="modal-dialog modal-dialog-centered">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header model_head">
-			          <h4 class="modal-title"></h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body model_body">
-			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The Subscriber Updated Successfully.</p>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer btnfooter">
-			          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
-			<!-- End of Row Delete Modal Success 1-->
 
 		  <!-- The Row Delete Modal 1-->
 			<div class="modal fade model1" id="myModal">
@@ -338,7 +261,7 @@
 			        <!-- Modal footer -->
 			        <div class="modal-footer btnfooter">
 			        	<button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-			        	<button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
+			        	<button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" >YES</button>
 			        </div>
 					        
 			      </div>
@@ -346,32 +269,6 @@
 			</div>
 			<!-- End of Row Delete Modal 1-->
 
-			<!-- The Row Delete Modal Success 1-->
-			  <div class="modal fade successmod" id="myModalSucess">
-			    <div class="modal-dialog modal-dialog-centered">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header model_head">
-			          <h4 class="modal-title"></h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body model_body">
-			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The Subscriber Deleted Successfully.</p>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer btnfooter">
-			          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
-			<!-- End of Row Delete Modal Success 1-->
 
 	</div>
 	<!--Main Content End-->
@@ -391,6 +288,7 @@
     <script src="js/Libraries/dataTables.tableTools.js"></script>
 	<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
 	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+	<script src="js/Libraries/jquery.toast.min.js"></script>
 	<script src="js/custom.js"></script>
 	<script src="js/pages/users.js"></script>
 	<script src="js/pages/common.js"></script>
@@ -423,6 +321,18 @@
 				});
 			}
 		});
+
+		$("#addButton").click(function(){
+			$('.addusermodel input[name=firstname]').val("");
+			$('.addusermodel input[name=lastname]').val("");
+			$('#f4').val("");
+			$('.addusermodel input[name=username]').val("");
+			$('.addusermodel input[name=email]').val("");
+			$('.addusermodel input[name=password]').val("");
+			$('.addusermodel input[name=confirmpassword]').val("");
+		});
+
+
 	</script>
 </body>
 </html>

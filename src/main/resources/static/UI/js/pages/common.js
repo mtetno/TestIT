@@ -80,19 +80,19 @@ $(document).ready(function() {
 		cache: false,
         error: function (x, status, error) {
             if (x.status == 403) {
-                alert("You are not authorized!");
+                showWarningToast("You are not authorized!");
                 //window.location.href = "login.html?msg=notauth";
             }
 			else if (x.status == 401) {
-                alert("You are not authenticated!");
+                showWarningToast("You are not authenticated!");
                 window.location.href = "login.html?msg=notauth";
             }
 			else if (x.status == 409) {
-                alert("Error: "+ x.responseText);
+                showWarningToast("Error: "+ x.responseText);
                 //window.location.href = "login.html?msg=notauth";
             }
 			else if (x.status == 500) {
-                alert("Error: Serverside error");
+                showWarningToast("Error: Serverside error");
                 //window.location.href = "login.html?msg=notauth";
             }
 			else if (x.status == "") {
@@ -101,7 +101,7 @@ $(document).ready(function() {
             }
             else {
                 //alert("An error occurred: " + status + "nError: " + error);
-				alert("Booh! It seems some error on page. Please contact to administrator");
+				showWarningToast("Booh! It seems some error on page. Please contact to administrator");
 				//return false;
             }
         }
@@ -128,19 +128,20 @@ $(document).ready(function() {
 });
 function statusError(statusCode, responseText="") {
 	if (statusCode == 403) {
-		alert("You are not authorized!");
+		showWarningToast("You are not authorized!");
 		//window.location.href = "login.html?msg=notauth";
 	}
 	else if (statusCode == 401) {
-		alert("You are not authenticated!");
+		showWarningToast("You are not authenticated!");
 		window.location.href = "login.html?msg=notauth";
 	}
 	else if (statusCode == 409) {
-		alert("Error: "+ responseText);
+		// showWarningToast("Error: "+ responseText);
+		showWarningToast("Oops, Something went wrong. Please try again.");
 		//window.location.href = "login.html?msg=notauth";
 	}
 	else if (statusCode == 500) {
-		alert("Error: Serverside error");
+		showWarningToast("Oops, Something went wrong. Please try again.");
 		//window.location.href = "login.html?msg=notauth";
 	}
 	else if (statusCode == "") {

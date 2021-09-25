@@ -26,6 +26,7 @@ public class LoginUser implements UserDetails {
 	Long companyId;
 	String username;
 	String password;
+	String profileImage;
 	Collection<? extends GrantedAuthority> authorities;
 	
 	@Autowired
@@ -38,6 +39,7 @@ public class LoginUser implements UserDetails {
 			@JsonProperty("username") final String username,
 			@JsonProperty("password") final String password,
 			@JsonProperty("companyId") final Long companyId,
+			@JsonProperty("profileImage") final String profileImage,
 			@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = requireNonNull(id);
@@ -45,6 +47,7 @@ public class LoginUser implements UserDetails {
 		this.username = requireNonNull(username);
 		this.password = requireNonNull(password);
 		this.companyId = requireNonNull(companyId);
+		this.profileImage = profileImage;
 		this.authorities = authorities;
 	}
 
@@ -108,6 +111,39 @@ public class LoginUser implements UserDetails {
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getProfileImage() {
+		return this.profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+	public PasswordEncoder getPasswordEncoder() {
+		return this.passwordEncoder;
+	}
+
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
+
 
 	@Override
 	public String toString() {

@@ -70,12 +70,14 @@ function attachClickListeners(){
 		if($(this).prop("checked")==true)
 		{
 			console.log("selected")	;
-			var item = {
-				"applicationId": $(this).attr('data-id'),
-				"applicationName":$(this).attr('data-value')
-			};
+			var appId =  $(this).attr('data-id');
+			var appName = $(this).attr('data-value');
+			
 			$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	
 			$(this).closest(".selectdiv1").find(".submaindiv input[type=checkbox]").each((i,obj)=> {
+				var item = {};
+				item['applicationId'] = appId;
+				item['applicationName'] = appName;
 				item['testCase'] = $(obj).attr('data-id') ;
 				item['testCaseName'] = $(obj).attr('data-value');
 				selectedApplicationDetails.push(item);
@@ -282,7 +284,7 @@ $(document).ready(function() {
 		complete: function(data) {
 			$('#btNext').click(()=>{
 				if(selectedApplicationDetails.length == 0){
-					alert(MESSAGE_ENTER_VALID_TESTCASES);
+					showWarningToast(MESSAGE_ENTER_VALID_TESTCASES);
 					return false;
 				}
 				console.log(selectedApplicationDetails);
@@ -374,13 +376,13 @@ function gettestcases(id)
 function getZipLinks(id)
 {
 	if($("select[name=application_id] option:selected").val()==""){
-		alert("Please select application");
+		showWarningToast("Please select application");
 		return false;
 	}
 	else {
 		if(id==""){
 			$(".zipLinks").hide();
-			alert("Please select environment");
+			showWarningToast("Please select environment");
 			return false;
 		}
 		else {

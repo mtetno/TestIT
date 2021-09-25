@@ -113,11 +113,11 @@ $(document).ready(function() {
 	
 	$("input[name=execute]").click(function() {
 		if($("#execution_name").val()==""){
-			alert("Please enter execution name");
+			showWarningToast("Please enter execution name");
 			return false;
 		}
 		if($("select[name=browser_id] option:selected").val()==""){
-			alert("Please select browser");
+			showWarningToast("Please select browser");
 			return false;
 		}
 		if ($("#table-example input[type=checkbox]:checked").length > 0) {
@@ -187,7 +187,7 @@ $(document).ready(function() {
 				}
 			});
 		} else {
-			alert("Please select Test set to execute");
+			showWarningToast("Please select Test set to execute");
 			return false;
 		}
 

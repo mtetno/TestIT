@@ -31,6 +31,7 @@ function deleteEmailConfigurations(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Email Configuration Deleted Successfully.");
 			fetchAllEmailConfiguration();
 		}
 	});
@@ -118,6 +119,7 @@ function deleteEmailTemplate(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Template Configuration Deleted Successfully.");
 			fetchAllEmailTemplates();
 		}
 	});

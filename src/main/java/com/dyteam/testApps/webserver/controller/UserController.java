@@ -210,7 +210,14 @@ public class UserController {
 		User userDb = userRepo.findById(loggedInUser.getUserId()).get();
 		userDb.setfName(user.getfName());
 		userDb.setlName(user.getlName());
-		userDb.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+		logger.info("updated password" + user.getPassword());
+		if(user.getPassword()!=null && user.getPassword().length() > 0){
+		  logger.info("updating new password...");
+		  userDb.setPassword(passwordEncoder.encode(user.getPassword()));
+		}
+		
+
 		userDb.setEmail(user.getEmail());
 		userDb.setContact(user.getContact());
 		userDb.setAddress(user.getAddress());

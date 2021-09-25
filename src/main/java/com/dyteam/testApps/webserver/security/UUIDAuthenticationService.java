@@ -72,7 +72,7 @@ final class UUIDAuthenticationService implements IUserAuthenticationService {
 //    		roles = Arrays.asList(role.get().toString());
     	}
 		
-    	user = new LoginUser(uuid, userEntity.getUserId(),loginId, password,userEntity.getCompanyId(),authorities);
+    	user = new LoginUser(uuid, userEntity.getUserId(),loginId, password,userEntity.getCompanyId(),userEntity.getProfileImage(),authorities);
     	String passwordDb = userEntity.getPassword();
 		logger.info("password"+password);
 		logger.info("passwordDb"+passwordDb);

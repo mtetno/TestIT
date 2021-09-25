@@ -12,14 +12,14 @@ function saveTestcases(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			$('#myModalSucess1').modal('show'); 
+			showSuccessToast("The Test Case Saved Successfully.");
 			displayTestcases();	
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(jqXHR);
 			console.log(textStatus);
 			console.log(errorThrown);
-			alert(jqXHR.responseJSON.errorMessage);
+			showWarningToast(jqXHR.responseJSON.errorMessage);
 		}
 	});
 }
@@ -35,14 +35,14 @@ function editTestcases(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			$('#myModalSucess1').modal('show'); 
+			showSuccessToast("The Test Case Updated Successfully.");
 			displayTestcases();	
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(jqXHR);
 			console.log(textStatus);
 			console.log(errorThrown);
-			alert(jqXHR.responseJSON.errorMessage);
+			showWarningToast(jqXHR.responseJSON.errorMessage);
 		}
 	});
 }
@@ -139,6 +139,7 @@ function deleteAllTestcases() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Test Case deleted Successfully.");
 			$("#bucketList").find(".mainCB input[type=checkbox]").prop("checked", false);
 			displayTestcases();	
 		}
@@ -155,6 +156,7 @@ function deleteTestcase(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			
 			displayTestcases();
 		}
 	});

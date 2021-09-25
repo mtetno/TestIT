@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/jquery.toast.min.css">
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
 </head>
 <body>
@@ -28,13 +29,13 @@
 		<!--Navbar Toggle End-->
 		<div class="collapse navbar-collapse" id="navbarText">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" href="dashboard.html">Monitor App</a></li>
-				<li class="nav-item"><a class="nav-link" href="users.html">Subscribers</a></li>
-				<li class="nav-item"><a class="nav-link" href="setup.html">AppSettings</a></li>
-				<li class="nav-item"><a class="nav-link" href="testmanagement.html">Test Management</a></li>
-				<li class="nav-item active"><a class="nav-link" href="runtest.html">Run Tests</a></li>
-				<li class="nav-item"><a class="nav-link" href="testbucketenviroment.html">Test Bucket</a></li>
-				<li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
+				<li class="nav-item"><a class="nav-link" href="dashboard.html"><img src="img/insert-chart-outlined-24-px.png"> Monitor App</a></li>
+				<li class="nav-item"><a class="nav-link" href="users.html"><img src="img/person-outline-24-px-1.png"> Subscribers</a></li>
+				<li class="nav-item"><a class="nav-link" href="setup.html"><img src="img/settings-24-px.png"> AppSettings</a></li>
+				<li class="nav-item"><a class="nav-link" href="testmanagement.html"><img src="img/assignment-24-px.png"> Library </a></li>
+				<li class="nav-item active"><a class="nav-link" href="runtest.html"><img src="img/play-arrow-24-px.png"> Execute Test Plan</a></li>
+				<li class="nav-item"><a class="nav-link" href="testbucketenviroment.html"><img src="img/subtitles-24-px.png"> Logical Group</a></li>
+				<li class="nav-item"><a class="nav-link" href="reports.html"><img src="img/pie-chart-24-px.png"> Reports</a></li>
 				<!-- <li class="nav-item"><a class="nav-link" href="subscription.html">Subscriptions</a></li> -->
 			</ul>
 
@@ -114,7 +115,7 @@
 				      
 				        <!-- Modal Header -->
 				        <div class="modal-header">
-				          <h4 class="modal-title">Summary Of Execution</h4>
+				          <h4 class="modal-title">Summary of Logical Group</h4>
 				          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 				        </div>
 				        
@@ -122,7 +123,7 @@
 				        <div class="modal-body">
 				          <div class="row">
 				          	<div class="col-md-12">
-				          		<div class="row">
+				          		<div class="row" id="testSummaryBody">
 						          	<div class="col-md-5">
 						          		<label id="testBucketNameCol" class="col-md-12">Test Bucket Name</label>
 						          		<label class="col-md-12">Execution Name</label>
@@ -156,7 +157,7 @@
 				        <div class="modal-footer btnfooter">
 				        	<button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
                             <!-- Show view text bucket button on this yes button click -->
-				            <button type="button" id="executionYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
+				            <button type="button" id="executionYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" >YES</button>
 				        </div>
 				        
 				      </div>
@@ -164,32 +165,6 @@
 				  </div>
 				  <!-- End of Modal 1-->
 
-				  <!-- The Modal Success 1-->
-				  <div class="modal fade" id="myModalSucess">
-				    <div class="modal-dialog modal-dialog-centered">
-				      <div class="modal-content">
-				      
-				        <!-- Modal Header -->
-				        <div class="modal-header model_head">
-				          <h4 class="modal-title"></h4>
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        </div>
-				        
-				        <!-- Modal body -->
-				        <div class="modal-body model_body">
-				          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-				          <p>The Test Bucket Created Successfully.</p>
-				        </div>
-				        
-				        <!-- Modal footer -->
-				        <div class="modal-footer btnfooter">
-				          <button id="closeSuccessModel" type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-				        </div>
-				        
-				      </div>
-				    </div>
-				  </div>
-				  <!-- End of Modal Success 1-->
 
 				  <!-- The Modal 2-->
 				  <div class="modal fade model1" id="myModal2">
@@ -313,7 +288,7 @@
 				      
 				        <!-- Modal Header -->
 				        <div class="modal-header">
-				          <h4 class="modal-title">Summary Of Execution</h4>
+				          <h4 class="modal-title">Summary of Logical Group</h4>
 				          <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        </div>
 				        
@@ -534,7 +509,7 @@
 		<div class="pull-left footer-logo"><img src="img/logo-11.png"></div>
 		<div class="pull-right footer-text">
 			<!-- &copy <script>document.write((new Date()).getFullYear());</script>   -->
-			Copyright @ 2021 Test IT(“UI automation Studio”). All Rights Reserved.
+			Copyright @ 2021 Test IT. All Rights Reserved.
 		</div>
 	</footer>
     <!--Footer End-->
@@ -551,6 +526,7 @@
 	<script src="js/pages/localstorage.js"></script>
 	<script src="js/pages/constants.js"></script>
 	<script src="js/pages/finalizeexecution.js"></script>
+	<script src="js/Libraries/jquery.toast.min.js"></script>
 	<script>
 		$(function(){
 
@@ -558,7 +534,7 @@
 				$("#scheduleExecution").text("Execute")
 			}
 
-			//fetchCompany();     
+			fetchCompany();     
 
 			$(".main, .subCB").click(function(e){
 				e.stopPropagation();
@@ -579,9 +555,16 @@
 
 			$(".create-test-bucket input[type=checkbox]").click(function(){
 				if($(this).prop("checked")==true)
-				{	$("#scheduleExecution").text("Create")	}
+				{
+						$("#testSummaryBody").hide();
+						$("#scheduleExecution").text("Create")	
+					}
 				else
-				{	$("#scheduleExecution").text("Execute")	}
+				{
+						$("#testSummaryBody").show();
+						$("#scheduleExecution").text("Execute")
+					
+					}
 			});
 
 			$('input:checkbox').click(function () {
@@ -623,7 +606,7 @@
 			var testBucketName = $('#inputbox').val().trim();
 			var isCheked =  $('#isCreateTestBucket').is(':checked')
 			if(isCheked && testBucketName.length == 0){
-				alert(MESSAGE_ENTER_VALID_TEST_BUCKET_NAME);
+				showWarningToast(MESSAGE_ENTER_VALID_TEST_BUCKET_NAME);
 				return false;
 			}
 

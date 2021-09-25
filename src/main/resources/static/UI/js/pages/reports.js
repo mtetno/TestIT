@@ -274,7 +274,7 @@ function show_test_case(no, one) {
     if ($execution_id != '') {
         showAjaxModal($execution_id);
     } else {
-        alert("Please Select Execution Name");
+        showWarningToast("Please Select Execution Name");
 		return false;
     }
 }
@@ -540,7 +540,7 @@ function runReport(runID) {
 				window.location.href= window.location.href;
 			}
 			else {
-				alert("No failed test case in selected Execution");
+				showWarningToast("No failed test case in selected Execution");
 			}
 		}
 	});

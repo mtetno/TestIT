@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!--Custom style link-->
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/jquery.toast.min.css">
 </head>
 <body>
 	<!--Header Start-->
@@ -37,7 +38,7 @@
 			<!--User Menu Start-->
 			<div id="userMenu" class="dropdown">
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
 			      <a class="dropdown-item" href="profile.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
@@ -187,7 +188,7 @@
 			        <!-- Modal footer -->
 			        <div class="modal-footer btnfooter">
 			        	<button type="button" class="btn btn-dark" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
-			            <button type="button" class="btn btn-primary saveBtn" data-toggle="modal" data-dismiss="modal" data-target="#editmyModalSucess1"><img src="img/save-24-px-1.png">SAVE</button>
+			            <button type="button" class="btn btn-primary saveBtn" data-toggle="modal" data-dismiss="modal" ><img src="img/save-24-px-1.png">SAVE</button>
 			        </div>
 			        
 			      </div>
@@ -195,32 +196,6 @@
 			  </div>
 			  <!-- End of Modal 2-->
 
-			  <!-- The Row Delete Modal Success 1-->
-			  <div class="modal fade successmod" id="editmyModalSucess1">
-			    <div class="modal-dialog modal-dialog-centered">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header model_head">
-			          <h4 class="modal-title"></h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body model_body">
-			          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-			          <p>The User Profile Updated Successfully.</p>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer btnfooter">
-			          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
-			<!-- End of Row Delete Modal Success 1-->
 
 	</div>
 	<!--Main Content End-->
@@ -240,6 +215,7 @@
     <script src="js/Libraries/dataTables.tableTools.js"></script>
 	<script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
 	<script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+	<script src="js/Libraries/jquery.toast.min.js"></script>
 	<script src="js/custom.js"></script>
 	<script src="js/pages/profile.js"></script>
 	<script>
@@ -250,6 +226,7 @@ $(document).ready(function() {
 
 var uname = readCookie("TAuname");
 $("#userMenu span").text(uname);
+$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 });
 			

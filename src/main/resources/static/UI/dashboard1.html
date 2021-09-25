@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!--Custom style link-->
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/jquery.toast.min.css">
 	<style>
 		.card, .card-body, .section-box {
 			border: 0px !important;
@@ -46,7 +47,7 @@
 			<!--User Menu Start-->
 			<div id="userMenu" class="dropdown">
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
 			      <a class="dropdown-item" href="profileAdmin.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
@@ -145,7 +146,7 @@
 		<div class="pull-left footer-logo"><img src="img/logo-11.png"></div>
 		<div class="pull-right footer-text">
 			<!-- &copy <script>document.write((new Date()).getFullYear());</script>   -->
-			Copyright @ 2021 Test IT(“UI automation Studio”). All Rights Reserved.
+			Copyright @ 2021 Test IT. All Rights Reserved.
 		</div>
 	</footer>
    <!--Footer End-->
@@ -158,6 +159,7 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/custom.js"></script>
+	<script src="js/Libraries/jquery.toast.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
@@ -175,6 +177,7 @@
 
 	var uname = readCookie("TAuname");
 	$("#userMenu span").text(uname);
+$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 	});
 
 

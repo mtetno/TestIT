@@ -23,12 +23,12 @@ function addUser(userId=0){
 	$loginid = $('.updateusermodel input[name=username]:visible').val();
 	$password = $('.updateusermodel input[name=password]:visible').val();
 	if($('.updateusermodel input[name=password]:visible').val() != $('.updateusermodel input[name=confirmpassword]:visible').val()){
-		alert("Password entered does not match")
+		showWarningToast("Password entered does not match")
 		return false;
 	}
 	if($useremail == '' || $firstname == '' || $lastname == '' || $useremail == '')
 	{
-		alert("Please enter valid form data")
+		showWarningToast("Please enter valid form data")
 	   return false;
 	}
 	$("#editmyModalSucess1").modal('hide');
@@ -39,9 +39,12 @@ function addUser(userId=0){
 	dataObj["address"]= $Address;
 	dataObj["contact"]= "";
 	dataObj["userName"] = $loginid;
-	dataObj["password"] = $password;	
+	if($password.trim().length >  0){
+		dataObj["password"] = $password;
+	}	
 	if(uploadedImageBase64 != undefined){
 		dataObj["profileImage"] = uploadedImageBase64;
+		saveItem('profileImage', uploadedImageBase64);
 	}
 	
 	$.ajax({
@@ -54,9 +57,10 @@ function addUser(userId=0){
 		},
 		url: base_url+"/user/updateProfile",
 			success: function(msg){
+				showSuccessToast("The User Profile Updated Successfully.");
 				$('#res').html("<span style='color:red;text-transform:capitalize;font-size:14px'>Profile updated successfully..!</span>").show();
 				$('#res span').fadeIn().fadeOut(3000);
-				fetchUserProfile();
+				window.location.href= window.location.href;
 			}
 	});
 }

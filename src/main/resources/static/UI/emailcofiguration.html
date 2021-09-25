@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <!--Custom style link-->
   <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/jquery.toast.min.css">
   <style>
     .bucketcheck label {
       padding-left: 5px;
@@ -43,7 +44,7 @@
       <!--User Menu Start-->
       <div id="userMenu" class="dropdown">
         <!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/account-circle-24-px.png"> <span>User</span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
         <div class="dropdown-menu">
           <a class="dropdown-item" href="profileAdmin.html">Profile</a>
           <a class="dropdown-item" href="login.html">Logout</a>
@@ -339,7 +340,7 @@
          <!-- Modal footer -->
          <div class="modal-footer btnfooter">
           <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-          <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess">YES</button>
+          <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">YES</button>
         </div>
 
       </div>
@@ -347,33 +348,6 @@
   </div>
   <!-- End of Row Delete Modal 1-->
 
-
-  <!-- The Row Delete Modal Execution Environment Success -->
-  <div class="modal fade" id="myModalSucess">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header model_head">
-          <h4 class="modal-title"></h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body model_body">
-          <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-          <p>Email Configuration Deleted Successfully.</p>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer btnfooter">
-          <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <!-- End of Row Delete Modal Success -->
 
   <!-- The Row Delete Environment URL's Modal 1-->
   <div class="modal fade model1" id="myModal1">
@@ -395,7 +369,7 @@
        <!-- Modal footer -->
        <div class="modal-footer btnfooter">
         <button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
-        <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#myModalSucess1">YES</button>
+        <button type="button" id="yesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" >YES</button>
       </div>
 
     </div>
@@ -403,32 +377,6 @@
 </div>
 <!-- End of Row Delete Modal 1-->
 
-<!-- The Row Delete Modal Environment URL's Success 1-->
-<div class="modal fade" id="myModalSucess1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header model_head">
-        <h4 class="modal-title"></h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body model_body">
-        <i class="fa fa-check-circle"></i><span><strong>Success</strong></span><br>
-        <p>Template Configuration Deleted Successfully.</p>
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer btnfooter">
-        <button type="button" class="btn btn-dark btnclose" data-dismiss="modal">CLOSE</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!-- End of Row Delete Modal Success 1-->
 
 </div>
 <!--Main Content End-->
@@ -438,7 +386,7 @@
     <div class="pull-left footer-logo"><img src="img/logo-11.png"></div>
     <div class="pull-right footer-text">
       <!-- &copy <script>document.write((new Date()).getFullYear());</script>   -->
-      Copyright @ 2021 Test IT(“UI automation Studio”). All Rights Reserved.
+      Copyright @ 2021 Test IT. All Rights Reserved.
     </div>
   </footer>
 <!--Footer End-->
@@ -454,6 +402,7 @@
 <script src="js/Libraries/dataTables.tableTools.js"></script>
 <script src="js/Libraries/jquery.dataTables.bootstrap.js"></script>
 <script src="js/Libraries/jquery.nanoscroller.min.js"></script>
+<script src="js/Libraries/jquery.toast.min.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/pages/emailconfiguration.js"></script>
 <script src="js/pages/common.js"></script>
@@ -522,15 +471,15 @@
 
 
       if(dataCompanynm.length == 0){
-        alert("Please select valid company")
+        showWarningToast("Please select valid company")
       }else if(dataHostname.length == 0){
-        alert("Please select valid hostname")
+        showWarningToast("Please select valid hostname")
       }else if(dataEmail.length == 0){
-        alert("Please select valid email")
+        showWarningToast("Please select valid email")
       }else if(dataPort.length == 0){
-        alert("Please select valid port")
+        showWarningToast("Please select valid port")
       }else if(protocal.length == 0){
-        alert("Please select valid protocol")
+        showWarningToast("Please select valid protocol")
       }else{
         var dataObj = {};
         dataObj["companyId"] = dataCompanynm;
@@ -589,11 +538,11 @@
       var dataTags = $("#legend_of_tag").val();
 
       if(dataAppl == 0){
-        alert("please select valid company name");
+        showWarningToast("please select valid company name");
       }else if(urlEnvironment == 0){
-        alert("please select valid template type");
+        showWarningToast("please select valid template type");
       }else if(dataTags == 0){
-        alert("please select valid legends");
+        showWarningToast("please select valid legends");
       }
 
       var dataObj = {};

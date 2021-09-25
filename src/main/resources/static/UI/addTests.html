@@ -79,43 +79,122 @@
 		<div class="card">
 			<div class="card-body">
 				<form>
-					<div class="row">
-						<div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
-							<!--Page subtitle-->
-							<!-- <label class="subtitle">Manage Test</label> -->
-							<!--Delete row-->
-							<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
-							<a href="#" class="addusetbtn" data-toggle="modal"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
-						</div>
+					<div class="col-md-12 addusermodel">
+						<form>
+
+							<div class="row">
+								<div class="col-md-12 mb-2">
+									<label class="required">Objective</label>
+									<input type="text" class="form-control border" name="objective" id="objective" placeholder="Please enter objective" required>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
+									<label class="required">Steps</label>
+									<!--Page subtitle-->
+									<!-- <label class="subtitle">Manage Test</label> -->
+									<!--Delete row-->
+									<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
+									<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+								</div>
+							</div>
+	
+							<div class="row selectdiv addTestParent" style="overflow-x: auto;">
+								<table id="addTestTable" class="table selectdiv1 addTest">
+								  <thead>
+									<tr>
+									  <th scope="col" class="bucketcheck">
+										  <label class="main mainCB">
+											<input type="checkbox"> 
+											<span class="geekmark"></span> 
+										</label>
+									  </th>
+									  <th scope="col" class="Username">STEPS <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
+									  <th scope="col">EXPECTED</th>
+									</tr>
+								  </thead>
+								  <tbody>
+									  <tr style="display: none;">
+									<td></td>
+									<td><input type="text" id="f1" class="form-control border" name="" placeholder="Search Test Name"></td>
+									<td><input type="text" id="f2" class="form-control border" name="" placeholder="Search Application"></td>
+									<td></td>
+									<td></td>
+									</tr>
+									
+								  </tbody>
+								</table>
+							</div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label class="required">Test Method</label>
+								  <input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
+							  </div>
+						  </div>
+
+							
+
+						 
+
+
+						  <div class="row">
+						  <div class="col-md-12 mb-2">
+							  <label class="required" >Application</label>
+							  <select class="form-control border" name="application" id="application" required>
+								  <option value="Select Application">Select Application</option>
+								  <option value="ITSM">ITSM</option>
+							  </select>
+						  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Type</label>
+								  <select class="form-control border" name="type" id="type">
+									  <option value="">Select Type</option>
+									  <option value="Smoke">Smoke</option>
+								  </select>
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Class Name</label>
+								  <input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-6">
+								  <label>Automation Status</label>
+								  <select class="form-control border" name="automation_status" id="automation_status">
+									  <option value="">Select Automation Status</option>
+									  <option value="Not yet automated">Not yet automated</option>
+									  <option value="In Progress">In Progress</option>
+								  </select>
+							  </div>
+							  <div class="col-md-6">
+								  <label>Automation Progress</label>
+								  <select class="form-control border" name="automation_progress" id="automation_progress">
+									  <option value="">Select Automation Progress</option>
+									  <option value="Backing">Backing</option>
+								  </select>
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Comments</label>
+								  <textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
+							  </div>
+						  </div>
+						  
+						</form>
 					</div>
-					<div class="row selectdiv testmanagementtableParent" style="overflow-x: auto;">
-						<table id="bucketList" class="table selectdiv1 testmanagementtable">
-						  <thead>
-						    <tr>
-						      <th scope="col" class="bucketcheck">
-						      	<label class="main mainCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </th>
-						      <th scope="col" class="Username">TEST CASE <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
-						      <th scope="col">APPLICATION  </th>
-						      <th scope="col">ENVIRONMENT</th>
-						      <th scope="col">AUTOMATION STATUS</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						  	<tr style="display: none;">
-							<td></td>
-							<td><input type="text" id="f1" class="form-control border" name="" placeholder="Search Test Name"></td>
-							<td><input type="text" id="f2" class="form-control border" name="" placeholder="Search Application"></td>
-							<td></td>
-							<td></td>
-							</tr>
-						    
-						  </tbody>
-						</table>
-					</div>
+
+					
 				</form>
 				<!-- <div class="row paginate">
 					<div class="col-md-12 col-sm-12 col-xs-12">
@@ -155,70 +234,18 @@
 
 							<div class="row">
 								<div class="col-md-12 mb-2">
-									<label class="required">Test Method</label>
-									<input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
+									<label class="required">Step</label>
+									<input type="text" class="form-control border" name="step" id="step" placeholder="Please enter step">
 								</div>
 							</div>
 
 		          			<div class="row">
 								<div class="col-md-12 mb-2">
-									<label class="required">Objective</label>
-									<input type="text" class="form-control border" name="objective" id="objective" placeholder="Please enter objective" required>
+									<label>Expected</label>
+									<input type="text" class="form-control border" name="objective" id="" placeholder="Please enter expected" required>
 								</div>
 							</div>
-
-							<div class="row">
-							<div class="col-md-12 mb-2">
-								<label class="required" >Application</label>
-								<select class="form-control border" name="application" id="application" required>
-									<option value="Select Application">Select Application</option>
-									<option value="ITSM">ITSM</option>
-								</select>
-							</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
-									<label>Type</label>
-									<select class="form-control border" name="type" id="type">
-										<option value="">Select Type</option>
-										<option value="Smoke">Smoke</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6 mb-2">
-									<label>Class Name</label>
-									<input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6">
-									<label>Automation Status</label>
-									<select class="form-control border" name="automation_status" id="automation_status">
-										<option value="">Select Automation Status</option>
-										<option value="Not yet automated">Not yet automated</option>
-										<option value="In Progress">In Progress</option>
-									</select>
-								</div>
-								<div class="col-md-6">
-									<label>Automation Progress</label>
-									<select class="form-control border" name="automation_progress" id="automation_progress">
-										<option value="">Select Automation Progress</option>
-										<option value="Backing">Backing</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
-									<label>Comments</label>
-									<textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
-								</div>
-							</div>
-							
+ 
 		          		</form>
 		          	</div>
 		        </div>
@@ -427,11 +454,6 @@ var uname = readCookie("TAuname");
 $("#userMenu span").text(uname);
 $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
-$(".addusetbtn").click(function(){
-		//clearAddTestCasePopupData();
-		window.location.href = "addTests.html";
-	 });
-
 });
 
 
@@ -625,7 +647,9 @@ $(".addusetbtn").click(function(){
 			}
 		});
 
-	 
+	 $("#addusetbtn").click(function(){
+		clearAddTestCasePopupData();
+	 });
 
 	</script>
 </body>
