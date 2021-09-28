@@ -79,43 +79,127 @@
 		<div class="card">
 			<div class="card-body">
 				<form>
-					<div class="row">
-						<div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
-							<!--Page subtitle-->
-							<!-- <label class="subtitle">Manage Test</label> -->
-							<!--Delete row-->
-							<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
-							<a href="#" class="addusetbtn" data-toggle="modal"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
-						</div>
+					<div class="col-md-12 addusermodel">
+						<form>
+
+							<div class="row">
+								<div class="col-md-12 mb-2">
+									<label class="required">Objective</label>
+									<input type="text" class="form-control border" name="objective" id="objective" placeholder="Please enter objective" required>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-xs-12 mb-2 buttonlink">
+									<label class="required">Steps</label>
+									<!--Page subtitle-->
+									<!-- <label class="subtitle">Manage Test</label> -->
+									<!--Delete row-->
+									<button class="btn btn-primary float-right buttonlink" id="deleteRow"><img src="img/delete-24-px.png">DELETE</button>
+									<a href="#" class="addusetbtn" data-toggle="modal" data-target="#myModal1"><button class="btn btn-primary float-right buttonlink"><img src="img/add-24-px-2.png">ADD</button></a>
+								</div>
+							</div>
+	
+							<div class="row selectdiv addTestParent" style="overflow-x: auto;">
+								<table id="addTestTable" class="table selectdiv1 addTest">
+								  <thead>
+									<tr>
+									  <th scope="col" class="bucketcheck">
+										  <label class="main mainCB">
+											<input type="checkbox"> 
+											<span class="geekmark"></span> 
+										</label>
+									  </th>
+									  <th scope="col" class="Username">STEPS <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
+									  <th scope="col">EXPECTED</th>
+									</tr>
+								  </thead>
+								  <tbody>
+									  <tr style="display: none;">
+									<td></td>
+									<td><input type="text" id="f1" class="form-control border" name="" placeholder="Search Test Name"></td>
+									<td><input type="text" id="f2" class="form-control border" name="" placeholder="Search Application"></td>
+									<td></td>
+									<td></td>
+									</tr>
+									
+								  </tbody>
+								</table>
+							</div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label class="required">Test Method</label>
+								  <input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
+							  </div>
+						  </div>
+
+							
+
+						 
+
+
+						  <div class="row">
+						  <div class="col-md-12 mb-2">
+							  <label class="required" >Application</label>
+							  <select class="form-control border" name="application" id="application" required>
+								  <option value="Select Application">Select Application</option>
+								  <option value="ITSM">ITSM</option>
+							  </select>
+						  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Type</label>
+								  <select class="form-control border" name="type" id="type">
+									  <option value="">Select Type</option>
+									  <option value="Smoke">Smoke</option>
+								  </select>
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Class Name</label>
+								  <input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-6">
+								  <label>Automation Status</label>
+								  <select class="form-control border" name="automation_status" id="automation_status">
+									  <option value="">Select Automation Status</option>
+									  <option value="Not yet automated">Not yet automated</option>
+									  <option value="In Progress">In Progress</option>
+								  </select>
+							  </div>
+							  <div class="col-md-6">
+								  <label>Automation Progress</label>
+								  <select class="form-control border" name="automation_progress" id="automation_progress">
+									  <option value="">Select Automation Progress</option>
+									  <option value="Backing">Backing</option>
+								  </select>
+							  </div>
+						  </div>
+
+						  <div class="row">
+							  <div class="col-md-12 mb-2">
+								  <label>Comments</label>
+								  <textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
+							  </div>
+						  </div>
+
+
+						  <div class="modal-footer btnfooter">
+							<button type="button" class="btn btn-primary saveTestCase"><img src="img/save-24-px-1.png">SAVE</button>
+						  </div>
+						  
+						</form>
 					</div>
-					<div class="row selectdiv testmanagementtableParent" style="overflow-x: auto;">
-						<table id="bucketList" class="table selectdiv1 testmanagementtable">
-						  <thead>
-						    <tr>
-						      <th scope="col" class="bucketcheck">
-						      	<label class="main mainCB">
-							        <input type="checkbox"> 
-							        <span class="geekmark"></span> 
-							    </label>
-					          </th>
-						      <th scope="col" class="Username">TEST METHOD <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
-						      <th scope="col">OBJECTIVE</th>
-						      <th scope="col">APPLICATION  </th>
-						      <th scope="col">AUTOMATION STATUS</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						  	<tr style="display: none;">
-							<td></td>
-							<td><input type="text" id="f1" class="form-control border" name="" placeholder="Search Test Name"></td>
-							<td><input type="text" id="f2" class="form-control border" name="" placeholder="Search Application"></td>
-							<td></td>
-							<td></td>
-							</tr>
-						    
-						  </tbody>
-						</table>
-					</div>
+
+					
 				</form>
 				<!-- <div class="row paginate">
 					<div class="col-md-12 col-sm-12 col-xs-12">
@@ -155,70 +239,18 @@
 
 							<div class="row">
 								<div class="col-md-12 mb-2">
-									<label class="required">Test Method</label>
-									<input type="text" class="form-control border" name="test_method" id="test_method" placeholder="Enter Test Method Here">
+									<label class="required">Step</label>
+									<input type="text" class="form-control border" name="step" id="step" placeholder="Please enter step">
 								</div>
 							</div>
 
 		          			<div class="row">
 								<div class="col-md-12 mb-2">
-									<label class="required">Objective</label>
-									<input type="text" class="form-control border" name="objective" id="objective" placeholder="Please enter objective" required>
+									<label>Expected</label>
+									<input type="text" class="form-control border" name="expected" id="expected" placeholder="Please enter expected" required>
 								</div>
 							</div>
-
-							<div class="row">
-							<div class="col-md-12 mb-2">
-								<label class="required" >Application</label>
-								<select class="form-control border" name="application" id="application" required>
-									<option value="Select Application">Select Application</option>
-									<option value="ITSM">ITSM</option>
-								</select>
-							</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
-									<label>Type</label>
-									<select class="form-control border" name="type" id="type">
-										<option value="">Select Type</option>
-										<option value="Smoke">Smoke</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6 mb-2">
-									<label>Class Name</label>
-									<input type="text" class="form-control border" name="classname" id="classname" placeholder="Enter Class Name Here">
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-6">
-									<label>Automation Status</label>
-									<select class="form-control border" name="automation_status" id="automation_status">
-										<option value="">Select Automation Status</option>
-										<option value="Not yet automated">Not yet automated</option>
-										<option value="In Progress">In Progress</option>
-									</select>
-								</div>
-								<div class="col-md-6">
-									<label>Automation Progress</label>
-									<select class="form-control border" name="automation_progress" id="automation_progress">
-										<option value="">Select Automation Progress</option>
-										<option value="Backing">Backing</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12 mb-2">
-									<label>Comments</label>
-									<textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
-								</div>
-							</div>
-							
+ 
 		          		</form>
 		          	</div>
 		        </div>
@@ -347,8 +379,8 @@
 			        
 			        <!-- Modal body -->
 			        <div class="modal-body model_body">
-			          	 <h4>Delete Test Case</h4>
-			             <p>You are about to Delete Test Case.</p>
+			          	 <h4>Delete Steps</h4>
+			             <p>You are about to test steps</p>
 			             <p>Are you sure you want to proceed?</p>
 			             <!-- <p id="deletedItem"></p> -->
 			        </div>
@@ -418,33 +450,32 @@
 	<script src="js/pages/common.js"></script>
 	<script src="js/pages/testcases.js"></script>
 	<script src="js/custom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 	<script src="js/pages/localstorage.js"></script>
 	<script src="js/pages/constants.js"></script>
-	
+
 	<script>
 
-$(document).ready(function() {	
+		var testCaseSteps = [];
 
-var uname = readCookie("TAuname");
-$("#userMenu span").text(uname);
-$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
-
-$(".addusetbtn").click(function(){
-		//clearAddTestCasePopupData();
-		window.location.href = "addTests.html";
-	 });
-
-});
-
-
-		$(function(){
-
+		
 			fetchAllApplications();
 			fetchAllEnvironments();
 			fetchAutomationProgress();
 			fetchAutomationStatus();
 			fetchTestType();
-			displayTestcases();
+
+		$(document).ready(function() {	
+
+		var uname = readCookie("TAuname");
+		$("#userMenu span").text(uname);
+		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+
+		fetchTestSteps();
+		});
+
+
+		$(function(){
 
 			/*---Jquery for search table column---*/
 
@@ -453,68 +484,106 @@ $(".addusetbtn").click(function(){
 			    $("#bucketList tbody tr:first-child").toggle();
 			});
 
-			
 
-			/*---Jquery for save row---*/
-			$(document).on("click", "#saveRec", function(){
-				var testcaseName = $("#test_case_name").val().trim();
-				var description = $("#description").val().trim();
-				var className = $("#classname").val().trim();
-				var testMethod = $("#test_method").val().trim();
-				var environmentId = $("#environment").val().trim();
-				var applicationId = $("#application").val().trim();
-				// var testTypeId = $("#type").val().trim();
-				// var foundInBuild = $("#found_in_build").val().trim();
-				var autoStatusId = $("#automation_status").val().trim();
-				var autoProgressId = $("#automation_progress").val().trim();
-				var expected = $("#expected").val().trim();
-				var isDelete = 0
 
-				if(testcaseName.length == 0){
-					showWarningToast("Please enter valid testcase name");
+			// /*---Jquery for save row---*/
+			$(document).on("click", ".saveTestCase", function(){
+				var objective = $("#objective").val();
+				var test_method = $("#test_method").val();
+				var className = $("#classname").val();
+				var applicationId = $("#application").val();
+				var type = $("#type").val() ;
+				var autoStatusId = $("#automation_status").val();
+				var autoProgressId = $("#automation_progress").val() ;
+				var comments = $("#comments").val() ;
+				
+
+				if(objective.length == 0){
+					showWarningToast("Please enter valid objective");
 					return false;
-				}else if(description.length == 0){
-					showWarningToast("Please enter valid description");
+				}else if(testCaseSteps.length == 0){
+					showWarningToast("Please enter atleast one step");
 					return false;
-				}else if(environmentId == 0){
-					showWarningToast("Please enter valid environment");
+				}else if(test_method == 0){
+					showWarningToast("Please enter valid test method");
 					return false;
 				}else if(applicationId == 0){
 					showWarningToast("Please enter valid application");
 					return false;
 				}
 				
-				// }else if(testTypeId == 0){
-				// 	alert("Please enter valid test type");
-				// 	return false;
-				// }else if(foundInBuild == '' || parseInt(foundInBuild) <= 0){
-				// 	alert("Please enter valid foundin build no");
-				// 	return false;
-				// }
-				$("#myModal1").modal('toggle');
+				 
+				// $("#myModal1").modal('toggle');
 				var dataObj = {};
-				dataObj["testcaseName"] = testcaseName;
-				dataObj["description"] = description;
+				dataObj["testcasesId"] = JSON.parse(getItem(EDIT_TESTCASE)).testcase_id;
+				dataObj["objective"] = objective;
+				dataObj["testCaseSteps"] = testCaseSteps;
 				dataObj["className"] = className;
-				dataObj["testMethod"] = testMethod;
-				dataObj["environmentId"] = environmentId;
+				dataObj["testMethod"] = test_method;
 				dataObj["applicationId"] = applicationId;
-				// dataObj["testTypeId"] = testTypeId;
-				// dataObj["foundInBuild"] = foundInBuild;
+				dataObj["testTypeId"] = type;
 				dataObj["autoStatusId"] = autoStatusId;
 				dataObj["autoProgressId"] = autoProgressId;
-				dataObj["expected"] = expected;
-				dataObj["isDelete"] = isDelete;
-				if(isEditTestCases){
-					dataObj["testcasesId"] = selectedTestCase.testcase_id;
-					isEditTestCases = false; 
-					editTestcases(dataObj);			    
-				}else{
-					saveTestcases(dataObj);			    
-				}
-				
-				clearAddTestCasePopupData();
+				dataObj["comment"] = comments;
+				editTestcases(dataObj);			    
 			});
+
+			/*---Jquery for save row---*/
+			$(document).on("click", "#saveRec", function(){
+				var step = $("#step").val();
+				var expected = $("#expected").val();
+				if(step.trim().length == 0){
+					showWarningToast("Please enter valid step");
+					return false;
+				}
+				testCaseSteps.push({"step": step, "expected": expected });
+				$("#myModal1").modal('hide');
+				$("#step").val("");
+				$("#expected").val("")
+				showStepsGrid();
+			});
+
+			function showStepsGrid(){
+				var rows = "";
+				testCaseSteps.map((value,index) => {
+						var savestr = `<tr>
+						<td scope='col' class='bucketcheck'>
+							<label class='main subCB'>
+							<input type='checkbox' data-value=` + index + `> 
+							<span class='geekmark'></span> 
+						</label>
+						</td>
+						<td>`+value.step+`</td>
+						<td>`+value.expected +`</td>
+					</tr>`
+					rows = rows + savestr;
+					});			 
+
+					if(rows != ""){
+					$(".addTestParent").html($(".addTest").get(0).outerHTML)
+					$(".addTestParent .paging_full_numbers").remove();
+
+					$(".addTest tbody").html(rows);
+					$('.addTest').DataTable({
+						"lengthChange": false,
+						"searching": false,   // Search Box will Be Disabled
+						"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+						"info": false,
+						"pagingType": "full_numbers"
+					});
+				}else{
+					$('.addTest').dataTable().fnClearTable();
+					$('.addTest').dataTable().fnDestroy();
+				}
+
+
+				$(".mainCB input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+				else
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+				});
+			}
 
 			function clearAddTestCasePopupData(){
 				$("#test_case_name").val("");
@@ -533,14 +602,13 @@ $(".addusetbtn").click(function(){
             /*---Jquery for Update row---*/
 
 			$("table.testmanagementtable tbody tr td:nth-child(2)").click(function(){
-				
-				// $("#editmyModal1").modal();
+				$("#editmyModal1").modal();
 
-		      	// $(".updateusermodel #uprowid").val($(this).closest("tr").index()+1);
-		      	// $(".updateusermodel #test_case_name1").val($(this).closest("tr").find("td:nth-child(2)").text());
-		      	// $(".updateusermodel #application1").val($(this).closest("tr").find("td:nth-child(3)").text()); 
-		      	// $(".updateusermodel #environment1").val($(this).closest("tr").find("td:nth-child(4)").text());
-		      	// $(".updateusermodel #automation_status1").val($(this).closest("tr").find("td:last-child").text());   
+		      	$(".updateusermodel #uprowid").val($(this).closest("tr").index()+1);
+		      	$(".updateusermodel #test_case_name1").val($(this).closest("tr").find("td:nth-child(2)").text());
+		      	$(".updateusermodel #application1").val($(this).closest("tr").find("td:nth-child(3)").text()); 
+		      	$(".updateusermodel #environment1").val($(this).closest("tr").find("td:nth-child(4)").text());
+		      	$(".updateusermodel #automation_status1").val($(this).closest("tr").find("td:last-child").text());   
 		    });
 
 		    /*---Jquery for Update Save---*/
@@ -589,14 +657,24 @@ $(".addusetbtn").click(function(){
 			
 
 			$(document).on("click", "#yesbtn", function(){
+				var index_tobe_delete = [];
 				$('table tbody .subCB input[type=checkbox]').map((i,val)=>{
 				if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
-					deleteTestcase($(val).attr("data-value"));     
+					index_tobe_delete.push(parseInt($(val).attr("data-value")));
 					}
 				}
-				});   
-				showSuccessToast("Test Case deleted Successfully.");
+				});
+				var filtered = [];
+				testCaseSteps.map((item,i) => {
+					if(index_tobe_delete.includes(i) == false ){
+						filtered.push(item);
+					}
+				})
+				testCaseSteps = filtered;
+
+				showStepsGrid();   
+				showSuccessToast("Test steps deleted Successfully.");
 			});
             
             /*---Jquery for toggle section on click caret-down icon---*/
@@ -623,7 +701,9 @@ $(".addusetbtn").click(function(){
 			}
 		});
 
-	 
+	 $("#addusetbtn").click(function(){
+		clearAddTestCasePopupData();
+	 });
 
 	</script>
 </body>

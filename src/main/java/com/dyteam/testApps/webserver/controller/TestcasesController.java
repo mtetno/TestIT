@@ -7,15 +7,19 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.dyteam.testApps.webserver.entity.Testcases;
+import com.dyteam.testApps.webserver.entity.TestcasesRequest;
+import com.dyteam.testApps.webserver.entity.TestcasesStep;
 import com.dyteam.testApps.webserver.entity.UploadTestcasesRequest;
 import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
 import com.dyteam.testApps.webserver.projection.INames;
 import com.dyteam.testApps.webserver.projection.IStackBar;
 import com.dyteam.testApps.webserver.repository.TestcasesRepository;
+import com.dyteam.testApps.webserver.repository.TestcasesStepRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,37 +39,71 @@ public class TestcasesController {
     @Autowired
     TestcasesRepository testcasesRepo;
 
+    @Autowired
+    TestcasesStepRepository testcasesStepRepository;
+
     @PostMapping("/save")
-    public Testcases save(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
+    public Testcases save(@RequestBody TestcasesRequest testcasesRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
+        Testcases testcases = new Testcases();
+        testcases.setApplicationId(testcasesRequest.getApplicationId());
+        testcases.setAutoProgressId(testcasesRequest.getAutoProgressId());
+        testcases.setAutoStatusId(testcasesRequest.getAutoStatusId());
+        testcases.setClassName(testcasesRequest.getClassName());
+        testcases.setComment(testcasesRequest.getComment());
+        testcases.setObjective(testcasesRequest.getObjective());
+        testcases.setIsDelete(0);
+        testcases.setCreatedAt(testcasesRequest.getCreatedAt());
+        testcases.setTestMethod(testcasesRequest.getTestMethod());
+        testcases.setTestTypeId(testcasesRequest.getTestTypeId());
+        testcases.setComment(testcasesRequest.getComment());
+
         logger.info("save testcases = " + testcases);
-        List<Testcases> foundcases = testcasesRepo.findByTestcaseName(testcases.getTestcaseName());
+        List<Testcases> foundcases = testcasesRepo.findByTestMethod(testcases.getTestMethod());
         if (foundcases.size() > 0) {
             throw new ResourceAlreadyExists("Testcase name Already exists");
         }
         testcases.setCompanyId(loggedInUser.getCompanyId());
         testcases.setAddedBy(loggedInUser.getUserId());
         Testcases save = testcasesRepo.save(testcases);
+        for(int i=0;i<testcasesRequest.getTestCaseSteps().size();i++){
+        TestcasesStep step = new TestcasesStep();
+        step.setTestcase_id(save.getTestcasesId());
+        step.setStep(testcasesRequest.getTestCaseSteps().get(i).getStep());
+        step.setExpected(testcasesRequest.getTestCaseSteps().get(i).getExpected());
+        testcasesStepRepository.save(step);
+        }
+
         return save;
     }
 
     @PostMapping("/edit")
-    public Testcases edit(@RequestBody Testcases testcases, @AuthenticationPrincipal final LoginUser loggedInUser) {
-        logger.info("edit testcases = " + testcases);
-        Optional<Testcases> foundcases = testcasesRepo.findById(testcases.getTestcasesId());
+    public Testcases edit(@RequestBody TestcasesRequest testcasesRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("edit testcases = " + testcasesRequest);
+        Optional<Testcases> foundcases = testcasesRepo.findById(testcasesRequest.getTestcasesId());
         if(foundcases.isPresent()){
             Testcases save = foundcases.get();
-            save.setApplicationId(testcases.getApplicationId());
-            save.setAutoProgressId(testcases.getAutoProgressId());
-            save.setAutoStatusId(testcases.getAutoStatusId());
-            save.setClassName(testcases.getClassName());
-            save.setDescription(testcases.getDescription());
-            save.setEnvironmentId(testcases.getEnvironmentId());
-            save.setFoundInBuild(testcases.getFoundInBuild());
-            save.setTestMethod(testcases.getTestMethod());
-            save.setTestcaseName(testcases.getTestcaseName());
-            save.setExpected(testcases.getExpected());
+            save.setApplicationId(testcasesRequest.getApplicationId());
+            save.setAutoProgressId(testcasesRequest.getAutoProgressId());
+            save.setAutoStatusId(testcasesRequest.getAutoStatusId());
+            save.setClassName(testcasesRequest.getClassName());
+            save.setComment(testcasesRequest.getComment());
+            save.setObjective(testcasesRequest.getObjective());
+            save.setIsDelete(0);
+            save.setTestMethod(testcasesRequest.getTestMethod());
+            save.setTestTypeId(testcasesRequest.getTestTypeId());
+            save.setComment(testcasesRequest.getComment());
+
+            testcasesStepRepository.deleteByTestcaseId(testcasesRequest.getTestcasesId());
+            for(int i=0;i<testcasesRequest.getTestCaseSteps().size();i++){
+            TestcasesStep step = new TestcasesStep();
+            step.setTestcase_id(save.getTestcasesId());
+            step.setStep(testcasesRequest.getTestCaseSteps().get(i).getStep());
+            step.setExpected(testcasesRequest.getTestCaseSteps().get(i).getExpected());
+            testcasesStepRepository.save(step);
+            }
             return testcasesRepo.save(save);
         }
+
         return null;
     }
 
@@ -162,6 +200,11 @@ public class TestcasesController {
     @GetMapping(value = "/downloadTestcases/{companyId}/{applicationId}")
     public List<Map<String, Object>> downloadTestcases(@PathVariable(value = "companyId") Long companyId,@PathVariable(value = "applicationId") Long applicationId) {
         return testcasesRepo.downloadTestcases(companyId,applicationId);
+    }
+
+    @GetMapping(value = "/getTestcaseSteps/{testcaseId}")
+    public List<Map<String, Object>> getTestcaseSteps(@PathVariable(value = "testcaseId") Long testcaseId) {
+        return testcasesStepRepository.fetchAllStepsByTestId(testcaseId);
     }
 
     @PostMapping("/uploadTestcases/{companyId}/{applicationId}")

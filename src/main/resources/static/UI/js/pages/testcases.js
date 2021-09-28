@@ -12,8 +12,7 @@ function saveTestcases(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			showSuccessToast("The Test Case Saved Successfully.");
-			displayTestcases();	
+			window.location.href = "testmanagement.html"
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(jqXHR);
@@ -35,8 +34,7 @@ function editTestcases(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			showSuccessToast("The Test Case Updated Successfully.");
-			displayTestcases();	
+			window.location.href = "testmanagement.html"
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(jqXHR);
@@ -46,6 +44,90 @@ function editTestcases(dataObj) {
 		}
 	});
 }
+
+
+function fetchTestSteps() {
+	var ediTTestcase = JSON.parse(getItem(EDIT_TESTCASE));
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/testcases/getTestcaseSteps/"+ediTTestcase.testcase_id,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+
+			var steps = [];
+			data.map((item)=>{
+			 steps.push({"step": item.step, "expected" : item.expected })
+			})
+			setTimeout(function(){
+			var editValue = JSON.parse(getItem(EDIT_TESTCASE));
+			$("#objective").val(editValue.objective);
+			$("#test_method").val(editValue.test_method);
+			$("#application").val(editValue.application_id);
+			$("#type").val(editValue.testtype_id);
+			$("#classname").val(editValue.class_name);
+			$("#automation_status").val(editValue.auto_status_id);
+			$("#automation_progress").val(editValue.auto_progress_id);
+			$("#comments").val(editValue.comment);
+			testCaseSteps = steps;
+			showStepsGrid();
+			}, 3000);
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(jqXHR);
+			console.log(textStatus);
+			console.log(errorThrown);
+			showWarningToast(jqXHR.responseJSON.errorMessage);
+		}
+	});
+}
+
+function showStepsGrid(){
+	var rows = "";
+	testCaseSteps.map((value,index) => {
+			var savestr = `<tr>
+			<td scope='col' class='bucketcheck'>
+				<label class='main subCB'>
+				<input type='checkbox' data-value=` + index + `> 
+				<span class='geekmark'></span> 
+			</label>
+			</td>
+			<td>`+value.step+`</td>
+			<td>`+value.expected +`</td>
+		</tr>`
+		rows = rows + savestr;
+		});			 
+
+		if(rows != ""){
+		$(".addTestParent").html($(".addTest").get(0).outerHTML)
+		$(".addTestParent .paging_full_numbers").remove();
+
+		$(".addTest tbody").html(rows);
+		$('.addTest').DataTable({
+			"lengthChange": false,
+			"searching": false,   // Search Box will Be Disabled
+			"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+			"info": false,
+			"pagingType": "full_numbers"
+		});
+	}else{
+		$('.addTest').dataTable().fnClearTable();
+		$('.addTest').dataTable().fnDestroy();
+	}
+
+
+	$(".mainCB input[type=checkbox]").click(function(){
+	if($(this).prop("checked")==true)
+	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+	else
+	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+	});
+}
+
+
 
 function displayTestcases(){
 	$.ajax({
@@ -60,7 +142,7 @@ function displayTestcases(){
 
 			var rows = "";
 			data.map((value) => {
-				var dataValue = "data-value="+JSON.stringify(value);
+				var dataValue = "data-value='"+JSON.stringify(value)+"'";
 				console.log(dataValue);
 				var savestr = `<tr>
 				<td scope='col' class='bucketcheck'>
@@ -69,10 +151,10 @@ function displayTestcases(){
 					  <span class='geekmark'></span> 
 				  </label>
 				</td>
-				<td class='rowTestCase' ${dataValue} >`+value.testcase_name+`</td>
+				<td class='rowTestCase' ${dataValue} >`+value.test_method+`</td>
+				<td>`+value.objective+`</td>
 				<td>`+value.application_name+`</td>
-				<td>`+value.environment_name+`</td>
-				<td>`+value.status +`</td>
+				<td>`+ value.status +`</td>
 			  </tr>`
 			 rows = rows + savestr;
 			});			 
@@ -109,22 +191,35 @@ function displayTestcases(){
 
 function postDisplayTestCases(){
 	$(".rowTestCase").click(function(){
-		isEditTestCases = true;
-		var dataValue = JSON.parse($(this).attr("data-value"));
-		selectedTestCase = dataValue;
-		$("#myModal1").modal('show');
-		 $("#test_case_name").val(dataValue.testcase_name);
-		 $("#description").val(dataValue.description);
-		 $("#classname").val(dataValue.class_name);
-		 $("#test_method").val(dataValue.test_method);
-		 $("#environment").val(dataValue.environment_id);
-		 $("#application").val(dataValue.application_id);
-		 $("#type").val(dataValue.testtype_id);
-		 $("#expected").val(dataValue.expected);
-		 $("#found_in_build").val(dataValue.foundin_build);
-		 $("#automation_status").val(dataValue.auto_status_id);
-		 $("#automation_progress").val(dataValue.auto_progress_id);
+		var dataVal = $(this).attr("data-value");
+		saveItem(EDIT_TESTCASE,dataVal)
+		window.location.href = "editTest.html"
+
+
+		// isEditTestCases = true;
+		// var dataValue = JSON.parse($(this).attr("data-value"));
+		// selectedTestCase = dataValue;
+		// $("#myModal1").modal('show');
+		//  $("#test_case_name").val(dataValue.testcase_name);
+		//  $("#description").val(dataValue.description);
+		//  $("#classname").val(dataValue.class_name);
+		//  $("#test_method").val(dataValue.test_method);
+		//  $("#environment").val(dataValue.environment_id);
+		//  $("#application").val(dataValue.application_id);
+		//  $("#type").val(dataValue.testtype_id);
+		//  $("#expected").val(dataValue.expected);
+		//  $("#found_in_build").val(dataValue.foundin_build);
+		//  $("#automation_status").val(dataValue.auto_status_id);
+		//  $("#automation_progress").val(dataValue.auto_progress_id);
 	});
+
+	$(".mainCB input[type=checkbox]").click(function(){
+		if($(this).prop("checked")==true)
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+		else
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+	});
+	
 }
 
 

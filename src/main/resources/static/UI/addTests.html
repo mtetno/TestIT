@@ -190,6 +190,11 @@
 								  <textarea class="form-control border" name="comments" id="comments" rows="1" placeholder="Please enter comments" required></textarea>
 							  </div>
 						  </div>
+
+
+						  <div class="modal-footer btnfooter">
+							<button type="button" class="btn btn-primary saveTestCase"><img src="img/save-24-px-1.png">SAVE</button>
+						  </div>
 						  
 						</form>
 					</div>
@@ -242,7 +247,7 @@
 		          			<div class="row">
 								<div class="col-md-12 mb-2">
 									<label>Expected</label>
-									<input type="text" class="form-control border" name="objective" id="" placeholder="Please enter expected" required>
+									<input type="text" class="form-control border" name="expected" id="expected" placeholder="Please enter expected" required>
 								</div>
 							</div>
  
@@ -374,8 +379,8 @@
 			        
 			        <!-- Modal body -->
 			        <div class="modal-body model_body">
-			          	 <h4>Delete Test Case</h4>
-			             <p>You are about to Delete Test Case.</p>
+			          	 <h4>Delete Steps</h4>
+			             <p>You are about to test steps</p>
 			             <p>Are you sure you want to proceed?</p>
 			             <!-- <p id="deletedItem"></p> -->
 			        </div>
@@ -445,16 +450,19 @@
 	<script src="js/pages/common.js"></script>
 	<script src="js/pages/testcases.js"></script>
 	<script src="js/custom.js"></script>
-	
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
 	<script>
 
-$(document).ready(function() {	
+		var testCaseSteps = [];
 
-var uname = readCookie("TAuname");
-$("#userMenu span").text(uname);
-$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+		$(document).ready(function() {	
 
-});
+		var uname = readCookie("TAuname");
+		$("#userMenu span").text(uname);
+		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+
+		});
 
 
 		$(function(){
@@ -473,73 +481,114 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 			    $("#bucketList tbody tr:first-child").toggle();
 			});
 
-			$(".mainCB input[type=checkbox]").click(function(){
-				if($(this).prop("checked")==true)
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-				else
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-			});
 
-			/*---Jquery for save row---*/
-			$(document).on("click", "#saveRec", function(){
-				var testcaseName = $("#test_case_name").val().trim();
-				var description = $("#description").val().trim();
+
+			// /*---Jquery for save row---*/
+			$(document).on("click", ".saveTestCase", function(){
+				var objective = $("#objective").val().trim();
+				var test_method = $("#test_method").val().trim();
 				var className = $("#classname").val().trim();
-				var testMethod = $("#test_method").val().trim();
-				var environmentId = $("#environment").val().trim();
 				var applicationId = $("#application").val().trim();
-				// var testTypeId = $("#type").val().trim();
-				// var foundInBuild = $("#found_in_build").val().trim();
+				var type = $("#type").val().trim();
 				var autoStatusId = $("#automation_status").val().trim();
 				var autoProgressId = $("#automation_progress").val().trim();
-				var expected = $("#expected").val().trim();
-				var isDelete = 0
+				var comments = $("#comments").val().trim();
+				
 
-				if(testcaseName.length == 0){
-					showWarningToast("Please enter valid testcase name");
+				if(objective.length == 0){
+					showWarningToast("Please enter valid objective");
 					return false;
-				}else if(description.length == 0){
-					showWarningToast("Please enter valid description");
+				}else if(testCaseSteps.length == 0){
+					showWarningToast("Please enter atleast one step");
 					return false;
-				}else if(environmentId == 0){
-					showWarningToast("Please enter valid environment");
+				}else if(test_method == 0){
+					showWarningToast("Please enter valid test method");
 					return false;
 				}else if(applicationId == 0){
 					showWarningToast("Please enter valid application");
 					return false;
 				}
 				
-				// }else if(testTypeId == 0){
-				// 	alert("Please enter valid test type");
-				// 	return false;
-				// }else if(foundInBuild == '' || parseInt(foundInBuild) <= 0){
-				// 	alert("Please enter valid foundin build no");
-				// 	return false;
-				// }
-				$("#myModal1").modal('toggle');
+				 
+				// $("#myModal1").modal('toggle');
 				var dataObj = {};
-				dataObj["testcaseName"] = testcaseName;
-				dataObj["description"] = description;
+				dataObj["objective"] = objective;
+				dataObj["testCaseSteps"] = testCaseSteps;
 				dataObj["className"] = className;
-				dataObj["testMethod"] = testMethod;
-				dataObj["environmentId"] = environmentId;
+				dataObj["testMethod"] = test_method;
 				dataObj["applicationId"] = applicationId;
-				// dataObj["testTypeId"] = testTypeId;
-				// dataObj["foundInBuild"] = foundInBuild;
+				dataObj["testTypeId"] = type;
 				dataObj["autoStatusId"] = autoStatusId;
 				dataObj["autoProgressId"] = autoProgressId;
-				dataObj["expected"] = expected;
-				dataObj["isDelete"] = isDelete;
-				if(isEditTestCases){
-					dataObj["testcasesId"] = selectedTestCase.testcase_id;
-					isEditTestCases = false; 
-					editTestcases(dataObj);			    
-				}else{
+				dataObj["comment"] = comments;
+				// dataObj["isDelete"] = isDelete;
+				// if(isEditTestCases){
+				// 	dataObj["testcasesId"] = selectedTestCase.testcase_id;
+				// 	isEditTestCases = false; 
+				// 	editTestcases(dataObj);			    
+				// }else{
 					saveTestcases(dataObj);			    
-				}
+				// }
 				
-				clearAddTestCasePopupData();
+				//clearAddTestCasePopupData();
 			});
+
+			/*---Jquery for save row---*/
+			$(document).on("click", "#saveRec", function(){
+				var step = $("#step").val();
+				var expected = $("#expected").val();
+				if(step.trim().length == 0){
+					showWarningToast("Please enter valid step");
+					return false;
+				}
+				testCaseSteps.push({"step": step, "expected": expected });
+				$("#myModal1").modal('hide');
+				$("#step").val("");
+				$("#expected").val("")
+				showStepsGrid();
+			});
+
+			function showStepsGrid(){
+				var rows = "";
+				testCaseSteps.map((value,index) => {
+						var savestr = `<tr>
+						<td scope='col' class='bucketcheck'>
+							<label class='main subCB'>
+							<input type='checkbox' data-value=` + index + `> 
+							<span class='geekmark'></span> 
+						</label>
+						</td>
+						<td>`+value.step+`</td>
+						<td>`+value.expected +`</td>
+					</tr>`
+					rows = rows + savestr;
+					});			 
+
+					if(rows != ""){
+					$(".addTestParent").html($(".addTest").get(0).outerHTML)
+					$(".addTestParent .paging_full_numbers").remove();
+
+					$(".addTest tbody").html(rows);
+					$('.addTest').DataTable({
+						"lengthChange": false,
+						"searching": false,   // Search Box will Be Disabled
+						"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+						"info": false,
+						"pagingType": "full_numbers"
+					});
+				}else{
+					$('.addTest').dataTable().fnClearTable();
+					$('.addTest').dataTable().fnDestroy();
+				}
+
+
+				$(".mainCB input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+				else
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+				});
+			}
 
 			function clearAddTestCasePopupData(){
 				$("#test_case_name").val("");
@@ -613,14 +662,24 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 			
 
 			$(document).on("click", "#yesbtn", function(){
+				var index_tobe_delete = [];
 				$('table tbody .subCB input[type=checkbox]').map((i,val)=>{
 				if($(val).attr("data-value")!=undefined){
                 if($(val).prop("checked") == true){
-					deleteTestcase($(val).attr("data-value"));     
+					index_tobe_delete.push(parseInt($(val).attr("data-value")));
 					}
 				}
-				});   
-				showSuccessToast("Test Case deleted Successfully.");
+				});
+				var filtered = [];
+				testCaseSteps.map((item,i) => {
+					if(index_tobe_delete.includes(i) == false ){
+						filtered.push(item);
+					}
+				})
+				testCaseSteps = filtered;
+
+				showStepsGrid();   
+				showSuccessToast("Test steps deleted Successfully.");
 			});
             
             /*---Jquery for toggle section on click caret-down icon---*/
