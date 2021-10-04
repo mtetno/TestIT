@@ -135,7 +135,7 @@
 			          		<form>
 			          			<div class="row">
 			          				<div class="col-md-2 mb-4 imgupload">
-										<img src="img/user-icon.png" id="profileImage" style="">
+										<img src="img/user-icon.png" id="profileImage" style="background-color: lightgrey;">
 									</div>
 									<div class="col-md-10 mb-4 imgupload">
 										<input type="file" id="myImage" class="form-control border" accept="image/x-png,image/gif,image/jpeg" name="file" placeholder="upload profile photo" onchange="onProfileImageSelected()">
@@ -230,6 +230,7 @@
 
 			var uname = readCookie("TAuname");
 			$("#userMenu span").text(uname);
+			if(localStorage.getItem('profileImage')!='null')
 			$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 			});

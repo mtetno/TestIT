@@ -119,6 +119,15 @@
 	<script src="js/pages/execution.js"></script>
 	<script src="js/custom.js"></script>
 	<script>
+		
+		$(document).ready(function() {	
+		var uname = readCookie("TAuname");
+		$("#userMenu span").text(uname);
+		if(localStorage.getItem('profileImage')!='null')
+		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+		});
+
+
 		$(function(){
 			$(".mainCB input[type=checkbox]").click(function(e){
 				e.stopPropagation();

@@ -38,7 +38,7 @@ $.ajax({
                             $.each(testCase, function(key, test) {      
                                 if(selectedTestcasesIds.includes(test.testcasesId.toString())){
                                         var eachTest = `<li>
-                                        <label class="main subCB">`+test.testcaseName+` 
+                                        <label class="main subCB">`+test.testMethod+` 
                                          
                                     </label>
                                     </li>`;

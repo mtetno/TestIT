@@ -1,3 +1,6 @@
 target/
 /logs/test-it-apps.log
 /logs
+testit.pem
+/aws
+aws/

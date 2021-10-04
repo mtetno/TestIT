@@ -115,6 +115,7 @@ function fetchUserProfile(){
 			$('input[name=username]').val(response.userName);
 			// $('input[name=password]').val(response.password);			
 			// $('input[name=confirmpassword]').val(response.password);			
+			if(response.profileImage!=undefined)
 			document.getElementById('profileImage').setAttribute(
 				'src', response.profileImage
 			);

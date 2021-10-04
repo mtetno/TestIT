@@ -61,6 +61,13 @@ function fetchAllEnvironment(){
 			$('.envTable').dataTable().fnDestroy();
 		}
 			
+		$(".envTable .mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+			else
+			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+			});
+
 		}
 	});
 }

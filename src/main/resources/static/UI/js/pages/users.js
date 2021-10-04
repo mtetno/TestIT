@@ -363,7 +363,7 @@ function addUser(userId=0){
 				console.log(jqXHR);
 				console.log(textStatus);
 				console.log(errorThrown);
-				showErrorToast("Something went wrong");
+				showErrorToast(jqXHR.responseJSON.errorMessage);
 			}
 	});
 }
@@ -372,7 +372,8 @@ $(document).ready(function() {
 
 	var uname = readCookie("TAuname");
 	$("#userMenu span").text(uname);
-$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+	if(localStorage.getItem('profileImage')!='null')
+	$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 	fetchUsers();
 
@@ -522,7 +523,7 @@ function fetchUsers(){
 
 			/*---Jquery for save row---*/
 			//$(document).on("click", "#saveRec", function(){
-			$(document).on("click", "#saveRec", function(){
+			$("#saveRec").unbind().click( function(){
 				if(addUser()){
 					var dt = new Date();
 					var date = dt.getDate()+"-"+('0'+(dt.getMonth()+1)).slice(-2)+"-"+dt.getFullYear();
@@ -606,11 +607,25 @@ function fetchUsers(){
 				 }
 			});
 
-			$(document).on("click", "#yesbtn", function(){
+			$("#yesbtn").unbind().click(function(){
 				chkArr.forEach(function(index, val){
 						deleteuser(index);
 				});
 			});
+
+			$(".selectAll").click(function(){
+				var isCheckedAll =$(".selectAll").find("input[type=checkbox]").prop("checked");
+				chkArr=[];
+				
+				if(!isCheckedAll){
+					$('.table input[type=checkbox]').map((i,val)=>{
+						isAllChecked=true;
+						if($(val).attr("data-value")!=undefined){chkArr.push($(val).attr("data-value"))}
+				});
+				}
+		
+				$('.table input[type=checkbox]').prop("checked", !(isCheckedAll));
+			})
             
             
 		}

@@ -469,6 +469,7 @@
 
 		var uname = readCookie("TAuname");
 		$("#userMenu span").text(uname);
+		if(localStorage.getItem('profileImage')!='null')
 		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 		fetchTestSteps();

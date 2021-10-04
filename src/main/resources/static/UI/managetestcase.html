@@ -425,6 +425,13 @@
 <script>
 
 $(document).ready(function() {	
+
+  
+  var uname = readCookie("TAuname");
+  $("#userMenu span").text(uname);
+  if(localStorage.getItem('profileImage')!='null')
+  $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+
   $(".updatetestmanageBtn").click(function(){
 	var testcaseId = selectedTestCase.testcase_id;
 	var companies = $("#company_name").val()

@@ -12,6 +12,7 @@ function deleteTestBucket(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
+			showSuccessToast("Bucket Deleted Successfully");
 			fetchAllTestBucket();
 		}
 	});
@@ -158,6 +159,7 @@ function postTestBucketFetch(){
 					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 				},
 				success: function () {
+					showSuccessToast("Bucket Clone Successfully")
 					fetchAllTestBucket();
 				}
 			});

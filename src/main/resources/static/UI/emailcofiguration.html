@@ -407,6 +407,16 @@
 <script src="js/pages/emailconfiguration.js"></script>
 <script src="js/pages/common.js"></script>
 <script>
+
+  $(document).ready(function() {	
+
+  var uname = readCookie("TAuname");
+  $("#userMenu span").text(uname);
+  if(localStorage.getItem('profileImage')!='null')
+  $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+  });
+
+
   $(function(){
 
     fetchAllCompanies();

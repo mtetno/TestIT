@@ -264,8 +264,8 @@ $(document).ready(function() {
 						}
 
 							tcData +='<li>'
-							tcData += '<label class="main subCB">'+value.testcaseName;
-							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testcaseName+'" value="'+value.className+'" type="checkbox">';
+							tcData += '<label class="main subCB">'+value.testMethod;
+							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testMethod+'" value="'+value.className+'" type="checkbox">';
 							tcData += '<span class="geekmark"></span> ';
 							tcData += '</label>';
 							tcData += '<i class="fa fa-caret-down showbtndiv caret" aria-hidden="true"></i>';

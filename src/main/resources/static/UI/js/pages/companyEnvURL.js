@@ -456,6 +456,15 @@ function displayAllEnvironmentUrls() {
 				$('.Urltable').dataTable().fnClearTable();
 				$('.Urltable').dataTable().fnDestroy();
 			}
+
+			$(".Urltable  .mainCB input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+				else
+				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+				});
+		  
+				
 				 
 		}
 	});
@@ -463,7 +472,7 @@ function displayAllEnvironmentUrls() {
 
  
 function deleteSelectedEnvironmentUrl(environmentURLId) {
-	$.ajax({
+	return $.ajax({
 		type: 'DELETE',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -524,6 +533,13 @@ function displayAllAccessRoles() {
 			$('.Roletable').dataTable().fnDestroy();
 		}
 
+		$(".Roletable  .mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+			else
+			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+			});
+			
 		}
 	});
 }

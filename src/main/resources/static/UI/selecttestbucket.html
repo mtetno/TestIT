@@ -56,7 +56,7 @@
 			<!--User Menu Start-->
 			<div id="userMenu" class="dropdown">
 				<!-- <a href="#"><i class="fa fa-user-o"></i> User</a> -->
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/user-icon.png"> <span>User</span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img   style="width: 25px; height: 25px; border-radius: 50%;"   src="img/account-circle-24-px.png"> <span>User</span></a>
 				<div class="dropdown-menu">
 			      <a class="dropdown-item" href="profileUser.html">Profile</a>
 			      <a class="dropdown-item" href="login.html">Logout</a>
@@ -344,6 +344,15 @@
 	<script src="js/pages/constants.js"></script>
 	<script src="js/pages/common.js"></script>
 	<script>
+
+		$(document).ready(function() {	
+		var uname = readCookie("TAuname");
+		$("#userMenu span").text(uname);
+		if(localStorage.getItem('profileImage')!='null')
+		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+		});
+
+
 		$(function(){
 			removeItem("cloneBucketSourceId");
 			
@@ -415,6 +424,7 @@
 							payload['testcasesId'] = JSON.stringify(data.map((i)=>i.testcase_id));
 							// createExecution(payload);
 							showSuccessToast("Test bucket scheduled Successfully.")
+							setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 3000);
 						}
 					});
 					});	

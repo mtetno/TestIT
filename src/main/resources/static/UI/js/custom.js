@@ -193,6 +193,7 @@ $(".mainbtn input[type=checkbox]").click(function(){
 	}
 
 	function showSuccessToast(text){
+		$.toast().reset('all');
 		$.toast({
 			heading: 'Success',
 			text: text,
@@ -203,6 +204,7 @@ $(".mainbtn input[type=checkbox]").click(function(){
 	}
 
 	function showErrorToast(text){
+		$.toast().reset('all');
 		$.toast({
 			heading: 'Error',
 			position: 'top-center',
@@ -213,6 +215,7 @@ $(".mainbtn input[type=checkbox]").click(function(){
 	}
 
 	function showWarningToast(text){
+		$.toast().reset('all');
 		$.toast({
 			heading: 'Warning',
 			position: 'top-center',
