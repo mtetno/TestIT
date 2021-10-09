@@ -108,10 +108,10 @@ function displayTestcases(){
 			data.map((value) => {
 				console.log("value"+value);
 				var companies = _.join(_.map(_.filter(testcasesAssignments, { 'testcase_id': value.testcase_id}),'company_name'), [separator=',']);
+				//// <td>`+value.environment_name+`</td>
 				var savestr = `<tr>
-				<td class="rowTestCase" data-value=`+ JSON.stringify(value) +` >`+value.testcase_name+`</td>
+				<td class="rowTestCase" data-value='`+ JSON.stringify(value) +`'>`+value.test_method+`</td>
 				<td>`+value.application_name+`</td>
-				<td>`+value.environment_name+`</td>
 				<td>`+value.status +`</td>
 				<td>`+ companies +`</td>
 			  </tr>`
@@ -182,10 +182,10 @@ function postDisplayTestCases(){
 		companiesIds = companiesIds.split(',');
 		console.log("companiesIds")
 		console.log(companiesIds)
-		$("#selectedTestCaseName").val(dataValue.testcase_name);
-		$("#selectedApplication").val(dataValue.application_name);
+		$("#selectedTestCaseName").val(dataValue.test_method);
+		$("#application").val(dataValue.application_id);
 		$("#selectedEnvironment").val(dataValue.environment_name);
-		$("#selectedAutomationStatus").val(dataValue.status);
+		$("#automation_status").val(dataValue.auto_status_id);
 		$("#company_name").val(companiesIds);
 		$("#updateTestAssignmentsModal").modal();
 	});
@@ -202,13 +202,13 @@ function downloadTestcases(companyId,applicationId){
 			console.log(data);
 			var sheetData = [];
 			
-			sheetData.push(['testcase_id','testcase_name','description','test_method','company_name','application_name','class_name']);
+			sheetData.push(['testcase_id','test_method','company_name','application_name','class_name']);
 			
+			//item.testcase_name,
+			//	item.descrpition,
 			data.map((item)=>{
 			sheetData.push([
 				item.testcase_id,
-				item.testcase_name,
-				item.descrpition,
 				item.test_method,
 				item.company_name,
 				item.application_name,

@@ -74,12 +74,19 @@ NA
 ===============================================
 
 
-While adding Subsription, no validation for email id. Getting server side error as well
 
-18. Variables tab: Contains Company, Key, Value
-19. Email configuration is getting added without company, add validation for company selection
-20. In Template Configuration, select company and click on add we will get server error. Seems validation missing which cause issue
+
+Variables tab: Contains Company, Key, Value
+
+19. Email configuration is getting added without company, add validation for company selection - done
+
+
+20. In Template Configuration, select company and click on add we will get server error. Seems validation missing which cause issue - done
+
+
 21. On Edit Test Assignment, Automation should be drop down like we have in Test Case Management page with same values
+
+
 22. Add Checkbox to all test cases, first column in grid. If user select more than 1 test case then Show Company Dropdown and Copy Button.
 	User has to select Company and if user click on Copy button, assign selected cases to selected company. This is for bulk assignment. 
 	We should not assign test case to same company again.

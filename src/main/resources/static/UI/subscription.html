@@ -39,7 +39,7 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item"><a class="nav-link" href="dashboard1.html"><img src="img/insert-chart-outlined-24-px.png"> Monitor App</a></li>
-				<li class="nav-item"><a class="nav-link" href="subscription.html"><img src="img/stars-24-px.png"> Subscriptions</a></li>
+				<li class="nav-item active"><a class="nav-link" href="subscription.html"><img src="img/stars-24-px.png"> Subscriptions</a></li>
 				<li class="nav-item"><a class="nav-link" href="emailcofiguration.html"><img src="img/email-24-px.png"> Email Configuration</a></li>
 				<li class="nav-item"><a class="nav-link" href="managetestcase.html"><img src="img/assignment-24-px.png"> Manage Test Cases</a></li>
       </ul>
@@ -977,7 +977,16 @@
 					showWarningToast("End date should be after start date");
 					return false;
 				}
-        $("#myModal1").modal('toggle');
+				
+				if(/^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/.test($('input[name=email]:visible').val())) {
+				  console.log('passed');
+				}
+				else {
+        			showWarningToast("Please enter valid email");
+				  return false;
+				}
+				
+        		$("#myModal1").modal('toggle');
         
 				var dataObj = {};
 				dataObj["companyName"] = name;
@@ -1002,7 +1011,7 @@
 				  $("#remind_before").val("");
 				  $("#threads").val("");
      
-				showSuccessToast("The Subscription Added Successfully.");
+				
       });
 
       function parseDate(date){
@@ -1223,15 +1232,7 @@
       $(this).closest(".rowhide").slideUp();
     });
 
-
-    $(".mainCB input[type=checkbox]").click(function(){
-      if($(this).prop("checked")==true)
-        { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
-      else
-        { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
-    });
-
-     
+ 
 
     $(document).on("click", "#myModal #yesbtn", function(){
       $('#subscriptionsList tbody .subCB input[type=checkbox]').map((i,val)=>{

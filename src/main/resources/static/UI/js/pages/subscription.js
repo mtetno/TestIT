@@ -24,9 +24,15 @@ function saveSubscription(dataObj) {
 			$("#testEnvSelect").val(0);
 			$("#remind_before").val(0);
 			$("#threads").val(0);
-			
+			showSuccessToast("The Subscription Added Successfully.");
 			$("#myModal1").modal("hide")
 			fetchAllSubscriptions();
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(jqXHR);
+			console.log(textStatus);
+			console.log(errorThrown);
+			showWarningToast("Username already exists");
 		}
 	});
 }
@@ -105,7 +111,7 @@ function editApplicationPaths(dataObj) {
  
 
 function deleteSubscription(id) {
-	showLoader();
+	// showLoader();
 	$.ajax({
 		type: 'DELETE',
 		contentType: 'application/json',
@@ -116,7 +122,7 @@ function deleteSubscription(id) {
 		},
 		success: function () {
 			showSuccessToast("Subscription Deleted Successfully.");
-			window.location.href = window.location.href;
+			fetchAllSubscriptions();
 		}
 	});
 }
@@ -166,7 +172,7 @@ function fetchAllSubscriptions() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			hideLoader();
+			//hideLoader();
 			$("#subscriptionTable tbody").html("");
 
 			var str = "";
@@ -209,6 +215,14 @@ function fetchAllSubscriptions() {
 		}
 
 			updateRowListener();
+
+			$(".subscriptionTable .mainCB input[type=checkbox]").click(function(){
+				if($(this).prop("checked")==true)
+				  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
+				else
+				  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
+			  });
+		  
 		}
 	});
 }
@@ -259,6 +273,16 @@ function fetchAllApplications() {
 			$('.Apptable').dataTable().fnClearTable();
     		$('.Apptable').dataTable().fnDestroy();
 		}
+
+		
+		$(".Apptable .mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
+			else
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
+		  });
+	  
+		
 		}
 	});
 }
@@ -324,6 +348,14 @@ function fetchAllApplicationPaths() {
 				$("#batch_file_home_edit").val(dataValue.batch_file_home);
 				});
 
+				$(".apppathtableParent .mainCB input[type=checkbox]").click(function(){
+					if($(this).prop("checked")==true)
+					  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
+					else
+					  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
+				  });
+				
+				  
 		}
 	});
 }

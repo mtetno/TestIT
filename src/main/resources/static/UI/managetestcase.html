@@ -28,7 +28,7 @@
 <script src="js/custom.js"></script>
 <script src="js/pages/common.js"></script>
 <script src="js/pages/managetestcase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
   <style>
     .bucketcheck label {
@@ -55,7 +55,7 @@
         <li class="nav-item"><a class="nav-link" href="dashboard1.html"><img src="img/insert-chart-outlined-24-px.png"> Monitor App</a></li>
 		<li class="nav-item"><a class="nav-link" href="subscription.html"><img src="img/stars-24-px.png"> Subscriptions</a></li>
 		<li class="nav-item"><a class="nav-link" href="emailcofiguration.html"><img src="img/email-24-px.png"> Email Configuration</a></li>
-		<li class="nav-item"><a class="nav-link" href="managetestcase.html"><img src="img/assignment-24-px.png"> Manage Test Cases</a></li>
+		<li class="nav-item active"><a class="nav-link" href="managetestcase.html"><img src="img/assignment-24-px.png"> Manage Test Cases</a></li>
       </ul>
 
       <!--User Menu Start-->
@@ -184,7 +184,7 @@
                   <tr>
                     <th scope="col" class="Username">TEST CASE <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
                     <th scope="col">APPLICATION  </th>
-                    <th scope="col">ENVIRONMENT</th>
+                    <!-- <th scope="col">ENVIRONMENT</th> -->
                     <th scope="col">AUTOMATION STATUS</th>
                     <th scope="col">COMPANIES</th>
                   </tr>
@@ -376,27 +376,34 @@
               <form>
           <div class="row">
             <div class="col-md-12 mb-2">
-              <label>Test Case Name: </label>
+              <label>Test Method: </label>
               <input type="text" class="form-control border" name="selectedTestCaseName" id="selectedTestCaseName">
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12 mb-2">
-              <label>Application: </label>
-              <input type="text" class="form-control border" name="selectedApplication" id="selectedApplication">
-            </div>
+						  <div class="col-md-12 mb-2">
+							  <label class="required" >Application:</label>
+							  <select class="form-control border" name="application" id="application" required disabled>
+								  <option value="Select Application">Select Application</option>
+								  <option value="ITSM">ITSM</option>
+							  </select>
+						  </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12 mb-2">
               <label>Environment: </label>
               <input type="text" class="form-control border" name="selectedEnvironment" id="selectedEnvironment">
             </div>
-          </div>
+          </div> -->
           <div class="row">
-            <div class="col-md-6 mb-2">
-              <label>Automation Status: </label>
-              <input type="text" class="form-control border" name="selectedAutomationStatus" id="selectedAutomationStatus">
-            </div>
+                <div class="col-md-6 mb-2">
+								  <label>Automation Status</label>
+								  <select class="form-control border" name="automation_status" id="automation_status" disabled>
+									  <option value="">Select Automation Status</option>
+									  <option value="Not yet automated">Not yet automated</option>
+									  <option value="In Progress">In Progress</option>
+								  </select>
+							  </div>
           </div>
           
           <div class="row">
@@ -426,6 +433,17 @@
 
 $(document).ready(function() {	
 
+ 
+  var allAjax = [];
+  allAjax.push(fetchAutomationStatus());
+	allAjax.push(fetchAllApplications());
+
+  Promise.all(allAjax).then(() => {
+    fetchTestcasesAssignments();
+  }).catch(() => {
+    console.log("Error in fetching data");
+  })
+
   
   var uname = readCookie("TAuname");
   $("#userMenu span").text(uname);
@@ -440,7 +458,7 @@ $(document).ready(function() {
 	dataObj['testCaseId'] = testcaseId ;
 	dataObj['companyId'] = companies ;
 
-		$.ajax({
+  $.ajax({
 		type: 'POST',
 		data: JSON.stringify(dataObj),
 		contentType: 'application/json',
@@ -452,7 +470,9 @@ $(document).ready(function() {
 		success: function () {
 			fetchTestcasesAssignments();
 		}
-	});
+	  });
+
+		
   });
 
 
@@ -493,7 +513,7 @@ $(document).ready(function() {
         var sheetData = [];
         for(var i=1;i<data.length;i++){
           var item = data[i].split(",");
-          if(item.length == 7)
+          if(item.length == 5)
           sheetData.push(item);
         }
         console.log(sheetData);
@@ -503,7 +523,7 @@ $(document).ready(function() {
 
 
   $(function(){       
-       fetchTestcasesAssignments();
+      
     // fetchAllCompanies();
     // fetchAllTestMethod();
 

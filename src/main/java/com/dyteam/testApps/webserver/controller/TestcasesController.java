@@ -211,19 +211,22 @@ public class TestcasesController {
     public boolean uploadTestcases(@PathVariable(value = "companyId") Long companyId,@PathVariable(value = "applicationId") Long applicationId,
         @RequestBody UploadTestcasesRequest uploadTestcasesRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
 
-        
+        logger.info("Inside uploadTestcases");
         for (ArrayList<String> item : uploadTestcasesRequest.getData() ) {
                 Long testcase_id = Long.parseLong(item.get(0).trim().equals("") ? "0" : item.get(0).trim());
-                String testcase_name = item.get(1) != null ? item.get(1) : "" ;
-                String description = item.get(2) != null ? item.get(2) : "";
-                String test_method = item.get(3) != null ? item.get(3) : "";
-                String company_name= item.get(4)!= null ? item.get(4) : "";
-                String application_name = item.get(5)!= null ? item.get(5) : "";
-                String class_name = item.get(6)!= null ? item.get(6) : "";
+                // String testcase_name = item.get(1) != null ? item.get(1) : "" ;
+                // String description = item.get(2) != null ? item.get(2) : "";
+                String test_method = item.get(1) != null ? item.get(1) : "";
+                String company_name= item.get(2)!= null ? item.get(2) : "";
+                String application_name = item.get(3)!= null ? item.get(3) : "";
+                String class_name = item.get(4)!= null ? item.get(4) : "";
+                    logger.info(testcase_id + " , " + test_method   + " , " + company_name  + " , " + application_name + " , " + class_name);
                 if(testcase_id > 0){
-                    testcasesRepo.updateBulkTestcases(testcase_id, testcase_name, description, test_method, class_name,companyId,applicationId);
+                    logger.info("Inside updateBulkTestcases--------------------");
+                    testcasesRepo.updateBulkTestcases(testcase_id,  test_method, class_name,companyId,applicationId);
                 }else{
-                    testcasesRepo.insertBulkTestcases(testcase_name, description, test_method, class_name, companyId, applicationId);
+                    logger.info("Inside insertBulkTestcases-----------------------");
+                    testcasesRepo.insertBulkTestcases( test_method, class_name, companyId, applicationId);
                 }
     }
     return true;

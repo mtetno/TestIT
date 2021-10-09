@@ -85,7 +85,14 @@ function fetchAllEmailConfiguration() {
 			$('.emailconfigTable').dataTable().fnClearTable();
 			$('.emailconfigTable').dataTable().fnDestroy();
 		}
-			
+		
+		$(".emailconfigTable  .mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
+			else
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
+		});
+
 		}
 	});
 }
@@ -174,6 +181,14 @@ function fetchAllEmailTemplates() {
 			$('.Tempconfigtable').dataTable().fnClearTable();
 			$('.Tempconfigtable').dataTable().fnDestroy();
 		}
+
+		$(".Tempconfigtable   .mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true); }
+			else
+			  { $(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);  }
+		});
+
 		}
 	});
 }

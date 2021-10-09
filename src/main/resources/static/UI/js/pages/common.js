@@ -180,7 +180,7 @@ function fetchAllApplicationsByCompanyId(id) {
 
 
 function fetchAllApplications() {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -326,7 +326,7 @@ function fetchTestType() {
 }
 
 function fetchAutomationStatus() {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
