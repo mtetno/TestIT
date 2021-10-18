@@ -139,7 +139,7 @@ function updateUser(userId=0){
 	if(userId==0){
 		$firstname = $('.addusermodel input[name=firstname]').val();
 		$lastname = $('.addusermodel input[name=lastname]').val();
-		$user_type = $('#f4').val();
+		$user_type = '3';// $('#f4').val();
 		$loginid = $('.addusermodel input[name=username]').val();
 		$useremail = $('.addusermodel input[name=email]').val();
 		$password = $('.addusermodel input[name=password]').val();
@@ -159,7 +159,7 @@ function updateUser(userId=0){
 	else {
 		$firstname = $('.updateusermodel input[name=firstname1]').val();
 		$lastname = $('.updateusermodel input[name=lastname1]').val();
-		$user_type = $('.updateusermodel input[name=role1]').val();
+		$user_type = '3';//$('.updateusermodel input[name=role1]').val();
 		$loginid = $('.updateusermodel input[name=username1]').val();
 		$useremail = $('.updateusermodel input[name=email1]').val();
 		$password = $('.updateusermodel input[name=password1]').val();
@@ -207,7 +207,7 @@ function updateUser(userId=0){
 	dataObj["lName"] = $lastname;
 	dataObj["userName"] = $loginid;
 	dataObj["password"] = $password;
-	dataObj["userType"] = $user_type;
+	dataObj["userType"] = '3';//$user_type;
 	if(userId!=0){
 		dataObj["userId"] = userId;
 	}
@@ -267,7 +267,7 @@ function addUser(userId=0){
 	if(userId==0){
 		$firstname = $('.addusermodel input[name=firstname]').val();
 		$lastname = $('.addusermodel input[name=lastname]').val();
-		$user_type = $('#f4').val();
+		$user_type = '3';//$('#f4').val();
 		$loginid = $('.addusermodel input[name=username]').val();
 		$useremail = $('.addusermodel input[name=email]').val();
 		$password = $('.addusermodel input[name=password]').val();
@@ -279,7 +279,7 @@ function addUser(userId=0){
 	else {
 		$firstname = $('.updateusermodel input[name=firstname1]').val();
 		$lastname = $('.updateusermodel input[name=lastname1]').val();
-		$user_type = $('.updateusermodel input[name=role1]').val();
+		$user_type = '3'; // $('.updateusermodel input[name=role1]').val();
 		$loginid = $('.updateusermodel input[name=username1]').val();
 		$useremail = $('.updateusermodel input[name=email1]').val();
 		$password = $('.updateusermodel input[name=password1]').val();
@@ -320,7 +320,7 @@ function addUser(userId=0){
 	dataObj["lName"] = $lastname;
 	dataObj["userName"] = $loginid;
 	dataObj["password"] = $password;
-	dataObj["userType"] = $user_type == undefined ? "0" : $user_type;
+	dataObj["userType"] = '3'; // $user_type == undefined ? "0" : $user_type;
 	if(userId!=0){
 		dataObj["userId"] = userId;
 	}

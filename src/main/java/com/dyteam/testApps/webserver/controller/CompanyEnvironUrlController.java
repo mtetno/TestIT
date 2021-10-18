@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,12 +67,24 @@ public class CompanyEnvironUrlController {
     @PostMapping("/save")
     public CompanyEnvironUrl save(@RequestBody CompanyEnvironUrl companyEnvironUrl,
             @AuthenticationPrincipal final LoginUser loggedInUser) {
+        CompanyEnvironUrl data = null;
         if (null == companyEnvironUrl.getCompanyEnvironUrlId()) {
             companyEnvironUrl.setCompanyId(loggedInUser.getCompanyId());
             companyEnvironUrl.setUserId(loggedInUser.getUserId());
+            logger.info("save companyEnvironUrl = " + companyEnvironUrl);
+            data =  companyEnvironUrlRepo.save(companyEnvironUrl);
+        }else{
+            Optional<CompanyEnvironUrl> found = companyEnvironUrlRepo.findById(companyEnvironUrl.getCompanyEnvironUrlId());
+
+            if(found.isPresent()){
+                CompanyEnvironUrl foundEntry = found.get();
+                foundEntry.setEnvUrl(companyEnvironUrl.getEnvUrl());
+                foundEntry.setApplication(companyEnvironUrl.getApplication());
+                foundEntry.setEnvironment(companyEnvironUrl.getEnvironment());
+                data =  companyEnvironUrlRepo.save(foundEntry);
+            }
         }
-        logger.info("save companyEnvironUrl = " + companyEnvironUrl);
-        return companyEnvironUrlRepo.save(companyEnvironUrl);
+       return data;
     }
 
     /**
@@ -132,6 +145,7 @@ public class CompanyEnvironUrlController {
             companyEnvironUrl.setCompanyEnvironUrlId(ceu.getCompanyEnvironUrlId());
             companyEnvironUrl.setEnvironment(new Environment(ceu.getEnvironmentId(), ceu.getEnvironmentName()));
             companyEnvironUrl.setEnvUrl(ceu.getEnvUrl());
+            companyEnvironUrl.setCompanyId(ceu.getApplicationId());
             map.get(ceu.getApplicationId()).add(companyEnvironUrl);
         });
         return new AppCompanyEnvWrapper(map);

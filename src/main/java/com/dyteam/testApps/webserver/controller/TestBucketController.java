@@ -42,7 +42,7 @@ public class TestBucketController {
         ArrayList<RunTestCases> bucketTestCaseId = testBucketParam.getRunTestCases();
         logger.info("Inside bucketTestCaseId size" + bucketTestCaseId.size());
         TestBucket testBucket = new TestBucket();
-        testBucket.setCompanyId(loggedInUser.getUserId());
+        testBucket.setCompanyId(loggedInUser.getCompanyId());
         testBucket.setEnvironmentId(testBucketParam.getEnvironmentId());
         testBucket.setUserRoleId(testBucketParam.getUserRoleId());
         testBucket.setName(testBucketParam.getName());
@@ -70,6 +70,13 @@ public class TestBucketController {
     public Iterable<Map<String, Object>> getAllTestBuckets() {
         logger.info("Inside getAllTestBuckets");
         Iterable<Map<String, Object>> testtypes = testBucketRepository.fetchAll();
+        return testtypes;
+    }
+
+    @GetMapping(value = "/allByCompany")
+    public Iterable<Map<String, Object>> getAllTestBucketsByCompanyId(  @AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("Inside getAllTestBucketsByCompanyId");
+        Iterable<Map<String, Object>> testtypes = testBucketRepository.findAllByCompanyIdId(loggedInUser.getCompanyId());
         return testtypes;
     }
 

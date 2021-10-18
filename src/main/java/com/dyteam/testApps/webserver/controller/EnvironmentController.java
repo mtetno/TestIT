@@ -77,9 +77,9 @@ public class EnvironmentController {
         environment.setStatus(0);
         environment.setAddedBy(loggedInUser.getUserId());
         environment.setCompanyId(loggedInUser.getCompanyId());
-        List<Environment> findByEnvironmentName = environmentRepo.findAllByEnvironmentName(loggedInUser.getUserId(),
-                environment.getEnvironmentName());
-        boolean isNew = findByEnvironmentName.size() > 0 ? false : true;
+        List<Environment> findByEnvironmentId = environmentRepo.findAllByEnvironmentId(loggedInUser.getUserId(),
+                environment.getEnvironmentId());
+        boolean isNew = findByEnvironmentId.size() > 0 ? false : true;
         if (isNew) {
             savedEnvironment = environmentRepo.save(environment);
             String companyName = subscriptionsRepository.getName(loggedInUser.getCompanyId());
@@ -98,9 +98,9 @@ public class EnvironmentController {
             }
             savedEnvironment.setIsNew(true);
         } else {
-            savedEnvironment = findByEnvironmentName.get(0);
-            savedEnvironment.setIsNew(false);
-            environmentRepo.updateByEnvironmentName(loggedInUser.getUserId(), environment.getEnvironmentName());
+            savedEnvironment = findByEnvironmentId.get(0);
+            savedEnvironment.setIsNew(true);
+            environmentRepo.updateByEnvironmentName(loggedInUser.getUserId(), environment.getEnvironmentName() , environment.getEnvironmentId());
         }
         return savedEnvironment;
     }

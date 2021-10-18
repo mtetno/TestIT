@@ -28,7 +28,7 @@ $.ajax({
 
                     if(selectedApplicationIds.includes(appId.toString())){
 
-                            var testCase =  _.filter(data, (item) => item.applicationId == appId);
+                            var testCase =  _.filter(data, (item) => item.application_id == appId);
                             console.log("appId",appId);
                             console.log("testCase",testCase);
                             console.log("data",data);
@@ -36,9 +36,9 @@ $.ajax({
 
                             var allTests = '';
                             $.each(testCase, function(key, test) {      
-                                if(selectedTestcasesIds.includes(test.testcasesId.toString())){
+                                if(selectedTestcasesIds.includes(test.testcase_id.toString())){
                                         var eachTest = `<li>
-                                        <label class="main subCB">`+test.testMethod+` 
+                                        <label class="main subCB">`+test.test_method+` 
                                          
                                     </label>
                                     </li>`;

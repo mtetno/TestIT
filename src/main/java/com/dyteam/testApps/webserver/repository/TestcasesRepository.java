@@ -26,8 +26,10 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 	@Query(value = "SELECT a.testcase_id,a.comment,a.objective,a.class_name,a.test_method,a.application_id,a.testtype_id,a.auto_status_id,a.auto_progress_id,b.application_name,d.status from testcases a join application b on b.application_id = a.application_id left join automation_status d on d.id = a.auto_status_id where a.is_delete = 0", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 
-	@Query("select e from Testcases e where e.companyId = :companyId AND e.isDelete = 0")
-	List<Testcases> findAllByCompanyId(Long companyId);
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT a.testcase_id,a.comment,a.objective,a.class_name,a.test_method,a.application_id,a.testtype_id,a.auto_status_id,a.auto_progress_id,b.application_name,d.status from testcases a join application b on b.application_id = a.application_id left join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId", nativeQuery = true)
+	public List<Map<String, Object>> findAllByCompanyId(Long companyId);
 
 	@Query("select e from Testcases e where e.testMethod = :name")
 	List<Testcases> findByTestMethod(String name);
@@ -74,4 +76,9 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 	@Modifying
 	@Transactional
 	Long deleteByCompanyId(Long companyId);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update testcases set application_id = :applicationId, auto_status_id = :autostatusId where testcase_id = :testCaseId ", nativeQuery = true)
+	public void updateTestcase(Long applicationId, Long autostatusId, Long testCaseId);
 }

@@ -383,7 +383,7 @@
           <div class="row">
 						  <div class="col-md-12 mb-2">
 							  <label class="required" >Application:</label>
-							  <select class="form-control border" name="application" id="application" required disabled>
+							  <select class="form-control border" name="application" id="application" required>
 								  <option value="Select Application">Select Application</option>
 								  <option value="ITSM">ITSM</option>
 							  </select>
@@ -398,7 +398,7 @@
           <div class="row">
                 <div class="col-md-6 mb-2">
 								  <label>Automation Status</label>
-								  <select class="form-control border" name="automation_status" id="automation_status" disabled>
+								  <select class="form-control border" name="automation_status" id="automation_status">
 									  <option value="">Select Automation Status</option>
 									  <option value="Not yet automated">Not yet automated</option>
 									  <option value="In Progress">In Progress</option>
@@ -453,10 +453,14 @@ $(document).ready(function() {
   $(".updatetestmanageBtn").click(function(){
 	var testcaseId = selectedTestCase.testcase_id;
 	var companies = $("#company_name").val()
+	var application = $("#application").val()
+	var automation_status = $("#automation_status").val()
 
 	var dataObj = {};
 	dataObj['testCaseId'] = testcaseId ;
 	dataObj['companyId'] = companies ;
+	dataObj['applicationId'] = application ;
+	dataObj['automationStatusId'] = automation_status ;
 
   $.ajax({
 		type: 'POST',

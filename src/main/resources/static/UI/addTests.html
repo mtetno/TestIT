@@ -467,12 +467,10 @@
 
 
 		$(function(){
-
-			
 			fetchAllEnvironments();
 			fetchAutomationProgress();
 			fetchAutomationStatus();
-			fetchAllApplications();
+			fetchAllApplicationsByLogedinCompanyId();
 			fetchTestType();
 			displayTestcases();
 
@@ -552,35 +550,37 @@
 
 			function showStepsGrid(){
 				var rows = "";
-				testCaseSteps.map((value,index) => {
-						var savestr = `<tr>
-						<td scope='col' class='bucketcheck'>
-							<label class='main subCB'>
-							<input type='checkbox' data-value=` + index + `> 
-							<span class='geekmark'></span> 
-						</label>
-						</td>
-						<td>`+value.step+`</td>
-						<td>`+value.expected +`</td>
-					</tr>`
-					rows = rows + savestr;
-					});			 
+				if(testCaseSteps.length > 0){
+					testCaseSteps.map((value,index) => {
+							var savestr = `<tr>
+							<td scope='col' class='bucketcheck'>
+								<label class='main subCB'>
+								<input type='checkbox' data-value=` + index + `> 
+								<span class='geekmark'></span> 
+							</label>
+							</td>
+							<td>`+value.step+`</td>
+							<td>`+value.expected +`</td>
+						</tr>`
+						rows = rows + savestr;
+						});			 
 
-					if(rows != ""){
-					$(".addTestParent").html($(".addTest").get(0).outerHTML)
-					$(".addTestParent .paging_full_numbers").remove();
+						if(rows != ""){
+						$(".addTestParent").html($(".addTest").get(0).outerHTML)
+						$(".addTestParent .paging_full_numbers").remove();
 
-					$(".addTest tbody").html(rows);
-					$('.addTest').DataTable({
-						"lengthChange": false,
-						"searching": false,   // Search Box will Be Disabled
-						"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
-						"info": false,
-						"pagingType": "full_numbers"
-					});
-				}else{
-					$('.addTest').dataTable().fnClearTable();
-					$('.addTest').dataTable().fnDestroy();
+						$(".addTest tbody").html(rows);
+						$('.addTest').DataTable({
+							"lengthChange": false,
+							"searching": false,   // Search Box will Be Disabled
+							"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+							"info": false,
+							"pagingType": "full_numbers"
+						});
+					}else{
+						$('.addTest').dataTable().fnClearTable();
+						$('.addTest').dataTable().fnDestroy();
+					}
 				}
 
 

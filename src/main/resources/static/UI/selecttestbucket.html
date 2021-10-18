@@ -222,7 +222,7 @@
 		          		<div class="row">
 				          	<div class="col-md-5">
 				          		<label class="col-md-12">Execution Name</label>
-				          		<label class="col-md-12">Testing Environment</label>
+				          		<label class="col-md-12">Browser</label>
 				          		<label class="col-md-12">Schedule Tests</label>
 				          	</div>
 				          	<div class="col-md-7">
@@ -305,7 +305,7 @@
 			
 			<!-- Modal footer -->
 			<div class="modal-footer btnfooter">
-				<button type="button" class="btn btn-dark" data-dismiss="modal">NO</button>
+				<button type="button" class="btn btn-dark" data-toggle="modal" data-dismiss="modal">NO</button>
 				<!-- Show view text bucket button on this yes button click -->
 				<button type="button" id="executionYesbtn" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" >YES</button>
 			</div>
@@ -367,6 +367,12 @@
 			});
 
 			$("#submitButton").click(function(){
+
+				if($(".bucketListTableParent table tbody .subCB input:checked").length == 0 ){
+					showWarningToast("Please select testbuckets");
+					return false;
+				}
+
 				var summaryStr= '';
 				for(i=0;i<availableBucket.length;i++){
 					if(selectedBucket.includes(availableBucket[i].id.toString())){
@@ -386,11 +392,7 @@
 
 
 			$('#executionYesbtn').click(function(){
-				if($("#executeSummary table tbody .subCB input:checked").length == 0 ){
-					showWarningToast("Please select testbuckets");
-					return false;
-				}
-
+				$("#myModal2").hide();
 				$("#executeSummary table tbody .subCB input:checked").each(function(i,n){
 					var bucketId = $(n).attr('data-value');
 
@@ -432,7 +434,11 @@
 
 
 			$("#schedulebtn").click(function(){
-				$("#myModal2").hide();
+				if($("#executeSummary table tbody .subCB input:checked").length == 0 ){
+					showWarningToast("Please select testbuckets");
+					return false;
+				}
+
 				$("#confirmationModel").modal("show");
 			})
 

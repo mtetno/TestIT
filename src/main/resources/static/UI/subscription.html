@@ -167,10 +167,10 @@
                       <input type="email" id="email" class="form-control border" name="email" placeholder="Enter Email" required>
                     </div>
                     <div class="col-md-6 mb-2 envlist">
-                      <label class="required" >Testing Environment</label>
+                      <label class="required" >Browser</label>
                       
                     <select class="form-control border" name="testing_environment" id="testing_environment" required multiple="multiple">
-                      <!-- <option value="Select Testing Environment">Select Testing Environment</option> -->
+                      <!-- <option value="Select Browser">Select Browser</option> -->
                       
                     </select>
                     </div>
@@ -189,7 +189,7 @@
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="required" >Remind Before</label>
+                      <label class="required" >Remind Before(In days)</label>
                       <select class="form-control border" name="remind_before" id="remind_before" required>
                          
                       </select>
@@ -265,9 +265,9 @@
                       <input type="email" class="form-control border" name="email1" id="email1" required>
                     </div>
                     <div class="col-md-6 mb-2 envlist">
-                      <label class="required" >Testing Environment</label>
+                      <label class="required" >Browser</label>
                       <select class="form-control border" name="testing_environment1" id="testing_environment1" required multiple="multiple">
-                        <!-- <option value="Select Testing Environment">Select Testing Environment</option> -->
+                        <!-- <option value="Select Browser">Select Browser</option> -->
                         
                       </select>
 
@@ -286,7 +286,7 @@
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="required" >Remind Before</label>
+                      <label class="required" >Remind Before(In days)</label>
                       <select class="form-control border" name="remind_before1" id="remind_before1">
                         
                       </select>
@@ -736,7 +736,14 @@
     fetchAllApplications();
     fetchAllApplicationPaths();
 
-    /*---Jquery for Testing Environment select---*/
+    $(document).ready(function() {	
+    var uname = readCookie("TAuname");
+    $("#userMenu span").text(uname);
+    if(localStorage.getItem('profileImage')!='null')
+    $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+    });
+
+    /*---Jquery for Browser select---*/
 
     $("#tabs li").click(function(){
       fetchAllCompanies();
@@ -884,7 +891,7 @@
 					showWarningToast("Password and confirm password didnt matched");
 					return false;
 				}else if(testing_environment == 0){
-					showWarningToast("Please enter valid testing environment");
+					showWarningToast("Please enter valid Browser");
 					return false;
 				}else if(startdate.length == 0){
 					showWarningToast("Please enter valid start date");
@@ -959,7 +966,7 @@
 					showWarningToast("Password and confirm password didnt matched");
 					return false;
 				}else if(testing_environment == 0){
-					showWarningToast("Please enter valid testing environment");
+					showWarningToast("Please enter valid Browser");
 					return false;
 				}else if(startdate.length == 0){
 					showWarningToast("Please enter valid start date");

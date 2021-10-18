@@ -184,13 +184,7 @@ $(".mainbtn input[type=checkbox]").click(function(){
 	}
 });
 
-	function showLoader(){
-	$("#loader").addClass("loading");
-	}
-	
-	function hideLoader(){
-	$("#loader").removeClass("loading");
-	}
+
 
 	function showSuccessToast(text){
 		$.toast().reset('all');

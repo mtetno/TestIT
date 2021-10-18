@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debugging",
+            "request": "attach",
+            "mainClass": "RestServer.java",
+            "hostName": "localhost",
+            "port": "5000"
+        }
+    ]
+}

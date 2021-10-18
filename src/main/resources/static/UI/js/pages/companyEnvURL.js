@@ -1,4 +1,6 @@
 var comEnvURL, aldta = {}, envData = {};
+var editEnvironmentURL={};
+var editRole={};
 $(document).ready(function () {
 
 	displayAllEnvironmentUrls();
@@ -305,6 +307,12 @@ function saveEnvironment(dataObj) {
 			}
 			
 			fetchAllEnvironment();
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log(jqXHR);
+			console.log(textStatus);
+			console.log(errorThrown);
+			showWarningToast("Environment already exists");
 		}
 	});
 }
@@ -342,6 +350,7 @@ function fetchAllApplications() {
 				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
 			})
 			$("#application").html(options);
+			$("#application1").html(options);
 		}
 	});
 }
@@ -361,6 +370,7 @@ function fetchAllEnvironments() {
 				options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
 			})
 			$("#url_environment").html(options);
+			$("#url_environment1").html(options);
 		}
 	});
 }
@@ -415,9 +425,9 @@ function displayAllEnvironmentUrls() {
 			var appOptions = "";
 			comEnvURL = data.map;
 			$.each(data.map, function (key, value) {
-
 				$.each(value.environmentList, function (k, v) {
-					payload += '<tr>';
+					var data = { "url" :  v.envUrl , "environmentId" : v.environment.environmentId, "companyEnvironUrlId" : v.companyEnvironUrlId, "applicationid": v.companyId }
+					payload += "<tr data='"+JSON.stringify(data)+"'>";
 					payload += '<td scope="col" class="bucketcheck">';
 					payload += '<label class="main subCB">';
 					payload += '<input type="checkbox" data-value=' + v.companyEnvironUrlId + '>';
@@ -457,18 +467,53 @@ function displayAllEnvironmentUrls() {
 				$('.Urltable').dataTable().fnDestroy();
 			}
 
-			$(".Urltable  .mainCB input[type=checkbox]").click(function(){
-				if($(this).prop("checked")==true)
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-				else
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-				});
-		  
-				
-				 
+			attachEnvironmentURLListeners();				 
 		}
 	});
 }
+
+function attachEnvironmentURLListeners(){
+	$(".Urltable  .mainCB input[type=checkbox]").click(function(){
+		if($(this).prop("checked")==true)
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+		else
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+		});
+
+
+	$("table.Urltable tbody tr td:nth-child(2)").click(function(){
+			$("#updateEnvironmentURLModal").modal();
+			var editData = JSON.parse($($(this).closest("tr")[0]).attr('data'));
+			editEnvironment = editData;
+			editEnvironmentURL = editData;
+			$("#application1").val(editData.applicationid);  
+			$("#url_environment1").val(editData.environmentId);  
+			$("#url1").val(editData.url);  
+	});
+
+	$(".updateEnvironmentURLBtn").unbind().click(function(){
+		var application = $("#application1").val();
+        var environment = $("#url_environment1").val();
+        var url = $("#url1").val();
+
+        if (application == 0) {
+          showMessage("Please select valid application name");
+        } else if (environment == 0) {
+          showMessage("Please select valid enviornment name");
+        } else if (url.trim().length == 0) {
+          showMessage("Please enter valid url");
+        } else {
+          var dataObj = {};
+          dataObj["companyEnvironUrlId"] = editEnvironmentURL.companyEnvironUrlId;
+          dataObj["application"] = {applicationId : application};
+          dataObj["environment"] = {environmentId : environment};
+          dataObj["envUrl"] = url;
+          dataObj["status"] = 0;
+          saveEnvironmentUrl(dataObj);
+        }	  
+	  });
+
+} 
 
  
 function deleteSelectedEnvironmentUrl(environmentURLId) {
@@ -499,7 +544,7 @@ function displayAllAccessRoles() {
 			data.map((value) => {
 				console.log(value);
 				var Val = value.name;
-				payload += '<tr>';
+				payload += "<tr data='"+JSON.stringify(value)+"'>";
 				payload += '<td scope="col" class="bucketcheck">';
 				payload += '<label class="main subCB">';
 				payload += '<input type="checkbox" data-value=' + value.executionUserId + '>';
@@ -526,23 +571,57 @@ function displayAllAccessRoles() {
 				"pagingType": "full_numbers"
 			});
 			// $(".selectdiv").css("padding-left","4rem")
-			// $(".bucketList_wrapper").css("padding-left","4rem")	
+			// $(".bucketList_wrapper").css("padding-left","4rem")	s
 			// $(".Roletable").css("margin-left","2rem")	
 		}else{
 			$('.Roletable').dataTable().fnClearTable();
 			$('.Roletable').dataTable().fnDestroy();
 		}
 
-		$(".Roletable  .mainCB input[type=checkbox]").click(function(){
-			if($(this).prop("checked")==true)
-			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-			else
-			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-			});
-			
+		attachRoleListeners();
 		}
 	});
 }
+
+function attachRoleListeners(){
+	$(".Roletable  .mainCB input[type=checkbox]").click(function(){
+		if($(this).prop("checked")==true)
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+		else
+		{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+		});
+
+
+	$("table.Roletable tbody tr td:nth-child(2)").click(function(){
+			$("#updateRoleModal").modal();
+			var editData = JSON.parse($($(this).closest("tr")[0]).attr('data'));
+			editRole = editData;
+			$("#username1").val(editData.name);  
+			$("#role1").val(editData.role);  
+	});
+
+	$(".updateRoleBtn").unbind().click(function(){
+		var dataUsername = $("#username1").val().trim();
+        var dataRole = $("#role1").val().trim();
+
+        if(dataUsername.length == 0){
+          showWarningToast("Please select valid username name");
+          return false;
+        }  else if(dataRole.length == 0){
+          showWarningToast("Please select valid role");
+          return false;
+        }
+
+          var dataObj = {};
+          dataObj["executionUserId"] = editRole.executionUserId;
+          dataObj["name"] = dataUsername;
+          dataObj["role"] = dataRole;
+          dataObj["isDelete"] = 0;
+          saveAccessRoles(dataObj);	  
+	  });
+
+} 
+
 
 function saveAccessRoles(dataObj) {
 	$.ajax({

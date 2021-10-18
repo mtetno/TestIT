@@ -20,8 +20,13 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
 
 	@Transactional
 	@Modifying
-	@Query("update Environment set is_delete = 0 where added_by = :userId AND environment_name = :environmentName")
-	void updateByEnvironmentName(Long userId, String environmentName);
+	@Query("select e from Environment e where e.addedBy = :userId AND environment_id = :environmentId")
+	List<Environment> findAllByEnvironmentId(Long userId, Long environmentId);
+
+	@Transactional
+	@Modifying
+	@Query("update Environment set is_delete = 0, environment_name = :environmentName where added_by = :userId AND environment_id = :environmentId")
+	void updateByEnvironmentName(Long userId, String environmentName, Long environmentId);
 
 	@Query("select e " + "from Environment e where e.addedBy = :userId AND is_delete = 0")
 	List<Environment> findAllByUserId(Long userId);

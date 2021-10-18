@@ -43,7 +43,6 @@ public class AccessRole {
 	private String role;
 	
 	@Column(name="password")
-	@NotNull
 	private String password;
 	
 	@Column(name="added_by")

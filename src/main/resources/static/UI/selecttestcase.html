@@ -89,7 +89,7 @@
 		<div class="row btn-div">
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center buttonlink">
 				<!--Back Button for go to previous page-->
-				<a href="runtest.html"><button class="btn btn-dark buttonlink">BACK</button></a>
+				<a><button id="backToRunTest" class="btn btn-dark buttonlink">BACK</button></a>
 				<!--Next Button for go to next page-->
 				<a><button id="btNext" class="btn btn-primary buttonlink">NEXT</button></a>
 			</div>
@@ -191,6 +191,11 @@
 					$(this).toggleClass("toggleIcon");
 				});
 			}
+
+			$("#backToRunTest").unbind().click(function(){
+				saveItem(IS_BACK_TO_RUNTESTS,"true");
+				window.location.href = "runtest.html";
+			});
 
 			
 		});

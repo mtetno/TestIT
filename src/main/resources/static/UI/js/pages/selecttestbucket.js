@@ -23,7 +23,7 @@ function fetchAllTestBucket() {
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/testBucket/all",
+		url: base_url + "/testBucket/allByCompany",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -231,7 +231,7 @@ function attachViewButtonClickListener(){
 					n.map((item) => {
 						testList = testList +
 						`<li>
-							<label>`+item.testcase_name+`</label>
+							<label>`+item.test_method+`</label>
 						</li>`;
 					})
 

@@ -92,6 +92,7 @@ public class TestcasesController {
             save.setTestMethod(testcasesRequest.getTestMethod());
             save.setTestTypeId(testcasesRequest.getTestTypeId());
             save.setComment(testcasesRequest.getComment());
+            save.setAddedBy(loggedInUser.getUserId());
 
             testcasesStepRepository.deleteByTestcaseId(testcasesRequest.getTestcasesId());
             for(int i=0;i<testcasesRequest.getTestCaseSteps().size();i++){
@@ -122,9 +123,9 @@ public class TestcasesController {
     }
 
     @GetMapping(value = "/allByComapny")
-    public List<Testcases> getAllByCompanyTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
+    public List<Map<String, Object>> getAllByCompanyTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAllByCompanyTestcases");
-        List<Testcases> testtypes = testcasesRepo.findAllByCompanyId(loggedInUser.getCompanyId());
+        List<Map<String, Object>> testtypes = testcasesRepo.findAllByCompanyId(loggedInUser.getCompanyId());
         return testtypes;
     }
 

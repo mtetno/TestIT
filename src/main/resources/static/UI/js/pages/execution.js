@@ -225,7 +225,7 @@ $(document).ready(function() {
 
 					$.each(applicationData, function(key, value) {
 						var applicationId = value.applicationId;
-						var filteredApps = _.filter(data,(i)=>i.applicationId == applicationId)
+						var filteredApps = _.filter(data,(i)=>i.application_id == applicationId)
 						if(filteredApps.length > 0){
 						
 						var applicationName = value.applicationName;
@@ -260,12 +260,12 @@ $(document).ready(function() {
 					$.each(data, function(key, value) {
 						var tcData = "";
 						if(optiontc.length == 0){
-							optiontc[String(value.applicationId)] = "";
+							optiontc[String(value.application_id)] = "";
 						}
 
 							tcData +='<li>'
-							tcData += '<label class="main subCB">'+value.testMethod;
-							tcData += '<input class="checkes subSelection'+value.applicationId+'" name="sub_category'+value.applicationId+'[]" data-id="'+value.testcasesId+'" data-value="'+value.testMethod+'" value="'+value.className+'" type="checkbox">';
+							tcData += '<label class="main subCB">'+value.test_method;
+							tcData += '<input class="checkes subSelection'+value.application_id+'" name="sub_category'+value.application_id+'[]" data-id="'+value.testcase_id+'" data-value="'+value.test_method+'" value="'+value.class_name+'" type="checkbox">';
 							tcData += '<span class="geekmark"></span> ';
 							tcData += '</label>';
 							tcData += '<i class="fa fa-caret-down showbtndiv caret" aria-hidden="true"></i>';
@@ -273,7 +273,7 @@ $(document).ready(function() {
 							tcData += '<button class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> Master Test Case</button><button class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> User Test Case</button><button class="btn btn-primary btn-sm"><i class="fa fa-folder" aria-hidden="true"></i> Browse</button><button class="btn btn-primary btn-sm"><i class="fa fa-upload" aria-hidden="true"></i> Upload</button>';
 							tcData += '</div>';
 							tcData += '</li>';
-							$(".selectdiv.app"+value.applicationId+" .selectdiv1 .submaindiv ul").append(tcData)
+							$(".selectdiv.app"+value.application_id+" .selectdiv1 .submaindiv ul").append(tcData)
 						
 					});
 

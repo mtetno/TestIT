@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!--Custom style link-->
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="css/loader.css">
 	<link rel="stylesheet" href="css/jquery.toast.min.css">
 	<style>
 		.bucketcheck label {
@@ -72,6 +73,7 @@
 
 	<!--Main Contebt Start-->
 	<div id="main-content" class="container-fluid pull-right">
+		<div id="loader"></div>
 		<!--Page Title-->
 		<!-- <h1 id="page-title"> Library </h1> -->
         
@@ -194,6 +196,7 @@
 
 						  <div class="modal-footer btnfooter">
 							<button type="button" class="btn btn-primary saveTestCase"><img src="img/save-24-px-1.png">SAVE</button>
+							<button type="button" class="btn btn-dark cancelEditTest" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
 						  </div>
 						  
 						</form>
@@ -457,22 +460,28 @@
 	<script>
 
 		var testCaseSteps = [];
+		var allAjax = [];
+		showLoader();
 
-		
-			fetchAllApplications();
-			fetchAllEnvironments();
-			fetchAutomationProgress();
-			fetchAutomationStatus();
-			fetchTestType();
+		allAjax.push(fetchAllApplicationsByLogedinCompanyId());
+		allAjax.push(fetchAllEnvironments());
+		allAjax.push(fetchAutomationProgress());
+		allAjax.push(fetchAutomationStatus());
+		allAjax.push(fetchTestType());
 
 		$(document).ready(function() {	
+
+			Promise.all(allAjax).then(() => {
+				fetchTestSteps();
+			}).catch(() => {
+				console.log("Error in fetching data");
+			})
 
 		var uname = readCookie("TAuname");
 		$("#userMenu span").text(uname);
 		if(localStorage.getItem('profileImage')!='null')
 		$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
-		fetchTestSteps();
 		});
 
 
@@ -546,6 +555,7 @@
 
 			function showStepsGrid(){
 				var rows = "";
+				if(testCaseSteps.length > 0){
 				testCaseSteps.map((value,index) => {
 						var savestr = `<tr>
 						<td scope='col' class='bucketcheck'>
@@ -576,6 +586,7 @@
 					$('.addTest').dataTable().fnClearTable();
 					$('.addTest').dataTable().fnDestroy();
 				}
+			}
 
 
 				$(".mainCB input[type=checkbox]").click(function(){
@@ -705,6 +716,10 @@
 	 $("#addusetbtn").click(function(){
 		clearAddTestCasePopupData();
 	 });
+
+	 $(".cancelEditTest").click(function(){
+			window.location.href = "testmanagement.html";
+		});
 
 	</script>
 </body>

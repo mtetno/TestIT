@@ -97,7 +97,7 @@
 						<div class="row">
 							<div class="col-md-6 col-sm-6">
 							    
-						       <input type="text" id="inputbox" class="form-control border bordersize"  name="" placeholder="Enter Bucket Name" disabled>
+						       <input type="text" id="inputbox" class="form-control border bordersize inputBucketName"  name="" placeholder="Enter Bucket Name" disabled style="visibility: hidden;">
 							</div>
 							<!-- <div class="col-md-6 col-sm-6">
 							 
@@ -127,7 +127,7 @@
 						          	<div class="col-md-5">
 						          		<label id="testBucketNameCol" class="col-md-12">Test Bucket Name</label>
 						          		<label class="col-md-12">Execution Name</label>
-						          		<label class="col-md-12">Testing Environment</label>
+						          		<label class="col-md-12">Browser</label>
 						          		<label class="col-md-12">Run In Threads</label>
 						          	</div>
 						          	<div class="col-md-7">
@@ -308,7 +308,7 @@
 						          	<div class="col-md-5">
 						          		<label class="col-md-12">Execution Name</label>
 						          		<label class="col-md-12">Environment</label>
-						          		<label class="col-md-12">Testing Environment</label>
+						          		<label class="col-md-12">Browser</label>
 						          		<label class="col-md-12">User Role</label>
 						          		<label class="col-md-12">Run In Threads</label>
 						          		<label class="col-md-12">Schedule Tests</label>
@@ -676,6 +676,17 @@
 			}
 			
 		});
+
+
+		$('#isCreateTestBucket').change(
+    	function(){
+			if ($(this).is(':checked')) {
+				$(".inputBucketName").css("visibility", "");
+			}else{
+				$(".inputBucketName").css("visibility", "hidden");
+			}
+	    });
+
 	</script>
 </body>
 </html>

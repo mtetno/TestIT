@@ -8,6 +8,25 @@ public class TestcasesAssignmentsRequest {
 
 	private ArrayList<Long> companyId;
 
+	private Long applicationId;
+
+	private Long automationStatusId;
+
+	public Long getApplicationId() {
+		return applicationId;
+	}
+
+	public void setApplicationId(Long applicationId) {
+		this.applicationId = applicationId;
+	}
+
+	public Long getAutomationStatusId() {
+		return automationStatusId;
+	}
+
+	public void setAutomationStatusId(Long automationStatusId) {
+		this.automationStatusId = automationStatusId;
+	}
 
 	public Long getTestCaseId() {
 		return this.testCaseId;

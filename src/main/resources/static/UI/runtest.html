@@ -101,9 +101,9 @@
 					</div>
 					<div class="row">
 						<div class="col-md-6 mb-4">
-							<label class="required" >Testing Environment</label>
+							<label class="required" >Browser</label>
 							<select class="form-control border" name="testing_environment" id="testing_environment" required>
-								<option value="Select Testing Environment">Select Testing Environment</option>
+								<option value="Select Browser">Select Browser</option>
 								<option value="Internet Explorer">Internet Explorer</option>
 							</select>
 						</div>
@@ -180,19 +180,40 @@
 	<script src="js/Libraries/jquery.toast.min.js"></script>
 	<script>
 
-$(document).ready(function() {	
-var uname = readCookie("TAuname");
-$("#userMenu span").text(uname);
-if(localStorage.getItem('profileImage')!='null')
-$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
-
-
+		$(document).ready(function() {	
+			var uname = readCookie("TAuname");
+			$("#userMenu span").text(uname);
+			if(localStorage.getItem('profileImage')!='null')
+			$("#userMenu img").attr("src",localStorage.getItem('profileImage'));
+			if(getItem(IS_BACK_TO_RUNTESTS) != "true")
 			clearRunTestPageData();
-			fetchAllEnvironments();
-			fetchAllTestingEnvironments();
-			fetchAllUsersRoles();
+			
+			var allAjax = [];
+			allAjax.push(fetchAllEnvironments());
+			allAjax.push(fetchAllTestingEnvironments());
+			allAjax.push(fetchAllUsersRoles());
 
-});
+			Promise.all(allAjax).then(() => {
+				loadLocalDataIfExists();
+			}).catch(() => {
+				console.log("Error in fetching data");
+			})
+
+		});
+
+
+		function loadLocalDataIfExists(){
+			if(getItem(IS_BACK_TO_RUNTESTS) == "true"){
+			$("#execution_name").val(getItem(RUNTESTS_NAME));
+			$("#environment").val(getItem(RUNTESTS_ENVIRONMENT_ID));
+			$("#testing_environment").val(getItem(RUNTESTS_TESTING_ENVIRONMENT_ID));
+			$("#user_role").val(getItem(RUNTESTS_USER_ROLE_ID));
+			$("#run_in_thread").val(getItem(RUNTESTS_THREAD));
+			$("#date").val(getItem(RUNTESTS_DATE));
+			$("#time").val(getItem(RUNTESTS_TIME));
+			}
+			removeItem(IS_BACK_TO_RUNTESTS);
+		}
 
 
 		$(function(){

@@ -1,5 +1,7 @@
 package com.dyteam.testApps.webserver.controller;
 
+import java.util.Optional;
+
 import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.AccessRole;
 
@@ -85,6 +87,17 @@ public class AccessRoleController {
   @PostMapping("/save")
   public boolean save(@RequestBody AccessRole executionUser, @AuthenticationPrincipal final LoginUser loggedInUser) {
     logger.info("save executionUser = " + executionUser);
+    if(executionUser.getExecutionUserId() !=null) {
+       Optional<AccessRole> found = executionUserRepo.findById(executionUser.getExecutionUserId());
+       if(found.isPresent()){
+         AccessRole entry = found.get();
+         entry.setName(executionUser.getName());
+         entry.setRole(executionUser.getRole());
+         executionUserRepo.save(entry);
+         return true;
+       }
+      
+    }
     executionUser.setCompanyId(loggedInUser.getCompanyId());
     executionUser.setAddedBy(loggedInUser.getUserId());
     String rawPassword = executionUser.getPassword();

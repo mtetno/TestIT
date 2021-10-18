@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.dyteam.testApps.webserver.entity.TestcasesAssignmentsRequest;
 import com.dyteam.testApps.webserver.repository.TestcasesAssignementsRepository;
+import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
 
 import org.slf4j.Logger;
@@ -25,10 +26,14 @@ public class TestcasesAssignmentsController {
     @Autowired
     TestcasesAssignementsRepository testcasesAssignementsRepository;
 
+    @Autowired
+    TestcasesRepository testcasesRepository;
+
     @PostMapping("/save")
     public boolean save(@RequestBody TestcasesAssignmentsRequest testcasesAssignmentsRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("save testcases assignments");
-    testcasesAssignementsRepository.deleteAssignmentsWithTestCaseId(testcasesAssignmentsRequest.getTestCaseId());
+        testcasesRepository.updateTestcase(testcasesAssignmentsRequest.getApplicationId(), testcasesAssignmentsRequest.getAutomationStatusId(), testcasesAssignmentsRequest.getTestCaseId());
+        testcasesAssignementsRepository.deleteAssignmentsWithTestCaseId(testcasesAssignmentsRequest.getTestCaseId());
         for (Long compId : testcasesAssignmentsRequest.getCompanyId()) {
             testcasesAssignementsRepository.insertInto(compId, testcasesAssignmentsRequest.getTestCaseId());
         }

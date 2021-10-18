@@ -1,4 +1,5 @@
-isExecutionEnvironmentDataTableAssigned = false;
+var isExecutionEnvironmentDataTableAssigned = false;
+var editEnvironment={};
 
 function fetchAllEnvironment(){
 	$.ajax({
@@ -25,7 +26,7 @@ function fetchAllEnvironment(){
 						break;
 				}
 				
-				payload += '<tr>';
+				payload += "<tr data='"+JSON.stringify(value)+"'>";
 				payload += '<td scope="col" class="bucketcheck">';
 				payload += '<label class="main subCB">';
 				payload += '<input type="checkbox" data-value="'+value.environmentId+'">';
@@ -60,17 +61,45 @@ function fetchAllEnvironment(){
 			$('.envTable').dataTable().fnClearTable();
 			$('.envTable').dataTable().fnDestroy();
 		}
-			
-		$(".envTable .mainCB input[type=checkbox]").click(function(){
-			if($(this).prop("checked")==true)
-			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-			else
-			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-			});
-
+		attachEnvironmentListeners();
 		}
 	});
 }
+
+function attachEnvironmentListeners(){
+	$(".envTable .mainCB input[type=checkbox]").click(function(){
+	if($(this).prop("checked")==true)
+	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+	else
+	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+	});
+
+
+	$("table.envTable tbody tr td:nth-child(2)").click(function(){
+			$("#updateEnvironmentModal").modal();
+			var editData = JSON.parse($($(this).closest("tr")[0]).attr('data'));
+			editEnvironment = editData;
+			
+			$("#inputEditEnvironment").val(editData.environmentName);  
+	});
+
+	$(".updateEnvironmentBtn").unbind().click(function(){
+		var dataVal = $("#inputEditEnvironment").val();
+		if (dataVal == '') {
+		  showWarningToast("Please enter valid environment name");
+		  return;
+		}
+		var dataObj = {};
+		dataObj["environmentName"] = dataVal;
+		dataObj["environmentId"] = editEnvironment.environmentId;
+		dataObj["added_by"] = readCookie("TAuid");
+		saveEnvironment(dataObj);	  
+	  });
+
+} 
+
+
+
 
 $(document).ready(function() {
 

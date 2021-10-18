@@ -62,7 +62,6 @@ function fetchTestSteps() {
 			data.map((item)=>{
 			 steps.push({"step": item.step, "expected" : item.expected })
 			})
-			setTimeout(function(){
 			var editValue = JSON.parse(getItem(EDIT_TESTCASE));
 			$("#objective").val(editValue.objective);
 			$("#test_method").val(editValue.test_method);
@@ -74,7 +73,6 @@ function fetchTestSteps() {
 			$("#comments").val(editValue.comment);
 			testCaseSteps = steps;
 			showStepsGrid();
-			}, 3000);
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			console.log(jqXHR);
@@ -87,6 +85,7 @@ function fetchTestSteps() {
 
 function showStepsGrid(){
 	var rows = "";
+	if(testCaseSteps.length > 0){
 	testCaseSteps.map((value,index) => {
 			var savestr = `<tr>
 			<td scope='col' class='bucketcheck'>
@@ -117,6 +116,7 @@ function showStepsGrid(){
 		$('.addTest').dataTable().fnClearTable();
 		$('.addTest').dataTable().fnDestroy();
 	}
+	}
 
 
 	$(".mainCB input[type=checkbox]").click(function(){
@@ -125,13 +125,15 @@ function showStepsGrid(){
 	else
 	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
 	});
+
+	hideLoader();
 }
 
 
 
 function displayTestcases(){
 	$.ajax({
-		url: base_url + "/testcases/all",
+		url: base_url + "/testcases/allByComapny",
 		method: "GET",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
@@ -162,6 +164,7 @@ function displayTestcases(){
 			// $("#bucketList tbody").html(rows);
 
 			if(rows != ""){
+			if($(".testmanagementtable").get(0)!=undefined)
 			$(".testmanagementtableParent").html($(".testmanagementtable").get(0).outerHTML)
 			$(".testmanagementtableParent .paging_full_numbers").remove()
 			$('.testmanagementtable').dataTable().fnClearTable();

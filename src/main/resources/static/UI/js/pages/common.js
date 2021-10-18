@@ -157,8 +157,33 @@ function statusError(statusCode, responseText="") {
 
  
 
+function fetchAllApplicationsByLogedinCompanyId() {
+	return $.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/application/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Application</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.applicationId + '">' + item.applicationName + '</option>';
+			})
+			$("#application").html(options);
+			$("#application1").html(options);
+			$("#application2").html(options);
+
+			$("#application").val("0");
+			$("#application1").val("0");
+			$("#application2").val("0");
+		}
+	});
+}
+
 function fetchAllApplicationsByCompanyId(id) {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -174,6 +199,10 @@ function fetchAllApplicationsByCompanyId(id) {
 			$("#application").html(options);
 			$("#application1").html(options);
 			$("#application2").html(options);
+
+			$("#application").val("0");
+			$("#application1").val("0");
+			$("#application2").val("0");
 		}
 	});
 }
@@ -194,12 +223,13 @@ function fetchAllApplications() {
 				options = options + '<option value="' + item.application_id + '">' + item.application_name + '</option>';
 			})
 			$("#application").html(options);
+			$("#application").val("0");
 		}
 	});
 }
 
 function fetchAllEnvironments() {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -213,12 +243,13 @@ function fetchAllEnvironments() {
 				options = options + '<option value="' + item.environmentId + '">' + item.environmentName + '</option>';
 			})
 			$("#environment").html(options);
+			$("#environment").val("0");
 		}
 	});
 }
 
 function fetchAllTestingEnvironments(inputName) {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -227,7 +258,7 @@ function fetchAllTestingEnvironments(inputName) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var options = '<option value="0">Select Testing Environment</option>';
+			var options = '<option value="0">Select Browser</option>';
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.name + '</option>';
 			})
@@ -236,6 +267,7 @@ function fetchAllTestingEnvironments(inputName) {
 			inputName != undefined && inputName != '' ?  $(inputName).html(options)
 			: 
 			$("#testing_environment").html(options);
+			$("#testing_environment").val("0");
 		}
 	});
 }
@@ -258,6 +290,11 @@ function fetchAllCompanies() {
 			$("#company_name1").html(options);
 			$("#company_name2").html(options);
 			$("#company_name1_edit").html(options);
+
+			$("#company_name").val("0");
+			$("#company_name1").val("0");
+			$("#company_name2").val("0");
+			$("#company_name1_edit").val("0");
 		}
 	});
 }
@@ -280,16 +317,17 @@ function fetchAllRemindBefore(inputName) {
 			inputName != undefined && inputName != '' ?  $(inputName).html(options)
 			: 
 			$("#remind_before").html(options);
+			$("#remind_before").val("0");
 		}
 	});
 }
 
 function fetchAllUsersRoles(inputName) {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/accessRole/all",
+		url: base_url + "/accessRole/allByCompany",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
@@ -302,12 +340,13 @@ function fetchAllUsersRoles(inputName) {
 			inputName != undefined && inputName != '' ?  $(inputName).html(options)
 			: 
 			$("#user_role").html(options);
+			$("#user_role").val("0");
 		}
 	});
 }
 
 function fetchTestType() {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -321,6 +360,7 @@ function fetchTestType() {
 				options = options + '<option value="' + item.id + '">' + item.type + '</option>';
 			})
 			$("#type").html(options);
+			$("#type").val("0");
 		}
 	});
 }
@@ -335,17 +375,18 @@ function fetchAutomationStatus() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var options = '<option value="0">Select Environment</option>';
+			var options = '<option value="0">Select Automation Status</option>';
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.status + '</option>';
 			})
 			$("#automation_status").html(options);
+			$("#automation_status").val("0");
 		}
 	});
 }
 
 function fetchAutomationProgress() {
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
@@ -354,11 +395,20 @@ function fetchAutomationProgress() {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			var options = '<option value="0">Select Environment</option>';
+			var options = '<option value="0">Select Automation Progress</option>';
 			data.map((item) => {
 				options = options + '<option value="' + item.id + '">' + item.value + '</option>';
 			})
 			$("#automation_progress").html(options);
+			$("#automation_progress").val("0");
 		}
 	});
 }
+
+	function showLoader(){
+	$("#loader").addClass("loading");
+	}
+	
+	function hideLoader(){
+	$("#loader").removeClass("loading");
+	}

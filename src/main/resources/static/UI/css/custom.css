@@ -987,6 +987,19 @@ canvas {
     text-decoration: underline;
 }
 
+.envTable tbody tr td:nth-child(2){
+    text-decoration: underline;
+}
+
+.Urltable  tbody tr td:nth-child(2){
+    text-decoration: underline;
+}
+
+.Roletable  tbody tr td:nth-child(2){
+    text-decoration: underline;
+}
+
+
 .testmanagementAssignmentTable tbody tr td:nth-child(1){
     text-decoration: underline;
 }

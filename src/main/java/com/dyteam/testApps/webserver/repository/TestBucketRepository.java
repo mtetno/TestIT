@@ -20,6 +20,11 @@ public interface TestBucketRepository extends CrudRepository<TestBucket, Long> {
 	@Query(value = "SELECT a.id,a.environment_id,a.user_role_id,a.name,b.environment_name,c.username from test_buckets a join environment b on b.environment_id = a.environment_id join access_roles c on a.user_role_id = c.access_role_id where a.is_delete = 0 order by a.id desc", nativeQuery = true)
 	public List<Map<String, Object>> fetchAll();
 
+	@Modifying
+	@Transactional
+	@Query(value ="SELECT a.id,a.environment_id,a.user_role_id,a.name,b.environment_name,c.username from test_buckets a join environment b on b.environment_id = a.environment_id join access_roles c on a.user_role_id = c.access_role_id where a.is_delete = 0 AND a.company_id = :companyId order by a.id desc ", nativeQuery = true)
+	public List<Map<String, Object>> findAllByCompanyIdId(Long companyId);
+
 	@Query(value = "SELECT testcases.*,B.application_name FROM testcases JOIN application AS B ON testcases.application_id = B.application_id where testcases.testcase_id in (SELECT test_buckets_testcases.testcase_id  FROM test_buckets_testcases where bucket_id = :bucketId) ", nativeQuery = true)
 	public List<Map<String, Object>> fetchBucketDetails(Long bucketId);
 
