@@ -629,7 +629,7 @@
 			}
 		});
 
-		$('#scheduleExecution').click(function(){
+		$('#scheduleExecution').unbind().click(function(){
 			var testBucketName = $('#inputbox').val().trim();
 			var isCheked =  $('#isCreateTestBucket').is(':checked')
 			if(isCheked && testBucketName.length == 0){
@@ -649,7 +649,7 @@
 				$('#runInThreads').text(": "+getItem(RUNTESTS_THREAD))
 		});
 
-		$('#executionYesbtn').click(function(){
+		$('#executionYesbtn').unbind().click(function(){
 			var testBucketPayload = {};
 			testBucketPayload['name'] = $('#inputbox').val();
 			testBucketPayload['environmentId'] = getItem(RUNTESTS_ENVIRONMENT_ID);

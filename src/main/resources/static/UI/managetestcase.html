@@ -182,6 +182,7 @@
               <table id="bucketList" class="table selectdiv1 testmanagementAssignmentTable">
                 <thead>
                   <tr>
+                    <th scope="col">ID</th>
                     <th scope="col" class="Username">TEST CASE <i class="fa fa-angle-down" aria-hidden="true"></i>  </th>
                     <th scope="col">APPLICATION  </th>
                     <!-- <th scope="col">ENVIRONMENT</th> -->
@@ -452,11 +453,13 @@ $(document).ready(function() {
 
   $(".updatetestmanageBtn").click(function(){
 	var testcaseId = selectedTestCase.testcase_id;
+	var testMethod = $("#selectedTestCaseName").val()
 	var companies = $("#company_name").val()
 	var application = $("#application").val()
 	var automation_status = $("#automation_status").val()
 
 	var dataObj = {};
+	dataObj['testMethod'] = testMethod ;
 	dataObj['testCaseId'] = testcaseId ;
 	dataObj['companyId'] = companies ;
 	dataObj['applicationId'] = application ;

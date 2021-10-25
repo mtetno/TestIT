@@ -116,6 +116,12 @@ public class EnvironmentController {
     public Iterable<Environment> findAllByUserId(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("get all environments by user id");
         return environmentRepo.findAllByUserId(loggedInUser.getUserId());
+    }   
+    
+    @GetMapping("/allByCompany")
+    public Iterable<Environment> findAllByCompanyId(@AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("get all environments by user id");
+        return environmentRepo.findAllByCompanyId(loggedInUser.getCompanyId());
     }
 
     public Iterable<Environment> findAll() {

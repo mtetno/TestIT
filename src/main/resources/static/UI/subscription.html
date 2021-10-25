@@ -766,6 +766,8 @@
 
         if($(".subscriptionTable   tbody .subCB input:checked").length > 0){
           $("#myModal").modal();
+        }else{
+        showWarningToast("Please select records to delete");
         }
  
 			});
@@ -823,7 +825,8 @@
     /*---Jquery for datepicker---*/
 
     $("input.datePicker").datepicker({
-      dateFormat: 'dd-mm-yy'
+      dateFormat: 'dd-mm-yy',
+      minDate: 0
     });
     
     /*---Jquery for update Application Paths---*/
@@ -1267,8 +1270,12 @@
 
       $("#deletedItem1").text(deleteStr);
       
-      if($(".Apptable    tbody .subCB input:checked").length > 0)
-      $("#myModalAppdlt").modal();
+      if($(".Apptable    tbody .subCB input:checked").length > 0){
+        $("#myModalAppdlt").modal();
+      }else{
+        showWarningToast("Please select records to delete");
+        }
+      
     });
 
     $(document).on("click", "#myModalAppdlt #yesbtn", function(){
@@ -1297,8 +1304,13 @@
 
 
       $("#deletedItem2").text(deleteStr);
-      if($(".apppathtable     tbody .subCB input:checked").length > 0)
+      if($(".apppathtable     tbody .subCB input:checked").length > 0){
       $("#myModal2").modal();
+      }else{
+        showWarningToast("Please select records to delete");
+        }
+
+
     });
 
     $(document).on("click", "#myModal2 #yesbtn", function(){

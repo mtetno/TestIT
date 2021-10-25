@@ -194,6 +194,7 @@
 
 						  <div class="modal-footer btnfooter">
 							<button type="button" class="btn btn-primary saveTestCase"><img src="img/save-24-px-1.png">SAVE</button>
+							<button type="button" class="btn btn-dark cancelAddTest" data-dismiss="modal"><img src="img/close-24-px.png">CANCEL</button>
 						  </div>
 						  
 						</form>
@@ -711,6 +712,10 @@
 	 $("#addusetbtn").click(function(){
 		clearAddTestCasePopupData();
 	 });
+
+	 $(".cancelAddTest").click(function(){
+			window.location.href = "testmanagement.html";
+		});
 
 	</script>
 </body>

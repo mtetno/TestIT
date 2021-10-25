@@ -110,6 +110,7 @@ function displayTestcases(){
 				var companies = _.join(_.map(_.filter(testcasesAssignments, { 'testcase_id': value.testcase_id}),'company_name'), [separator=',']);
 				//// <td>`+value.environment_name+`</td>
 				var savestr = `<tr>
+				<td>`+value.testcase_id+`</td>
 				<td class="rowTestCase" data-value='`+ JSON.stringify(value) +`'>`+value.test_method+`</td>
 				<td>`+value.application_name+`</td>
 				<td>`+value.status +`</td>

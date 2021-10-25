@@ -79,6 +79,6 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "update testcases set application_id = :applicationId, auto_status_id = :autostatusId where testcase_id = :testCaseId ", nativeQuery = true)
-	public void updateTestcase(Long applicationId, Long autostatusId, Long testCaseId);
+	@Query(value = "update testcases set test_method = :testMethod, application_id = :applicationId, auto_status_id = :autostatusId where testcase_id = :testCaseId ", nativeQuery = true)
+	public void updateTestcase(String testMethod, Long applicationId, Long autostatusId, Long testCaseId);
 }

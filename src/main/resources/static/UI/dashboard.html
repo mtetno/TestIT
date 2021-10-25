@@ -113,7 +113,7 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<label class="subtitle">Execution Schedule:</label>
 					</div>
-                    <table id="#" class="table tabledash tabledashdata">
+                    <table id="executionSummary" class="table tabledash tabledashdata">
 		                <thead>
 		                  <tr>
 		                    <th scope="col">RUN NAME</th>
@@ -122,7 +122,8 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-		                  <tr>
+		                  
+		                  <!-- <tr>
 		                    <td >cbowenals_12_17_2018</td>
 		                    <td >2018-12-17</td>
 		                    <td ><img src="img/visibility-24-px.png" data-toggle="modal" data-target="#myModal" alt="1">  <img src="img/shape.svg" alt="1" class="deletedataBtn"></td>
@@ -131,12 +132,7 @@
 		                    <td >cbowenals_12_17_2018</td>
 		                    <td >2018-12-17</td>
 		                    <td ><img src="img/visibility-24-px.png" data-toggle="modal" data-target="#myModal" alt="1">  <img src="img/shape.svg" alt="1" class="deletedataBtn"></td>
-		                  </tr>
-		                  <tr>
-		                    <td >cbowenals_12_17_2018</td>
-		                    <td >2018-12-17</td>
-		                    <td ><img src="img/visibility-24-px.png" data-toggle="modal" data-target="#myModal" alt="1">  <img src="img/shape.svg" alt="1" class="deletedataBtn"></td>
-		                  </tr>
+		                  </tr> -->
 		                </tbody>
 		              </table>
 					</div>
@@ -199,7 +195,7 @@
 		          	<div class="col-md-12">
 		          		<div class="row">
 				          	<div class="col-md-6 textrow">
-				          		<p><strong>Execution Result : cbowenahs_12_27_2018_12_43_43</strong></p>
+				          		<p id="selectedExecutionName"><strong>Execution Result : cbowenahs_12_27_2018_12_43_43</strong></p>
 				          	</div>
 				          	<div class="col-md-6 textrow">
 				          		<canvas id="pie-chart" style="display: inline-block; float: left !important;"></canvas>
@@ -214,28 +210,28 @@
 				          			</thead>
 				          			<tbody>
 				          				<tr>
-					          				<td >102</td>
-					          				<td >52</td>
-					          				<td >30</td>
-					          				<td >20</td>
+					          				<td id="totalExecution">102</td>
+					          				<td id="passedExecution">52</td>
+					          				<td id="failedExecution">30</td>
+					          				<td id="queuesExecution">20</td>
 					          			</tr>
 				          			</tbody>
 				          		</table>
 				          	</div>
 		          		</div>
-		          		<div class="Reportmodel" style="overflow-x: auto;">
+		          		<div class="Reportmodel selectedExecutionModel" style="overflow-x: auto;">
 		          			<table class="table mb-0 reportmodeltable">
 							  <thead>
 							    <tr>
 							      <th scope="col">SR. NO.</th>
 							      <th scope="col">BUCKET NAME</th>
-							      <th scope="col">ENVIRONMENT</th>
-							      <th scope="col">USER ROLE</th>
-							      <th scope="col">ACTION</th>
+							      <th scope="col">RESULT</th>
+							      <th scope="col">ELAPSE TIME</th>
+							      <!-- <th scope="col">ACTION</th> -->
 							    </tr>
 							  </thead>
 							  <tbody>
-							    <tr>
+							    <!-- <tr>
 							      <td scope="col">1</td>
 							      <td>SmartTI_CreateNewIncident</td>
 							      <td class="passed">Passed</td>
@@ -493,7 +489,7 @@
 							      	</table>
 							      </div>
 							     </td>
-							    </tr>
+							    </tr> -->
 							  </tbody>
 							</table>
 		          		</div>
@@ -744,17 +740,8 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 });
 
 		fetchAllTestBucket();
-		new Chart(document.getElementById("pie-chart"), {
-		    type: 'pie',
-		    data: {
-		      // labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
-		      datasets: [{
-		        // label: "Population (millions)",
-		        backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
-		        data: [50,20,30]
-		      }]
-		    }
-		});
+		fetchAllExecutions();
+		
 	</script>
 	<script>
       google.charts.load("current", {packages:["corechart"]});
@@ -999,6 +986,9 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 		      $(".tabledashdata").children("tbody").children("tr:nth-child("+rowIndx+")").remove();
 			  showSuccessToast("Execution Schedule Deleted Successfully.");
 		    });
+
+			
+
   </script>
 </body>
 </html>

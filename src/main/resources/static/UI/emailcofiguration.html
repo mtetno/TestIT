@@ -663,6 +663,8 @@
 
         if($(".emailconfigTable  tbody .subCB input:checked").length > 0){
           $("#myModal").modal();
+        }else{
+        showWarningToast("Please select records to delete");
         }
 			});
 
@@ -682,7 +684,9 @@
 
         if($(".Tempconfigtable  tbody .subCB input:checked").length > 0){
           $("#myModal1").modal();
-        }
+        }else{
+          showWarningToast("Please select records to delete");
+          }
 				
 			});
 

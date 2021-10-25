@@ -675,6 +675,8 @@ $(document).ready(function() {
         $("#deletedItem").text(str);
         if($(".envTable  tbody .subCB input:checked").length > 0){
           $("#myModal").modal();
+        }else{
+        showWarningToast("Please select records to delete");
         }
       });
 
@@ -714,6 +716,8 @@ $(document).ready(function() {
         $("#deletedItem1").text(str);
         if($(".Urltable  tbody .subCB input:checked").length > 0){
           $("#myModal1").modal();
+        }else{
+        showWarningToast("Please select records to delete");
         }
       });
 
@@ -752,6 +756,8 @@ $(document).ready(function() {
         
         if($(".Roletable  tbody .subCB input:checked").length > 0){
           $("#myModal2").modal();
+        }else{
+        showWarningToast("Please select records to delete");
         }
       });
 

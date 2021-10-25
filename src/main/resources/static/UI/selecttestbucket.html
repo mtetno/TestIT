@@ -474,7 +474,12 @@
 				});
 
 				$("#deletedItem").text(str);
+
+				if($("table  tbody .subCB input:checked").length > 0){
 				$("#myModal").modal();
+				}else{
+				showWarningToast("Please select records to delete");
+				}
 			});
 
 			$(document).on("click", "#yesbtn", function(){

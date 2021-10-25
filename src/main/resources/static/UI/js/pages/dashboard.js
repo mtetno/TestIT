@@ -1,32 +1,108 @@
 
 var bucketData = [];
+var executionDetails = {};
 
 function fetchAllTestBucket() {
 	$.ajax({
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/testBucket/all",
+		url: base_url + "/testBucket/allByCompany",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
 			bucketData = data;
+			
 			$("#testBucketSummary tbody").html("");
+			var str = "" ;
 			data.map((value,position) => {
 				if(position < 5){
-					var str = `<tr data-value="`+value.id+`">
+					str += `<tr data-value="`+value.id+`">
 					<td >`+value.name+`</td>
-					<td ><img src="img/visibility-24-px.png" class="viewBucket" data-toggle="modal"   alt="1"></td>
+					<td ><img  src="img/visibility-24-px.png" data-toggle="modal"   alt="1"></td>
 				  </tr>`;
 			 
-					$("#testBucketSummary  tbody").prepend(str);
+					
 				}
 			});
+			$("#testBucketSummary  tbody").append(str);
 			postTestBucketFetch();
 		}
 	});
 }
+
+function fetchAllExecutions() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionDetails/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			bucketData = data;
+			executionDetails = data;
+			data = _.uniqBy(data, 'execution_id');
+			$("#executionSummary tbody").html("");
+			var str = "" ;
+			data.map((value,position) => {
+				if(position < 5){
+					str += `<tr data-value="`+value.id+`">
+					<td >`+value.execution_name+`</td>
+					<td >`+value.triggered_when.substring(0,10)+`</td>
+		            <td ><img data-value="`+value.execution_id+`" class="viewExecutionBucket" src="img/visibility-24-px.png"  alt="1">  </td>
+		            </tr>`;
+					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+				}
+			});
+			$("#executionSummary  tbody").append(str);
+			postExecutionFetch();
+		}
+	});
+}
+
+function postExecutionFetch(){
+	$(".viewExecutionBucket").click(function(){
+		$("#myModal").modal();
+		var exeId = $(this).attr('data-value');
+		var popUpData = _.filter(executionDetails, 
+			{ 'execution_id': parseInt(exeId) }
+		);
+		$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
+		$("#totalExecution").text(popUpData.length)
+		$("#passedExecution").text("0")
+		$("#failedExecution").text("0")
+		$("#queuesExecution").text(popUpData.length);
+
+		$(".selectedExecutionModel tbody").html("");
+		var str = "" ;
+		popUpData.map((value,position) => {
+				str += `<tr><td scope="col">`+position+`</td>
+						  <td>`+value.test_method+`</td>
+						  <td class="passed">Queued</td>
+						  <td>-</td></tr>`;
+				//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+		});
+		$(".selectedExecutionModel  tbody").append(str);
+
+		new Chart(document.getElementById("pie-chart"), {
+		    type: 'pie',
+		    data: {
+		      // labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
+		      datasets: [{
+		        // label: "Population (millions)",
+		        backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
+		        data: [0,popUpData.length,0]
+		      }]
+		    }
+		});
+
+
+	});
+}
+
 
 function postTestBucketFetch(){
 
@@ -68,7 +144,7 @@ function postTestBucketFetch(){
 					n.map((item) => {
 						testList = testList +
 						`<li>
-							<label>`+item.testcase_name+`</label>
+							<label>`+item.test_method+`</label>
 						</li>`;
 					})
 

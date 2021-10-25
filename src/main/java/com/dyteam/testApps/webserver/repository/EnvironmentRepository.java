@@ -31,6 +31,9 @@ public interface EnvironmentRepository extends CrudRepository<Environment, Long>
 	@Query("select e " + "from Environment e where e.addedBy = :userId AND is_delete = 0")
 	List<Environment> findAllByUserId(Long userId);
 
+	@Query("select e " + "from Environment e where e.companyId = :companyid AND is_delete = 0")
+	List<Environment> findAllByCompanyId(Long companyid);
+
 	@Query("select e from Environment e where e.companyId = :companyId AND e.status=0")
 	Iterable<Environment> findAll(Long companyId);
 

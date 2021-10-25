@@ -1000,7 +1000,7 @@ canvas {
 }
 
 
-.testmanagementAssignmentTable tbody tr td:nth-child(1){
+.testmanagementAssignmentTable tbody tr td:nth-child(2){
     text-decoration: underline;
 }
 

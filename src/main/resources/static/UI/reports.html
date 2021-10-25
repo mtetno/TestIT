@@ -793,6 +793,8 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 				 
 				if($("table  tbody .subCB input:checked").length > 0){
 				$("#myModal2").modal();
+				}else{
+				showWarningToast("Please select records to delete");
 				}
 			});
 

@@ -3,7 +3,7 @@ var editEnvironment={};
 
 function fetchAllEnvironment(){
 	$.ajax({
-		url: base_url+"/environment/findAllByUserId", 
+		url: base_url+"/environment/allByCompany", 
 		method: "get",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class TestcasesAssignmentsRequest {
 
+
+	private String testMethod;
+
 	private Long testCaseId;
 
 	private ArrayList<Long> companyId;
@@ -11,6 +14,16 @@ public class TestcasesAssignmentsRequest {
 	private Long applicationId;
 
 	private Long automationStatusId;
+
+	
+
+	public String getTestMethod() {
+		return testMethod;
+	}
+
+	public void setTestMethod(String testMethod) {
+		this.testMethod = testMethod;
+	}
 
 	public Long getApplicationId() {
 		return applicationId;

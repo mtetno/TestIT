@@ -13,6 +13,7 @@ import com.dyteam.testApps.webserver.entity.UploadTestcasesRequest;
 import com.dyteam.testApps.webserver.exceptions.ResourceAlreadyExists;
 import com.dyteam.testApps.webserver.projection.INames;
 import com.dyteam.testApps.webserver.projection.IStackBar;
+import com.dyteam.testApps.webserver.repository.TestcasesAssignementsRepository;
 import com.dyteam.testApps.webserver.repository.TestcasesRepository;
 import com.dyteam.testApps.webserver.repository.TestcasesStepRepository;
 import com.dyteam.testApps.webserver.security.LoginUser;
@@ -42,6 +43,9 @@ public class TestcasesController {
     @Autowired
     TestcasesStepRepository testcasesStepRepository;
 
+    @Autowired
+    TestcasesAssignementsRepository testcasesAssignementsRepository;
+
     @PostMapping("/save")
     public Testcases save(@RequestBody TestcasesRequest testcasesRequest, @AuthenticationPrincipal final LoginUser loggedInUser) {
         Testcases testcases = new Testcases();
@@ -65,6 +69,7 @@ public class TestcasesController {
         testcases.setCompanyId(loggedInUser.getCompanyId());
         testcases.setAddedBy(loggedInUser.getUserId());
         Testcases save = testcasesRepo.save(testcases);
+        testcasesAssignementsRepository.insertInto(loggedInUser.getCompanyId(), save.getTestcasesId());
         for(int i=0;i<testcasesRequest.getTestCaseSteps().size();i++){
         TestcasesStep step = new TestcasesStep();
         step.setTestcase_id(save.getTestcasesId());
@@ -141,6 +146,8 @@ public class TestcasesController {
         logger.info("testcaseId" + testcaseId);
         // testcasesRepo.updateByTestcaseId(loggedInUser.getUserId(), testcaseId);
         testcasesRepo.deleteById(testcaseId);
+        testcasesAssignementsRepository.deleteAssignmentsWithTestCaseId(testcaseId);
+        testcasesStepRepository.deleteByTestcaseId(testcaseId);
         return true;
     }
 

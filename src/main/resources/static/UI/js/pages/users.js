@@ -604,7 +604,9 @@ function fetchUsers(){
 
 				if($("table  tbody .subCB input:checked").length > 0){
 					$("#myModal").modal();
-				 }
+				}else{
+					showWarningToast("Please select records to delete");
+				}
 			});
 
 			$("#yesbtn").unbind().click(function(){
