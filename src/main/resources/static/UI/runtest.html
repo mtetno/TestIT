@@ -190,7 +190,7 @@
 			
 			var allAjax = [];
 			allAjax.push(fetchAllEnvironments());
-			allAjax.push(fetchAllTestingEnvironments());
+			allAjax.push(fetchAllTestingEnvironmentsByCompany());
 			allAjax.push(fetchAllUsersRoles());
 
 			Promise.all(allAjax).then(() => {

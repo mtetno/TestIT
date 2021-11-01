@@ -133,6 +133,13 @@ public class TestcasesController {
         List<Map<String, Object>> testtypes = testcasesRepo.findAllByCompanyId(loggedInUser.getCompanyId());
         return testtypes;
     }
+    
+    @GetMapping(value = "/checkedIn/allByComapny")
+    public List<Map<String, Object>> getAllCheckedInByCompanyTestcases(@AuthenticationPrincipal final LoginUser loggedInUser) {
+        logger.info("Inside getAllByCompanyTestcases");
+        List<Map<String, Object>> testtypes = testcasesRepo.findAllCheckedInByCompanyId(loggedInUser.getCompanyId());
+        return testtypes;
+    }
 
     @DeleteMapping(value = "/deleteAll")
     public boolean deleteAll(@AuthenticationPrincipal final LoginUser loggedInUser) {
@@ -152,23 +159,23 @@ public class TestcasesController {
     }
 
     @GetMapping(value = "/getAutoProgressStats")
-    public List<Map<String, Object>> getAutoProgressStats() {
+    public List<Map<String, Object>> getAutoProgressStats(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAutoProgressStats");
-        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoProgressStats();
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoProgressStats(loggedInUser.getCompanyId());
         return dashboardStats;
     }
 
     @GetMapping(value = "/getAutoStatusStats")
-    public List<Map<String, Object>> getAutoStatusStats() {
+    public List<Map<String, Object>> getAutoStatusStats(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getAutoStatusStats");
-        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoStatusStats();
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getAutoStatusStats(loggedInUser.getCompanyId());
         return dashboardStats;
     }
 
     @GetMapping(value = "/getApplicationCoverageStats")
-    public List<Map<String, Object>> getApplicationCoverageStats() {
+    public List<Map<String, Object>> getApplicationCoverageStats(@AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("Inside getApplicationCoverageStats");
-        List<Map<String, Object>> dashboardStats = testcasesRepo.getApplicationCoverageStats();
+        List<Map<String, Object>> dashboardStats = testcasesRepo.getApplicationCoverageStats(loggedInUser.getCompanyId());
         return dashboardStats;
     }
 

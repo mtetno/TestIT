@@ -84,11 +84,11 @@
 				<div class="row section-box">
 					<div class="col-md-4">
 					<div class="col-md-12 col-sm-12 col-xs-12 Exeresult">
-						<label class="subtitle">Execution Result:</label><img src="img/visibility-24-px.png" data-toggle="modal" data-target="#myModal" alt="1">
-						<label>cbowenals_12_17_2018_12_43_43</label>
+						<label class="subtitle">Execution Result:</label><img id="viewRecentExecutionDetails" src="img/visibility-24-px.png" alt="1">
+						<br><label id="recentExecutionName"></label>
 					</div>
 						<div id="donutchart" style="width: 100%; height: 200px;"></div>
-					<div class="pl-1 tabledata1">
+					<div class="pl-1 tabledata1 recentExecutionTable">
 						<table>
 							<thead>
 								<tr>
@@ -100,10 +100,10 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td><strong>102</strong></td>
-									<td><strong>52</strong></td>
-									<td><strong>30</strong></td>
-									<td><strong>20</strong></td>
+									<td id="recentExeTotal"><strong>102</strong></td>
+									<td id="recentExePassed"><strong>52</strong></td>
+									<td id="recentExeFailed"><strong>30</strong></td>
+									<td id="recentExeQueued"><strong>20</strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -741,34 +741,8 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 
 		fetchAllTestBucket();
 		fetchAllExecutions();
+		$(".recentExecutionTable").hide()
 		
-	</script>
-	<script>
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['QUEUED - 20',   20],
-          ['FAILED - 30',  30],
-          ['PASSED - 52',   52]
-        ]);
-
-        var options = {
-          // title: 'TOTAL : 102',
-          pieHole: 0.4,
-          slices: {
-            0: { color: '#ffc637' },
-            1: { color: '#bc1f1f' },
-            2: { color: '#2a8102' }
-          }
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
-	</script>
-	<script>
       google.charts.load("current", {packages:["corechart"]});
 	  google.charts.setOnLoadCallback(drawChart);
 	  

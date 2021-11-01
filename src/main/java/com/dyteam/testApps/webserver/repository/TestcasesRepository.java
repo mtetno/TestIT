@@ -29,19 +29,24 @@ public interface TestcasesRepository extends CrudRepository<Testcases, Long> {
 	@Modifying
 	@Transactional
 	@Query(value = "SELECT a.testcase_id,a.comment,a.objective,a.class_name,a.test_method,a.application_id,a.testtype_id,a.auto_status_id,a.auto_progress_id,b.application_name,d.status from testcases a join application b on b.application_id = a.application_id left join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId", nativeQuery = true)
-	public List<Map<String, Object>> findAllByCompanyId(Long companyId);
+	public List<Map<String, Object>> findAllByCompanyId(Long companyId);	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT a.testcase_id,a.comment,a.objective,a.class_name,a.test_method,a.application_id,a.testtype_id,a.auto_status_id,a.auto_progress_id,b.application_name,d.status from testcases a join application b on b.application_id = a.application_id left join automation_status d on d.id = a.auto_status_id where a.is_delete = 0 AND a.company_id = :companyId AND a.auto_status_id = 1", nativeQuery = true)
+	public List<Map<String, Object>> findAllCheckedInByCompanyId(Long companyId);
 
 	@Query("select e from Testcases e where e.testMethod = :name")
 	List<Testcases> findByTestMethod(String name);
 
-	@Query(value = "select count(a.auto_progress_id) as count, b.value as name from testcases a join automation_progress b where a.auto_progress_id = b.id group by a.auto_progress_id", nativeQuery = true)
-	List<Map<String, Object>> getAutoProgressStats();
+	@Query(value = "select count(a.auto_progress_id) as count, b.value as name from testcases a join automation_progress b where a.auto_progress_id = b.id AND a.company_id = :companyId group by a.auto_progress_id", nativeQuery = true)
+	List<Map<String, Object>> getAutoProgressStats(Long companyId);
 
-	@Query(value = "select count(a.auto_status_id) as count, b.status as name from testcases a join automation_status b where a.auto_status_id = b.id group by a.auto_status_id", nativeQuery = true)
-	List<Map<String, Object>> getAutoStatusStats();
+	@Query(value = "select count(a.auto_status_id) as count, b.status as name from testcases a join automation_status b where a.auto_status_id = b.id AND a.company_id = :companyId group by a.auto_status_id", nativeQuery = true)
+	List<Map<String, Object>> getAutoStatusStats(Long companyId);
 
-	@Query(value = "select count(a.application_id) as count, b.application_name as name from testcases a join application b where a.application_id = b.application_id group by a.application_id", nativeQuery = true)
-	List<Map<String, Object>> getApplicationCoverageStats();
+	@Query(value = "select count(a.application_id) as count, b.application_name as name from testcases a join application b where a.application_id = b.application_id  AND a.company_id = :companyId group by a.application_id", nativeQuery = true)
+	List<Map<String, Object>> getApplicationCoverageStats(Long companyId);
 
 	@Query(value = "SELECT count(a.testcase_id) as count , a.application_id, a.company_id, b.application_name, c.company_name from testcases a join application b join subscriptions c where  a.application_id=:applicationId AND a.company_id=:companyId AND a.application_id = b.application_id AND a.company_id = c.id", nativeQuery = true)
 	IStackBar getApplicationVsCompanyStats(Long applicationId, Long companyId);

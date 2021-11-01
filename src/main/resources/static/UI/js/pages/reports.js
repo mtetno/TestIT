@@ -1,167 +1,167 @@
 $(document).ready(function() {
-	$.ajax({
-		url: base_url+"/executionResults/getAllRunnerByCompany", 
-		method: "get",
-		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-		},
-		success: function(dataBrowser) {
-			var appOptions = "";
-			var payload = "";
-			var index = 0;
-			$.each(dataBrowser, function(key, value) {
-				var dateArray = value.executedOn==null?"-":value.executedOn.split(".")[0].replace("T", " ");
-				$pas= value.progess;
-				var isDisabled = 'disabled="disabled"';
-				var div = "";
-				if($pas >=0 && $pas <=30){
-					$cls = 'progress progress-bar-danger';
-					div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
-				}else if($pas >=30 && $pas <=50){
-					 $cls = 'progress progress-bar-warning';
-					 div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
-				}else if($pas >=50 && $pas <=99){
-					 $cls = 'progress progress-bar-info';
-					 div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
-				} else if($pas ==100){
-					 $cls = '';
-					 isDisabled = "";
-					 div = '<div>';
-				}
-				payload += '<tr>';
-				payload += '<td scope="col" class="bucketcheck">';
-				payload += '<label class="main subCB">';
-				payload += '<input type="checkbox"> ';
-				payload += '<span class="geekmark"></span> ';
-				payload += '</label>';
-				payload += '</td>';
-				payload += '<td></td>';
-				payload += '<td>'+value.runName+'</td>';
-				payload += '<td>'+value.executedBy+'</td>';
-				payload += '<td><span id="hundred">100</span>  '+dateArray+'</td>';
-				payload += '<td>';
-				payload += '<img src="img/visibility-24-px.png" alt="Imgtime"  onclick="showAjaxModal('+value.runId+', \''+value.runName+'\');" title="View">  '; 
-				payload += '<img src="img/refresh-24-px.png" alt="Imgrefresh" title="Retry">  ';
-				payload += '<img src="img/down-arrow.png" onclick="downloadFile(\'excel\', '+value.runId+', \''+value.runName+'\');" class="Imgdownload" alt="Imgdownload" title="Download">';
-				payload += '<div class="showicons" style="display: none;">';
-				payload += '<img src="img/pdf-1.png" alt="Imgpdf">';
-				payload += '<img src="img/excel.png" alt="Imgexcel">';
-				payload += '</div> ';
-				payload += '</td>';
-				payload += '</tr>';
-				payload += '<tr>';
+	// $.ajax({
+	// 	url: base_url+"/executionResults/getAllRunnerByCompany", 
+	// 	method: "get",
+	// 	beforeSend: function (xhr) {
+	// 		xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+	// 	},
+	// 	success: function(dataBrowser) {
+	// 		var appOptions = "";
+	// 		var payload = "";
+	// 		var index = 0;
+	// 		$.each(dataBrowser, function(key, value) {
+	// 			var dateArray = value.executedOn==null?"-":value.executedOn.split(".")[0].replace("T", " ");
+	// 			$pas= value.progess;
+	// 			var isDisabled = 'disabled="disabled"';
+	// 			var div = "";
+	// 			if($pas >=0 && $pas <=30){
+	// 				$cls = 'progress progress-bar-danger';
+	// 				div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
+	// 			}else if($pas >=30 && $pas <=50){
+	// 				 $cls = 'progress progress-bar-warning';
+	// 				 div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
+	// 			}else if($pas >=50 && $pas <=99){
+	// 				 $cls = 'progress progress-bar-info';
+	// 				 div = '<div class="progress" style="margin-bottom:0px;color:#000;"><div class="progress-bar '+$cls+' progress-bar-striped" title="'+$pas+'%" role="progressbar" aria-valuenow="'+$pas+'"  aria-valuemin="0" aria-valuemax="100" style="width:'+$pas+'%"></div>';
+	// 			} else if($pas ==100){
+	// 				 $cls = '';
+	// 				 isDisabled = "";
+	// 				 div = '<div>';
+	// 			}
+	// 			payload += '<tr>';
+	// 			payload += '<td scope="col" class="bucketcheck">';
+	// 			payload += '<label class="main subCB">';
+	// 			payload += '<input type="checkbox"> ';
+	// 			payload += '<span class="geekmark"></span> ';
+	// 			payload += '</label>';
+	// 			payload += '</td>';
+	// 			payload += '<td></td>';
+	// 			payload += '<td>'+value.runName+'</td>';
+	// 			payload += '<td>'+value.executedBy+'</td>';
+	// 			payload += '<td><span id="hundred">100</span>  '+dateArray+'</td>';
+	// 			payload += '<td>';
+	// 			payload += '<img src="img/visibility-24-px.png" alt="Imgtime"  onclick="showAjaxModal('+value.runId+', \''+value.runName+'\');" title="View">  '; 
+	// 			payload += '<img src="img/refresh-24-px.png" alt="Imgrefresh" title="Retry">  ';
+	// 			payload += '<img src="img/down-arrow.png" onclick="downloadFile(\'excel\', '+value.runId+', \''+value.runName+'\');" class="Imgdownload" alt="Imgdownload" title="Download">';
+	// 			payload += '<div class="showicons" style="display: none;">';
+	// 			payload += '<img src="img/pdf-1.png" alt="Imgpdf">';
+	// 			payload += '<img src="img/excel.png" alt="Imgexcel">';
+	// 			payload += '</div> ';
+	// 			payload += '</td>';
+	// 			payload += '</tr>';
+	// 			payload += '<tr>';
 				
-				/*payload += '<tr>';
-				payload += '<td>'+(++index)+'</td>';
-				payload += '<td>'+value.runName+'</td>';
-				payload += '<td>'+value.executedBy+'</td>';
-				payload += '<td>';
-				payload += div;
-				payload += '</div>';
-				payload += '<div>'+dateArray+'</div>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<button onclick="showAjaxModal('+value.runId+', \''+value.runName+'\');" class="btn btn-info">';
-				payload += 'View';
-				payload += '</button>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<button onclick="downloadFile(\'excel\', '+value.runId+', \''+value.runName+'\');" style="cursor:pointer;background-color: green" class="btn btn-success mar5">';
-				payload += '<i class="fa fa-file-excel-o"></i>';
-				payload += '</button>';
-				payload += '<button onclick="downloadFile(\'pdf\', '+value.runId+', \''+value.runName+'\');" style="cursor:pointer;background-color: #E13300" class="btn btn-info">';
-				payload += '<i class="fa fa-file-pdf-o"></i>';
-				payload += '</button>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<button '+isDisabled+' onclick="runReport('+value.runId+');" class="btn btn-info">';
-				payload += 'Run';
-				payload += '</button>';
-				payload += '</td>';
-				payload += '<td>';
-				payload += '<a onclick="return false;" class="table-link danger">';
-				payload += '<span class="fa-stack" onclick="return checkDelete('+value.runId+');">';
-				payload += '<i class="fa fa-square fa-stack-2x"></i>';
-				payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
-				payload += '</span>';
-				payload += '</a>';
-				payload += '</td>';
-				payload += '</tr>'; 
-				appOptions += '<option value="'+value.runId+'">'+value.runName+'</option>';*/
-			});
-			//$("select[name=executed_testCases]").append(appOptions);			
-			$("#bucketList tbody").html(payload);
+	// 			/*payload += '<tr>';
+	// 			payload += '<td>'+(++index)+'</td>';
+	// 			payload += '<td>'+value.runName+'</td>';
+	// 			payload += '<td>'+value.executedBy+'</td>';
+	// 			payload += '<td>';
+	// 			payload += div;
+	// 			payload += '</div>';
+	// 			payload += '<div>'+dateArray+'</div>';
+	// 			payload += '</td>';
+	// 			payload += '<td>';
+	// 			payload += '<button onclick="showAjaxModal('+value.runId+', \''+value.runName+'\');" class="btn btn-info">';
+	// 			payload += 'View';
+	// 			payload += '</button>';
+	// 			payload += '</td>';
+	// 			payload += '<td>';
+	// 			payload += '<button onclick="downloadFile(\'excel\', '+value.runId+', \''+value.runName+'\');" style="cursor:pointer;background-color: green" class="btn btn-success mar5">';
+	// 			payload += '<i class="fa fa-file-excel-o"></i>';
+	// 			payload += '</button>';
+	// 			payload += '<button onclick="downloadFile(\'pdf\', '+value.runId+', \''+value.runName+'\');" style="cursor:pointer;background-color: #E13300" class="btn btn-info">';
+	// 			payload += '<i class="fa fa-file-pdf-o"></i>';
+	// 			payload += '</button>';
+	// 			payload += '</td>';
+	// 			payload += '<td>';
+	// 			payload += '<button '+isDisabled+' onclick="runReport('+value.runId+');" class="btn btn-info">';
+	// 			payload += 'Run';
+	// 			payload += '</button>';
+	// 			payload += '</td>';
+	// 			payload += '<td>';
+	// 			payload += '<a onclick="return false;" class="table-link danger">';
+	// 			payload += '<span class="fa-stack" onclick="return checkDelete('+value.runId+');">';
+	// 			payload += '<i class="fa fa-square fa-stack-2x"></i>';
+	// 			payload += '<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>';
+	// 			payload += '</span>';
+	// 			payload += '</a>';
+	// 			payload += '</td>';
+	// 			payload += '</tr>'; 
+	// 			appOptions += '<option value="'+value.runId+'">'+value.runName+'</option>';*/
+	// 		});
+	// 		//$("select[name=executed_testCases]").append(appOptions);			
+	// 		$("#bucketList tbody").html(payload);
 			
 			
-			//$('#table-example').DataTable();
-			/*var table = $('#table-example').dataTable({
-				'info': false,
-				'sDom': 'lTfr<"clearfix">tip',
-				'oTableTools': {
-					'aButtons': [{
-						'sExtends': 'collection',
-						'sButtonText': '<i class="fa fa-cloud-download"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>',
-						'aButtons': ['csv', 'xls', 'pdf', 'copy', 'print']
-					}]
-				}
-			});
+	// 		//$('#table-example').DataTable();
+	// 		/*var table = $('#table-example').dataTable({
+	// 			'info': false,
+	// 			'sDom': 'lTfr<"clearfix">tip',
+	// 			'oTableTools': {
+	// 				'aButtons': [{
+	// 					'sExtends': 'collection',
+	// 					'sButtonText': '<i class="fa fa-cloud-download"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i>',
+	// 					'aButtons': ['csv', 'xls', 'pdf', 'copy', 'print']
+	// 				}]
+	// 			}
+	// 		});
 
-			var tt = new $.fn.dataTable.TableTools(table);
-			$(tt.fnContainer()).insertBefore('div.dataTables_wrapper');
+	// 		var tt = new $.fn.dataTable.TableTools(table);
+	// 		$(tt.fnContainer()).insertBefore('div.dataTables_wrapper');
 
-			var tableFixed = $('#table-example-fixed').dataTable({
-				'info': false,
-				'pageLength': 50
-			});
+	// 		var tableFixed = $('#table-example-fixed').dataTable({
+	// 			'info': false,
+	// 			'pageLength': 50
+	// 		});
 
-			new $.fn.dataTable.FixedHeader(tableFixed);	*/		
-		},
-		complete: function(){
-			var table = $('table#bucketList').DataTable({
-				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
-				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
-				"info": true,
-				"pagingType": "full_numbers"
-			});
-			$('.searchboxes').keyup(function(){
-				table.search($(this).val()).draw() ;
-			});
-			$(".searchtext").click(function(e){
-				e.preventDefault();
-			    $("#bucketList thead tr:last-child").toggle();
-			});
+	// 		new $.fn.dataTable.FixedHeader(tableFixed);	*/		
+	// 	},
+	// 	complete: function(){
+	// 		var table = $('table#bucketList').DataTable({
+	// 			"lengthChange": false,
+	// 			"searching": false,   // Search Box will Be Disabled
+	// 			"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+	// 			"info": true,
+	// 			"pagingType": "full_numbers"
+	// 		});
+	// 		$('.searchboxes').keyup(function(){
+	// 			table.search($(this).val()).draw() ;
+	// 		});
+	// 		$(".searchtext").click(function(e){
+	// 			e.preventDefault();
+	// 		    $("#bucketList thead tr:last-child").toggle();
+	// 		});
 
-			$(".mainCB input[type=checkbox]").click(function(){
-				if($(this).prop("checked")==true)
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-				else
-				{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-			});
+	// 		$(".mainCB input[type=checkbox]").click(function(){
+	// 			if($(this).prop("checked")==true)
+	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+	// 			else
+	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+	// 		});
 
-			/*---Jquery for delete row---*/
+	// 		/*---Jquery for delete row---*/
 
-			$("#deleteRow").click(function(e){
-				e.preventDefault();
-				var str = '';
-				$("table tbody .subCB input:checked").each(function(){
-				if(str!='')
-					str += ", "+$(this).closest("tr").find("td:nth-child(3)").text();
-				else
-					str += $(this).closest("tr").find("td:nth-child(3)").text();
-				});
+	// 		$("#deleteRow").click(function(e){
+	// 			e.preventDefault();
+	// 			var str = '';
+	// 			$("table tbody .subCB input:checked").each(function(){
+	// 			if(str!='')
+	// 				str += ", "+$(this).closest("tr").find("td:nth-child(3)").text();
+	// 			else
+	// 				str += $(this).closest("tr").find("td:nth-child(3)").text();
+	// 			});
 
-				$("#deletedItem").text(str);
-				$("#myModal2").modal();
-			});
+	// 			$("#deletedItem").text(str);
+	// 			$("#myModal2").modal();
+	// 		});
 
-			$(document).on("click", "#yesbtn", function(){
-				$("table tbody .subCB input:checked").each(function(){
-					$(this).closest("tr").remove();
-				});	    
-			});
-		}
-	});    
+	// 		$(document).on("click", "#yesbtn", function(){
+	// 			$("table tbody .subCB input:checked").each(function(){
+	// 				$(this).closest("tr").remove();
+	// 			});	    
+	// 		});
+	// 	}
+	// });    
 });
 
 /*
@@ -579,3 +579,122 @@ function showTestImage() {
     });
 }
 */
+
+var executionDetails = [];
+function fetchAllExecutions() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionDetails/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			executionDetails = data;
+			var payload = "";
+			data = _.uniqBy(data, 'execution_id');
+			data.map((value)=> {
+					payload =  payload + ` <tr  data='`+JSON.stringify(value)+`'>
+					<td scope="col" class="bucketcheck">
+						<label class="main subCB">
+						  <input type="checkbox"> 
+						  <span class="geekmark"></span> 
+					  </label>
+					</td>
+					<td></td>
+					<td>`+value.execution_name+`</td>
+					<td>`+value.email+`</td>
+					<td><span id="zero">0</span>  `+value.triggered_when+`</td>
+					<td>
+						<img data-value="`+value.execution_id+`"  src="img/visibility-24-px.png" alt="Imgtime" data-toggle="modal" data-target="#myModal" title="View" class="viewExecutionBucket">  
+						<img hidden src="img/refresh-24-px.png" alt="Imgrefresh" title="Retry">  
+						<img hidden src="img/down-arrow.png" class="Imgdownload" alt="Imgdownload" title="Download">
+					<div class="showicons" style="display: none;">
+						<img src="img/pdf-1.png" alt="Imgpdf">
+						<img src="img/excel.png" alt="Imgexcel">
+					</div> 
+				   </td>
+				  </tr>`;
+			});
+
+
+			if(payload != ""){
+				$(".reporttableParent").html($(".reporttable").get(0).outerHTML)
+				$(".reporttableParent .paging_full_numbers").remove()
+	
+				$('.reporttable').dataTable().fnClearTable();
+				$('.reporttable').dataTable().fnDestroy();
+	
+				
+				$(".reporttable tbody").html(payload);
+					$('.reporttable').DataTable({
+						"lengthChange": false,
+						"searching": false,   // Search Box will Be Disabled
+						"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
+						"info": false,
+						"pagingType": "full_numbers"
+					});
+				}else{
+					$('.reporttable').dataTable().fnClearTable();
+					$('.reporttable').dataTable().fnDestroy();
+				}
+			postExecutionFetch();
+		}
+	});
+}
+
+function postExecutionFetch(){
+	$(".viewExecutionBucket").click(function(){
+		if(executionDetails.length > 0){
+			$("#myModal").modal();
+			var exeId = $(this).attr('data-value');
+			var popUpData = _.filter(executionDetails, 
+				{ 'execution_id': parseInt(exeId) }
+			);
+			var passed = _.filter(popUpData, 
+				{ 'test_result': 'PASSED' }
+			);
+
+			var failed = _.filter(popUpData, 
+				{ 'test_result': 'FAILED' }
+			);
+
+			var queued = _.filter(popUpData, 
+				{ 'test_result': 'QUEUED' }
+			);
+
+
+			$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
+			$("#totalExecution").text(popUpData.length)
+			$("#passedExecution").text(passed.length)
+			$("#failedExecution").text(failed.length)
+			$("#queuesExecution").text(queued.length);
+
+			$(".selectedExecutionModel tbody").html("");
+			var str = "" ;
+			popUpData.map((value,position) => {
+					str += `<tr><td scope="col">`+(position+1)+`</td>
+							<td>`+value.test_method+`</td>
+							<td class="passed">`+value.test_result+`</td>
+							<td>-</td></tr>`;
+					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+			});
+			$(".selectedExecutionModel  tbody").append(str);
+
+			new Chart(document.getElementById("pie-chart"), {
+				type: 'pie',
+				data: {
+				// labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
+				datasets: [{
+					// label: "Population (millions)",
+					backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
+					data: [passed.length,queued.length,failed.length]
+				}]
+				}
+			});
+			
+		}
+	});
+}
+

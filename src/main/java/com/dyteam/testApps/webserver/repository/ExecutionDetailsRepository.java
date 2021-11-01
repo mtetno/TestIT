@@ -21,7 +21,8 @@ public interface ExecutionDetailsRepository extends CrudRepository<ExecutionDeta
 
     @Modifying
 	@Transactional
-	@Query(value ="SELECT a.*,b.test_method from execution_details a join testcases b on a.testcases_id = b.testcase_id where a.is_delete = 0 AND a.company_id = :companyId order by a.id desc ", nativeQuery = true)
+	@Query(value ="SELECT a.*,b.test_method,c.email from execution_details a join testcases b on a.testcases_id = b.testcase_id join subscriptions c on a.company_id = c.id where a.is_delete = 0 AND a.company_id = 91 order by a.id desc", nativeQuery = true)
 	public List<Map<String, Object>> findAllByCompanyId(Long companyId);
+    //AND a. >= CURDATE();
 
 }

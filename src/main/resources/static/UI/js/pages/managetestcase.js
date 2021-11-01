@@ -130,7 +130,7 @@ function displayTestcases(){
 			$(".testmanagementAssignmentTable tbody").html(rows);
 			$('.testmanagementAssignmentTable').DataTable({
 				"lengthChange": false,
-				"searching": false,   // Search Box will Be Disabled
+				"searching": true,   // Search Box will Be Disabled
 				"ordering": true,    // Ordering (Sorting on Each Column)will Be Disabled
 				"info": false,
 				"pagingType": "full_numbers"
@@ -253,6 +253,7 @@ function uploadTestcases(sheetData,companyId,applicationId){
 			},
 			success: function(response)
 			{
+				fetchTestcasesAssignments();
 				hideLoader();
 				$("#uploadNotification").show();
 				setTimeout(function(){ 

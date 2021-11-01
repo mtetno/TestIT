@@ -603,6 +603,7 @@ function attachRoleListeners(){
 	$(".updateRoleBtn").unbind().click(function(){
 		var dataUsername = $("#username1").val().trim();
         var dataRole = $("#role1").val().trim();
+        var updateRole1Password = $("#updateRole1Password").val().trim();
 
         if(dataUsername.length == 0){
           showWarningToast("Please select valid username name");
@@ -616,14 +617,20 @@ function attachRoleListeners(){
           dataObj["executionUserId"] = editRole.executionUserId;
           dataObj["name"] = dataUsername;
           dataObj["role"] = dataRole;
+		  if(updateRole1Password.length > 0 )
+          dataObj["password"] = updateRole1Password;
           dataObj["isDelete"] = 0;
-          saveAccessRoles(dataObj);	  
+          saveAccessRoles(dataObj,true);	 
+		  
+		  $("#username1").val("");
+		  $("#role1").val("");
+		  $("#updateRole1Password").val("");
 	  });
 
 } 
 
 
-function saveAccessRoles(dataObj) {
+function saveAccessRoles(dataObj,isEdit) {
 	$.ajax({
 		type: 'POST',
 		data: JSON.stringify(dataObj),
@@ -634,7 +641,12 @@ function saveAccessRoles(dataObj) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			showSuccessToast("Access Role Added Successfully.");
+			if(isEdit){
+				showSuccessToast("Access Role Updated Successfully.");
+			}else{
+				showSuccessToast("Access Role Added Successfully.");
+			}
+
 			closeAccessRoleInput();
 			displayAllAccessRoles();
 		}

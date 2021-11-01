@@ -56,6 +56,7 @@ public class ExecutionDetailsController {
             executionDetails.setThreads(executionDetailsRequest.getThreads());
             executionDetails.setScheduleDate(executionDetailsRequest.getScheduleDate());
             executionDetails.setScheduleTime(executionDetailsRequest.getScheduleTime());
+            executionDetails.setTestResult("QUEUED");
             // executionDetails.setTestcasesId(executionDetailsParam.getTestcasesId());
             executionDetails.setTriggeredBy(loggedInUser.getUserId());
             executionDetails.setIsDelete(0);

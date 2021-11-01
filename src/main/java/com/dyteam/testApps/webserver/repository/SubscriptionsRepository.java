@@ -48,4 +48,15 @@ public interface SubscriptionsRepository extends CrudRepository<Subscriptions, L
 	@Query(value = "select a.company_name,b.selenium_home from subscriptions a join application_paths b where a.id=77 AND a.id = b.company_id", nativeQuery = true)
 	public ISubscription getCompanyInfoForFolder(Long companyId);
 
+	@Modifying
+	@Transactional
+	@Query(value = "INSERT INTO subscriptions_testing_environment_mapping (id,testing_environment_id) values (:id , :testingEvnId)", nativeQuery = true)
+	public void addSubscriptionAndEnvironmentMapping(Long id,Long testingEvnId);
+
+	@Modifying
+	@Transactional
+	@Query(value = "delete from subscriptions_testing_environment_mapping where id = :id", nativeQuery = true)
+	public void removeSubscriptionAndEnvironmentMapping(Long id);
+
+
 }

@@ -214,7 +214,7 @@ $(document).ready(function() {
 			
 			
 			$.ajax({
-				url: base_url+"/testcases/allByComapny", 
+				url: base_url+"/testcases/checkedIn/allByComapny", 
 				method: "get",
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));

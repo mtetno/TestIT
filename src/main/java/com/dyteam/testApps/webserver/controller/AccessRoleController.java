@@ -93,6 +93,10 @@ public class AccessRoleController {
          AccessRole entry = found.get();
          entry.setName(executionUser.getName());
          entry.setRole(executionUser.getRole());
+         if(executionUser.getPassword() != null){
+          String encodedPassword = subscriptionsRepository.getEncodedPassword(executionUser.getPassword(), key);
+          entry.setPassword(encodedPassword);
+         }
          executionUserRepo.save(entry);
          return true;
        }

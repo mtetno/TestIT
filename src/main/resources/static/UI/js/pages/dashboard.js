@@ -20,7 +20,7 @@ function fetchAllTestBucket() {
 				if(position < 5){
 					str += `<tr data-value="`+value.id+`">
 					<td >`+value.name+`</td>
-					<td ><img  src="img/visibility-24-px.png" data-toggle="modal"   alt="1"></td>
+					<td ><img class="viewBucket"  src="img/visibility-24-px.png" data-toggle="modal"   alt="1"></td>
 				  </tr>`;
 			 
 					
@@ -64,45 +64,146 @@ function fetchAllExecutions() {
 }
 
 function postExecutionFetch(){
+	if(executionDetails.length > 0 ){
+		plotLastExecutionResult();
+		$(".recentExecutionTable").show()
+	}else{
+		$(".recentExecutionTable").hide()
+	}
+	
+	
 	$(".viewExecutionBucket").click(function(){
-		$("#myModal").modal();
-		var exeId = $(this).attr('data-value');
-		var popUpData = _.filter(executionDetails, 
-			{ 'execution_id': parseInt(exeId) }
-		);
-		$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
-		$("#totalExecution").text(popUpData.length)
-		$("#passedExecution").text("0")
-		$("#failedExecution").text("0")
-		$("#queuesExecution").text(popUpData.length);
+		if(executionDetails.length > 0){
+			$("#myModal").modal();
+			var exeId = $(this).attr('data-value');
+			var popUpData = _.filter(executionDetails, 
+				{ 'execution_id': parseInt(exeId) }
+			);
+			var passed = _.filter(popUpData, 
+				{ 'test_result': 'PASSED' }
+			);
 
-		$(".selectedExecutionModel tbody").html("");
-		var str = "" ;
-		popUpData.map((value,position) => {
-				str += `<tr><td scope="col">`+position+`</td>
-						  <td>`+value.test_method+`</td>
-						  <td class="passed">Queued</td>
-						  <td>-</td></tr>`;
-				//<img src="img/shape.svg" alt="1" class="deletedataBtn">
-		});
-		$(".selectedExecutionModel  tbody").append(str);
+			var failed = _.filter(popUpData, 
+				{ 'test_result': 'FAILED' }
+			);
 
-		new Chart(document.getElementById("pie-chart"), {
-		    type: 'pie',
-		    data: {
-		      // labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
-		      datasets: [{
-		        // label: "Population (millions)",
-		        backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
-		        data: [0,popUpData.length,0]
-		      }]
-		    }
-		});
+			var queued = _.filter(popUpData, 
+				{ 'test_result': 'QUEUED' }
+			);
 
 
+			$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
+			$("#totalExecution").text(popUpData.length)
+			$("#passedExecution").text(passed.length)
+			$("#failedExecution").text(failed.length)
+			$("#queuesExecution").text(queued.length);
+
+			$(".selectedExecutionModel tbody").html("");
+			var str = "" ;
+			popUpData.map((value,position) => {
+					str += `<tr><td scope="col">`+(position+1)+`</td>
+							<td>`+value.test_method+`</td>
+							<td class="passed">`+value.test_result+`</td>
+							<td>-</td></tr>`;
+					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+			});
+			$(".selectedExecutionModel  tbody").append(str);
+
+			new Chart(document.getElementById("pie-chart"), {
+				type: 'pie',
+				data: {
+				// labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
+				datasets: [{
+					// label: "Population (millions)",
+					backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
+					data: [passed.length,queued.length,failed.length]
+				}]
+				}
+			});
+			
+		}
 	});
 }
 
+function plotLastExecutionResult(){
+	var exeId = executionDetails[0].execution_id;
+	var popUpData = _.filter(executionDetails, 
+		{ 'execution_id': parseInt(exeId) }
+	);
+	var passed = _.filter(popUpData, 
+		{ 'test_result': 'PASSED' }
+	);
+
+	var failed = _.filter(popUpData, 
+		{ 'test_result': 'FAILED' }
+	);
+
+	var queued = _.filter(popUpData, 
+		{ 'test_result': 'QUEUED' }
+	);
+
+
+
+
+	$("#recentExecutionName").text(popUpData[0].execution_name);
+	$("#recentExeTotal").text(popUpData.length)
+	$("#recentExePassed").text(passed.length)
+	$("#recentExeFailed").text(failed.length)
+	$("#recentExeQueued").text(queued.length);
+	drawRecentExecutionChart(popUpData.length,failed.length,passed.length);
+
+	$("#viewRecentExecutionDetails").click(function(){
+		if(executionDetails.length > 0){
+			$("#myModal").modal();
+			var popUpData = _.filter(executionDetails, 
+				{ 'execution_id': parseInt(exeId) }
+			);
+
+			var passed = _.filter(popUpData, 
+				{ 'test_result': 'PASSED' }
+			);
+		
+			var failed = _.filter(popUpData, 
+				{ 'test_result': 'FAILED' }
+			);
+		
+			var queued = _.filter(popUpData, 
+				{ 'test_result': 'QUEUED' }
+			);
+
+			$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
+			$("#totalExecution").text(popUpData.length)
+			$("#passedExecution").text(passed.length)
+			$("#failedExecution").text(failed.length)
+			$("#queuesExecution").text(queued.length);
+
+			$(".selectedExecutionModel tbody").html("");
+			var str = "" ;
+			popUpData.map((value,position) => {
+					str += `<tr><td scope="col">`+position+`</td>
+							<td>`+value.test_method+`</td>
+							<td class="passed">`+value.test_result+`</td>
+							<td>-</td></tr>`;
+					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+			});
+			$(".selectedExecutionModel  tbody").append(str);
+
+			new Chart(document.getElementById("pie-chart"), {
+				type: 'pie',
+				data: {
+				// labels: ["TOTAL", "PASSED", "FAILED", "QUEQUD"],
+				datasets: [{
+					// label: "Population (millions)",
+					backgroundColor: ["#2e8009", "#dbaf11","#bb2424"],
+					data: [passed.length,queued.length,failed.length]
+				}]
+				}
+			});
+			
+		}
+	});
+
+}
 
 function postTestBucketFetch(){
 
@@ -173,6 +274,31 @@ function postTestBucketFetch(){
 	   
    });
 
+}
+
+// google.charts.load("current", {packages:["corechart"]});
+//       google.charts.setOnLoadCallback(drawChart);
+
+function drawRecentExecutionChart(Queued,failed,passed) {
+var data = google.visualization.arrayToDataTable([
+	['Task', 'Hours per Day'],
+	['QUEUED - 20',   Queued],
+	['FAILED - 30',  failed],
+	['PASSED - 52',   passed]
+]);
+
+var options = {
+	// title: 'TOTAL : 102',
+	pieHole: 0.4,
+	slices: {
+	0: { color: '#ffc637' },
+	1: { color: '#bc1f1f' },
+	2: { color: '#2a8102' }
+	}
+};
+
+var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+chart.draw(data, options);
 }
 
  

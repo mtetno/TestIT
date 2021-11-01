@@ -272,6 +272,30 @@ function fetchAllTestingEnvironments(inputName) {
 	});
 }
 
+function fetchAllTestingEnvironmentsByCompany(inputName) {
+	return $.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/testingEnvironment/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			var options = '<option value="0">Select Browser</option>';
+			data.map((item) => {
+				options = options + '<option value="' + item.id + '">' + item.name + '</option>';
+			})
+
+			console.log(" inputName "+inputName);
+			inputName != undefined && inputName != '' ?  $(inputName).html(options)
+			: 
+			$("#testing_environment").html(options);
+			$("#testing_environment").val("0");
+		}
+	});
+}
+
 function fetchAllCompanies() {
 	$.ajax({
 		type: 'GET',

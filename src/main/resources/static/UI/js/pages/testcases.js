@@ -187,6 +187,9 @@ function displayTestcases(){
 			// $(".testmanagementtable").css("margin-left","2rem")	
 
 		postDisplayTestCases();	
+		$('.testmanagementtable').on('draw.dt', function() {
+			postDisplayTestCases();	
+		});
 
 		}
 	});

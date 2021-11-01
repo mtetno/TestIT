@@ -184,6 +184,11 @@
 						}else{
 							window.location.href = "./dashboard.html";
 						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						if(jqXHR.status == 401){
+						 showWarningToast("Please enter valid credentials");
+						}
 						
 					}
 				});

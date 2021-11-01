@@ -84,6 +84,11 @@ public class SubscriptionsController {
 
         Subscriptions savedSubscriptions = subscriptionsRepository.save(subscriptions);
 
+        String[] allEnv = subscriptions.getTestingEnvironmentId().split(",");
+        for (String string : allEnv) {
+            subscriptionsRepository.addSubscriptionAndEnvironmentMapping(savedSubscriptions.getId(), Long.parseLong(string));
+        }
+
         // Create user
         User createUser = new User();
         createUser.setUserType(1);
@@ -107,6 +112,13 @@ public class SubscriptionsController {
     public Boolean update(@RequestBody Subscriptions subscriptions,
             @AuthenticationPrincipal final LoginUser loggedInUser) {
         logger.info("update Subscriptions = " + subscriptions);
+
+        subscriptionsRepository.removeSubscriptionAndEnvironmentMapping(subscriptions.getId());
+        String[] allEnv = subscriptions.getTestingEnvironmentId().split(",");
+        for (String string : allEnv) {
+            subscriptionsRepository.addSubscriptionAndEnvironmentMapping(subscriptions.getId(), Long.parseLong(string));
+        }
+
         subscriptionsRepository.update(subscriptions.getCompanyName(), subscriptions.getUsername(),
                 subscriptions.getPassword(), subscriptions.getEmail(), subscriptions.getTestingEnvironmentId(),
                 subscriptions.getRemindBefore(), subscriptions.getThreads(), subscriptions.getEndDate(),

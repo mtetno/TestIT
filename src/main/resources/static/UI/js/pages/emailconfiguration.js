@@ -156,9 +156,11 @@ function fetchAllEmailTemplates() {
                     <td ><span class="updtRow">`+value.company_name+`</span></td>
                     <td >`+value.template_type+`</td>
                     <td>`+value.content+`</td>
-                    <td >-</td>
-                    <td >Report Issue</td>
+                 
                   </tr>`;
+
+				//   <td >-</td>
+				//   <td >Report Issue</td>
 			 
 			});
 			$('.table input[type=checkbox]').prop("checked", false)
