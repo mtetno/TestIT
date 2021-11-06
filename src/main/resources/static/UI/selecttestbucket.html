@@ -81,13 +81,13 @@
 	<!--Main Contebt Start-->
 	<div id="main-content" class="container-fluid pull-right">
 		<!--Page Title-->
-		<!-- <h1 id="page-title">Test Bucket</h1> -->
+		<!-- <h1 id="page-title">Logical Group</h1> -->
 		
 		<!--Pages Tabs-->
 		<div class="card">
 			<div class="card-body tabsHeader">
 				<span class="active activetab"><i class="fa fa-check"></i> Select Environment</span>
-				<span class="active activetab"><i>2</i> Select Test Bucket & Finalize</span>
+				<span class="active activetab"><i>2</i> Select Logical Group & Finalize</span>
 			</div>
 		</div>
         
@@ -113,7 +113,7 @@
 							        <span class="geekmark"></span> 
 							    </label>
 					          </th>
-						      <th scope="col">BUCKET NAME</th>
+						      <th scope="col">LOGICAL GROUP NAME</th>
 						      <th scope="col">ENVIRONMENT</th>
 						      <th scope="col">USER ROLE</th>
 						      <th scope="col">ACTIONS</th>
@@ -141,8 +141,8 @@
 		        
 		        <!-- Modal body -->
 		        <div class="modal-body model_body">
-		          	 <h4>Delete Test Bucket</h4>
-		             <p>Do you want to Delete Test Bucket?</p>
+		          	 <h4>Delete Logical Group</h4>
+		             <p>Do you want to Delete Logical Group?</p>
 		             <p id="deletedItem"></p>
 		        </div>
 		        
@@ -166,7 +166,7 @@
 		      
 		        <!-- Modal Header -->
 		        <div class="modal-header">
-		          <h4 class="modal-title">View Bucket</h4>
+		          <h4 class="modal-title">View Logical Group</h4>
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		        </div>
 		        
@@ -176,7 +176,7 @@
 		          	<div class="col-md-12">
 		          		<div class="row">
 				          	<div class="col-md-5">
-				          		<label  class="col-md-12">Bucket Name</label>
+				          		<label  class="col-md-12">Logical Group Name</label>
 				          		<label  class="col-md-12">Environment</label>
 				          		<label  class="col-md-12">User Role</label>
 				          	</div>
@@ -242,7 +242,7 @@
 											<span class="geekmark"></span> 
 										</label>
 									  </th>
-									  <th scope="col">BUCKET NAME</th>
+									  <th scope="col">LOGICAL GROUP NAME</th>
 									  <th scope="col">ENVIRONMENT</th>
 									  <th scope="col">USER ROLE</th>
 									  <th scope="col">ACTIONS</th>
@@ -290,7 +290,7 @@
 		  
 			<!-- Modal Header -->
 			<div class="modal-header">
-			  <h4 class="modal-title">Summary Of Test Buckets</h4>
+			  <h4 class="modal-title">Summary Of Logical Group</h4>
 			  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 			</div>
 			
@@ -344,7 +344,7 @@
 	<script src="js/pages/constants.js"></script>
 	<script src="js/pages/common.js"></script>
 	<script>
-
+		var runTestcases = [];
 		$(document).ready(function() {	
 		var uname = readCookie("TAuname");
 		$("#userMenu span").text(uname);
@@ -391,31 +391,29 @@
 			});
 
 
-			$('#executionYesbtn').click(function(){
+			$('#executionYesbtn').unbind().click(function(){
 				$("#myModal2").hide();
-				$("#executeSummary table tbody .subCB input:checked").each(function(i,n){
-					var bucketId = $(n).attr('data-value');
+				var allAjax = [];
+				var exeName = getItem(TESTBUCKET_EXECUTION_NAME);
+				var testEnvId = getItem(TESTBUCKET_TESTING_ENVIRONMENT_ID);
+				var threads = 1
+				var date = getItem(TESTBUCKET_SCHEDULE_DATE);
+				var time = getItem(TESTBUCKET_SCHEDULE_TIME);
+				var bucketId,envId,roleId;
 
-					$.ajax({
-						type: 'GET',
-						contentType: 'application/json',
-						dataType: 'json',
-						url: base_url + "/testBucket/fetchTestBucketDetails/"+bucketId,
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
-						},
-						success: function (data) {
-							console.log(data);
-							var exeName = getItem(TESTBUCKET_EXECUTION_NAME);
-							var envId = $($(n).closest("tr").find("td:eq(2)")[0]).attr('data-value')
-							var testEnvId = getItem(TESTBUCKET_TESTING_ENVIRONMENT_ID);
-							var roleId = $($(n).closest("tr").find("td:eq(3)")[0]).attr('data-value')
-							var threads = 1
-							var date = getItem(TESTBUCKET_SCHEDULE_DATE);
-							var time = getItem(TESTBUCKET_SCHEDULE_TIME);
-
-							var payload = {};
+				var payload = {};
 				
+				runTestcases = [];
+				$("#executeSummary table tbody .subCB input:checked").each(function(i,n){
+					bucketId = $(n).attr('data-value');
+					envId = $($(n).closest("tr").find("td:eq(2)")[0]).attr('data-value')
+					roleId = $($(n).closest("tr").find("td:eq(3)")[0]).attr('data-value')
+					allAjax.push(findBucketDetails(bucketId));
+					});	
+
+
+					Promise.all(allAjax).then(() => {
+							payload['name'] = "";
 							payload['executionName'] = exeName
 							payload['environmentId'] = envId
 							payload['testingEnvironmentId'] = testEnvId
@@ -423,13 +421,11 @@
 							payload['threads'] = threads
 							payload['scheduleDate'] = date
 							payload['scheduleTime'] = time
-							payload['testcasesId'] = JSON.stringify(data.map((i)=>i.testcase_id));
-							// createExecution(payload);
-							showSuccessToast("Test bucket scheduled Successfully.")
-							setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 3000);
-						}
-					});
-					});	
+							payload['runTestCases'] = runTestcases;
+							createExecution(payload);
+					}).catch(() => {
+						console.log("Error in fetching data");
+					})
 			});
 
 
@@ -455,6 +451,28 @@
 				$(this).closest(".selectdiv").find(".submaindiv").slideToggle();
 				$(this).toggleClass("caret-rev");
 			});
+
+			function findBucketDetails(bucketId){
+				return $.ajax({
+						type: 'GET',
+						contentType: 'application/json',
+						dataType: 'json',
+						url: base_url + "/testBucket/fetchTestBucketDetails/"+bucketId,
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+						},
+						success: function (data) {
+							data.map((i)=> {
+								runTestcases.push({
+									"applicationId": i.application_id ,
+									"applicationName": i.application_name,
+									"testCase": i.testcase_id ,
+									"testCaseName": i.test_method
+								});
+							})
+						}
+					});
+			}
 
             
             

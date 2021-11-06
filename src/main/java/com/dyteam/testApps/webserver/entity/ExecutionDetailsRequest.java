@@ -1,6 +1,10 @@
 package com.dyteam.testApps.webserver.entity;
 
+
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
+
 
 
 public class ExecutionDetailsRequest {
@@ -80,22 +84,31 @@ public class ExecutionDetailsRequest {
 	public void setThreads(Long threads) {
 		this.threads = threads;
 	}
+ 
+
+	 
+
 
 	public String getScheduleDate() {
-		return this.scheduleDate;
+		return scheduleDate;
 	}
+
 
 	public void setScheduleDate(String scheduleDate) {
 		this.scheduleDate = scheduleDate;
 	}
 
+ 
+
 	public String getScheduleTime() {
-		return this.scheduleTime;
+		return scheduleTime;
 	}
+
 
 	public void setScheduleTime(String scheduleTime) {
 		this.scheduleTime = scheduleTime;
 	}
+
 
 	public ArrayList<ExecutionDetailsTestCases> getRunTestCases() {
 		return this.runTestCases;

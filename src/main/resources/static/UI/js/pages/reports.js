@@ -1,3 +1,6 @@
+var forceFailedExeId = {};
+var retryId = {};
+
 $(document).ready(function() {
 	// $.ajax({
 	// 	url: base_url+"/executionResults/getAllRunnerByCompany", 
@@ -598,18 +601,19 @@ function fetchAllExecutions() {
 					payload =  payload + ` <tr  data='`+JSON.stringify(value)+`'>
 					<td scope="col" class="bucketcheck">
 						<label class="main subCB">
-						  <input type="checkbox"> 
+						  <input data-value="`+value.execution_id+`" type="checkbox"> 
 						  <span class="geekmark"></span> 
 					  </label>
 					</td>
 					<td></td>
 					<td>`+value.execution_name+`</td>
 					<td>`+value.email+`</td>
-					<td><span id="zero">0</span>  `+value.triggered_when+`</td>
+					<td><div style="display: flex;"><div id="donut`+value.execution_id+`"></div><span style="margin-top: 12px;">`+value.triggered_when+`</span></div></td>
 					<td>
 						<img data-value="`+value.execution_id+`"  src="img/visibility-24-px.png" alt="Imgtime" data-toggle="modal" data-target="#myModal" title="View" class="viewExecutionBucket">  
-						<img hidden src="img/refresh-24-px.png" alt="Imgrefresh" title="Retry">  
+						<img data-value="`+value.execution_id+`" src="img/refresh-24-px.png" alt="Imgrefresh" class="retry" title="Retry">  
 						<img hidden src="img/down-arrow.png" class="Imgdownload" alt="Imgdownload" title="Download">
+						<img data-value="`+value.execution_id+`" src="img/cancel.png" class="markFailed" alt="markFailed" title="Mark Failed">
 					<div class="showicons" style="display: none;">
 						<img src="img/pdf-1.png" alt="Imgpdf">
 						<img src="img/excel.png" alt="Imgexcel">
@@ -640,11 +644,61 @@ function fetchAllExecutions() {
 					$('.reporttable').dataTable().fnDestroy();
 				}
 			postExecutionFetch();
+			
+			plotDonutGraph();
+		}
+	});
+}
+
+function markForcedFailed(){
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionDetails/markForceFailed/"+forceFailedExeId,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			showSuccessToast("Execution Force Failed Successfully.");
+			fetchAllExecutions();
 		}
 	});
 }
 
 function postExecutionFetch(){
+	$(".markFailed").click(function(){
+			forceFailedExeId = $(this).attr('data-value');
+			$("#forcedFailedModal").modal();
+			
+	});
+
+	$("#retryModalyesbtn").unbind().click(function(){
+		$("#retryModal").hide();
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json',
+			dataType: 'json',
+			url: base_url + "/executionDetails/markExecutionRetry/" + retryId,
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+			},
+			success: function () {
+			showSuccessToast("Execution Marked Retry Successfully.");
+			fetchAllExecutions();
+			}
+		});
+});
+
+	$(".retry").click(function(){
+		retryId = $(this).attr('data-value');
+		$("#retryModal").modal();
+	});
+	
+	$("#forcedFailedModalyesbtn").unbind().click(function(){
+		markForcedFailed();
+	});
+
 	$(".viewExecutionBucket").click(function(){
 		if(executionDetails.length > 0){
 			$("#myModal").modal();
@@ -698,3 +752,71 @@ function postExecutionFetch(){
 	});
 }
 
+function deleteSelectedExecution(executionId){
+	return $.ajax({
+		type: 'DELETE',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionDetails/deleteByExecutionId/" + executionId,
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function () {
+			console.log("deleteSelectedExecution successfull")
+		}
+	});
+}
+
+function plotDonutGraph(){
+	var uniqueExecutions = _.uniqBy(executionDetails, 'execution_id');
+
+	uniqueExecutions.map((item)=>{
+		var allTests = _.filter(executionDetails, 
+			{ 'execution_id': parseInt(item.execution_id) }
+		);
+
+		var passed = _.filter(allTests, 
+			{ 'test_result': 'PASSED' }
+		);
+
+		var failed = _.filter(allTests, 
+			{ 'test_result': 'FAILED' }
+		);
+
+		var queued = _.filter(allTests, 
+			{ 'test_result': 'QUEUED' }
+		);
+
+		drawExecutionChart(item.execution_id,passed.length,failed.length,queued.length);
+
+	})
+}
+
+function drawExecutionChart(id, passed , failed, queued){
+			  var chartArray = [['STATUS', 'COUNT']];
+			  var obj = ["PASSED",passed];
+			  chartArray.push(obj)
+
+			  var obj = ["FAILED",failed];
+			  chartArray.push(obj)	 
+			  
+			  var obj = ["QUEUED",queued];
+			  chartArray.push(obj)
+
+			  var data = google.visualization.arrayToDataTable(chartArray);
+
+			  var options = {
+				pieHole: 0.4,
+				width: 50,
+				height: 50,
+				legend: 'none',
+				slices: {
+					0: { color: '#2a8102' },
+					1: { color: '#bc1f1f' },
+					2: { color: '#ffc637' }
+				}
+			  };
+
+			  var chart = new google.visualization.PieChart(document.getElementById('donut'+id));
+			  chart.draw(data, options);
+}

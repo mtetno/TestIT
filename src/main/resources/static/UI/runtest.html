@@ -223,14 +223,15 @@
 		  /*---Jquery for datepicker---*/
 
 			$("input.datePicker").datepicker({
-				dateFormat: 'dd-mm-yy',
+				dateFormat: 'yy-mm-dd',
 				minDate: 0
 			});
           
           /*---Jquery for timepicker---*/
 
 			$('input.timePicker').timepicker({
-			    timeFormat: 'h:mm p',
+			    timeFormat: 'HH:mm:ss',
+				show24Hours: true,
 			    interval: 15,   
 			    /*minTime: '10',
 			    maxTime: '6:00pm',

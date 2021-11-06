@@ -104,7 +104,7 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
-                showSuccessToast("The Test Bucket Created Successfully.");
+                showSuccessToast("The Logical Group Created Successfully.");
                 console.log("Inside createExecution")
                 window.location.href = "runtest.html";
             }

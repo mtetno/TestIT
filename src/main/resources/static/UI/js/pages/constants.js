@@ -33,7 +33,7 @@ const MESSAGE_ENTER_VALID_THREAD = "Please enter valid thread"
 const MESSAGE_ENTER_VALID_DATE = "Please enter valid date"
 const MESSAGE_ENTER_VALID_TIME = "Please enter valid time"
 const MESSAGE_ENTER_VALID_TESTCASES = "Please enter valid testcases"
-const MESSAGE_ENTER_VALID_TEST_BUCKET_NAME = "Please enter valid test bucket name"
+const MESSAGE_ENTER_VALID_TEST_BUCKET_NAME = "Please enter valid test logical group name"
 
 const QUEUED = "QUEUED"
 const PASSED = "PASSED"

@@ -1,36 +1,71 @@
-1. If we are creating logical group then test cases entries are getting added in execution_details table which is wrong, as we not executing anything 
-- Not able to reproduce, please recheck
-
-2. On Monitor app, View logical group is not working - fixed
-
-3. On Monitor app, schedule execution must show executions which are scheduled for future dates
-8. On Monitor app, Executed test case but still it shows in Execution Schedule
-9. On Monitor app, Executed test case but on execution details char it shows queued as 20
-- When we add entry via Execute Test plan then schedule date is optional in that case how this is handled ? 
-- All 3 above points are related to date, so seems like same issue.
- 
-
-5. On Monitor app, Automation progress chart should display values belong to current users company, currently it shows all values
-- Fixed
-
-
-6. On Monitor app, Automation Status chart should display values belong to current users company, currently it shows all values
-- Fixed
-
-
-7. On Monitor app, Though we dont have anything executed still execution details show some values Total, Pass, Failed, Queued. Username: comp2 Password: 123
-- Fixed
-
-4. On Monitor app, Execution details should show execution which is currently under execution
-10. On Monitor app, schedule test should not be shown in execution details
-11. Executed logical group but it shows message as " Logical Group scheduled"
-12. Executed logical group by its entry not shown on execution details on Monitor app
-- Please explain in details with screenshot. Is it Execution Result Chart ? Was been asked put the latest execution detail there.
-
-
-14. Reports page data should come from Execution_details table
-15. X on report page which will mark “Queued” cases to “Force Failed”
+- Insert LG in execution tables
+- Inserting Execution does not display 
+- Insert flag in execution for scheduled & non schedule sorting & show with correct date status in dashbaord
+- static no as 20 in queue
 
 
 
 
+
+
+{
+"name":"",
+"executionName":"dxcxcx",
+"environmentId":"108",
+"testingEnvironmentId":"2",
+"userRoleId":"54",
+"threads":"4",
+"scheduleDate":"31-10-2021",
+"scheduleTime":"",
+"runTestCases":[
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"243",
+"testCaseName":"test"
+},
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"245",
+"testCaseName":"Testing001"
+},
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"246",
+"testCaseName":"Testing0013"
+}
+]
+}
+{
+"name":"",
+"executionName":"dxcxcx",
+"environmentId":"108",
+"testingEnvironmentId":"2",
+"userRoleId":"54",
+"threads":"4",
+"scheduleDate":"31-10-2021",
+"scheduleTime":"",
+"runTestCases":[
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"243",
+"testCaseName":"test"
+},
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"245",
+"testCaseName":"Testing001"
+},
+{
+"applicationId":"84",
+"applicationName":"ml_comp",
+"testCase":"246",
+"testCaseName":"Testing0013"
+}
+]
+}
+Author: Olivier Cuenot

@@ -70,13 +70,13 @@
 	<!--Main Contebt Start-->
 	<div id="main-content" class="container-fluid pull-right">
 		<!--Page Title-->
-		<!-- <h1 id="page-title">Test Bucket</h1> -->
+		<!-- <h1 id="page-title">Logical Group</h1> -->
 		
 		<!--Pages Tabs-->
 		<div class="card">
 			<div class="card-body tabsHeader">
 				<span class="active activetab"><i>1</i> Select Environment</span>
-				<span><i>2</i> Select Test Bucket & Finalize</span>
+				<span><i>2</i> Select Logical Group & Finalize</span>
 			</div>
 		</div>
 
@@ -200,14 +200,15 @@ $("#userMenu img").attr("src",localStorage.getItem('profileImage'));
 		  /*---Jquery for datepicker---*/
 
 			$("input.datePicker").datepicker({
-				dateFormat: 'dd-mm-yy',
+				dateFormat: 'yy-mm-dd',
 				minDate: 0
 			});
           
           /*---Jquery for timepicker---*/
 
 			$('input.timePicker').timepicker({
-			    timeFormat: 'h:mm p',
+			    timeFormat: 'HH:mm:ss',
+				show24Hours: true,
 			    interval: 15,   
 			    /*minTime: '10',
 			    maxTime: '6:00pm',

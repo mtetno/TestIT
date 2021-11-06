@@ -1,6 +1,7 @@
 
 var bucketData = [];
 var executionDetails = {};
+var recentExecutionDetails = {};
 
 function fetchAllTestBucket() {
 	$.ajax({
@@ -37,24 +38,36 @@ function fetchAllExecutions() {
 		type: 'GET',
 		contentType: 'application/json',
 		dataType: 'json',
-		url: base_url + "/executionDetails/allByCompany",
+		url: base_url + "/executionDetails/futureExecutions/allByCompany",
 		beforeSend: function (xhr) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function (data) {
-			bucketData = data;
 			executionDetails = data;
 			data = _.uniqBy(data, 'execution_id');
 			$("#executionSummary tbody").html("");
 			var str = "" ;
+			var pos = 0;
 			data.map((value,position) => {
-				if(position < 5){
-					str += `<tr data-value="`+value.id+`">
-					<td >`+value.execution_name+`</td>
-					<td >`+value.triggered_when.substring(0,10)+`</td>
-		            <td ><img data-value="`+value.execution_id+`" class="viewExecutionBucket" src="img/visibility-24-px.png"  alt="1">  </td>
-		            </tr>`;
-					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+
+				var splitTime = value.schedule_time != undefined && value.schedule_time.length > 0 ? value.schedule_time : "00:00:00";
+				splitTime = splitTime.split(":");
+
+				var splitDate = value.schedule_date.split("-")
+
+				var currentD = new Date();
+				var itemHours =  new Date(splitDate[0],splitDate[1]-1,splitDate[2],splitTime[0],splitTime[1])
+				
+				if(currentD <= itemHours){
+					if(pos < 5){
+						str += `<tr data-value="`+value.id+`">
+						<td >`+value.execution_name+`</td>
+						<td >`+value.schedule_date+`</td>
+						<td ><img data-value="`+value.execution_id+`" class="viewExecutionBucket" src="img/visibility-24-px.png"  alt="1">  </td>
+						</tr>`;
+						pos = pos +1;
+						//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+					}
 				}
 			});
 			$("#executionSummary  tbody").append(str);
@@ -63,13 +76,29 @@ function fetchAllExecutions() {
 	});
 }
 
+
+function fetchRecentExecutions() {
+	$.ajax({
+		type: 'GET',
+		contentType: 'application/json',
+		dataType: 'json',
+		url: base_url + "/executionDetails/recentExecutions/allByCompany",
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
+		},
+		success: function (data) {
+			recentExecutionDetails = data;
+			if(recentExecutionDetails.length > 0 ){
+				plotLastExecutionResult();
+				$(".recentExecutionTable").show()
+			}else{
+				$(".recentExecutionTable").hide()
+			}
+		}
+	});
+}
+
 function postExecutionFetch(){
-	if(executionDetails.length > 0 ){
-		plotLastExecutionResult();
-		$(".recentExecutionTable").show()
-	}else{
-		$(".recentExecutionTable").hide()
-	}
 	
 	
 	$(".viewExecutionBucket").click(function(){
@@ -126,8 +155,8 @@ function postExecutionFetch(){
 }
 
 function plotLastExecutionResult(){
-	var exeId = executionDetails[0].execution_id;
-	var popUpData = _.filter(executionDetails, 
+	var exeId = recentExecutionDetails[0].execution_id;
+	var popUpData = _.filter(recentExecutionDetails, 
 		{ 'execution_id': parseInt(exeId) }
 	);
 	var passed = _.filter(popUpData, 
@@ -150,12 +179,12 @@ function plotLastExecutionResult(){
 	$("#recentExePassed").text(passed.length)
 	$("#recentExeFailed").text(failed.length)
 	$("#recentExeQueued").text(queued.length);
-	drawRecentExecutionChart(popUpData.length,failed.length,passed.length);
+	drawRecentExecutionChart(queued.length,failed.length,passed.length);
 
 	$("#viewRecentExecutionDetails").click(function(){
-		if(executionDetails.length > 0){
+		if(recentExecutionDetails.length > 0){
 			$("#myModal").modal();
-			var popUpData = _.filter(executionDetails, 
+			var popUpData = _.filter(recentExecutionDetails, 
 				{ 'execution_id': parseInt(exeId) }
 			);
 
@@ -282,9 +311,9 @@ function postTestBucketFetch(){
 function drawRecentExecutionChart(Queued,failed,passed) {
 var data = google.visualization.arrayToDataTable([
 	['Task', 'Hours per Day'],
-	['QUEUED - 20',   Queued],
-	['FAILED - 30',  failed],
-	['PASSED - 52',   passed]
+	['QUEUED',   Queued],
+	['FAILED',  failed],
+	['PASSED',   passed]
 ]);
 
 var options = {

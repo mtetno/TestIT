@@ -12,7 +12,7 @@ function deleteTestBucket(id) {
 			xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 		},
 		success: function () {
-			showSuccessToast("Bucket Deleted Successfully");
+			showSuccessToast("Logical Group Deleted Successfully");
 			fetchAllTestBucket();
 		}
 	});
@@ -102,6 +102,10 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
+				showSuccessToast("Logical Group scheduled Successfully.")
+				setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 2500);
+
+ 				
             }
         });
     }
@@ -121,7 +125,7 @@ function postTestBucketFetch(){
 		saveItem("cloneBucketSourceId",cloneBucketSourceId);
 		var str = `<tr>
 		<td></td>
-		<td><input type="text" id="cloneBucketName" class="form-control border" name="" placeholder="Enter Bucket Name" value="${bucketName}"></td>
+		<td><input type="text" id="cloneBucketName" class="form-control border" name="" placeholder="Enter Logical Group Name" value="${bucketName}"></td>
 		<td><select id="environment" class="form-control border" name="" value="${envId}">
 			</select></td>
 		<td><select id="user_role" class="form-control border" name="" value="${roleId}">
@@ -141,7 +145,7 @@ function postTestBucketFetch(){
 				var userRole =  $("#user_role").val();
 
 				if(bucketName.trim().length == 0){
-					showWarningToast("Select valid bucket name");
+					showWarningToast("Select valid Logical Group Name");
 				}else if(bucketId == 0){
 					showWarningToast("Cloned bucket is not valid");
 				}else if(environment == 0){
@@ -159,7 +163,7 @@ function postTestBucketFetch(){
 					xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
 				},
 				success: function () {
-					showSuccessToast("Bucket Clone Successfully")
+					showSuccessToast("Logical Group Clone Successfully")
 					fetchAllTestBucket();
 				}
 			});

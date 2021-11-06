@@ -1,5 +1,7 @@
 package com.dyteam.testApps.webserver.entity;
 
+
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -70,11 +72,9 @@ public class ExecutionDetails {
 	private Long threads;
 
 	@Column(name="schedule_date")
-	@NotNull
 	private String scheduleDate;
 
 	@Column(name="schedule_time")
-	@NotNull
 	private String scheduleTime;
 
 	@Column(name="testcases_id")
@@ -177,6 +177,8 @@ public class ExecutionDetails {
 		this.threads = threads;
 	}
 
+ 
+
 	public String getScheduleDate() {
 		return scheduleDate;
 	}
@@ -185,6 +187,7 @@ public class ExecutionDetails {
 		this.scheduleDate = scheduleDate;
 	}
 
+	 
 	public String getScheduleTime() {
 		return scheduleTime;
 	}
