@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.dyteam.testApps.webserver.TestAppException;
 import com.dyteam.testApps.webserver.Util;
 import com.dyteam.testApps.webserver.entity.Subscriptions;
@@ -46,6 +45,9 @@ final class LoginController {
 	
 	@Value("${selenium.home.default.path}")
 	String seleniumHomePath;
+
+	@Value("${execution.user.pass.key}")
+	private String passwordKey;
 	
 	@Autowired
     UserRepository userRepo;

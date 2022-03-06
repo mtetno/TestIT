@@ -53,9 +53,6 @@ public class ExecutionQueues {
 	@Column(name="isDelete")
 	private Integer userRoleId;
 
-
-	
-
 	public Long getId() {
 		return this.id;
 	}
@@ -104,7 +101,4 @@ public class ExecutionQueues {
 		this.userRoleId = userRoleId;
 	}
 
-
-	
-		 
 }

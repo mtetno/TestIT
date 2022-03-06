@@ -547,11 +547,14 @@
 
 		$(function(){
 
-			if(getItem(RUNTESTS_DATE) ==''){
-				$("#scheduleExecution").text("Execute")
-			}else{
-				$("#summaryModalTitle").text("Summary of Schedule Execution")
-			}
+			$("#scheduleExecution").text("Execute")
+			$("#summaryModalTitle").text("Summary of Schedule Execution")
+
+			// if(getItem(RUNTESTS_DATE) ==''){
+			// 	$("#scheduleExecution").text("Execute")
+			// }else{
+			// 	$("#summaryModalTitle").text("Summary of Schedule Execution")
+			// }
 
 			fetchCompany();     
 
@@ -585,19 +588,20 @@
 
 					
 				 
-
-				if(getItem(RUNTESTS_DATE) !=''){
-					$("#summaryModalTitle").text("Summary of Schedule Execution")
-					$("#scheduleExecution").text("Execute")
-				}else{
-					$("#summaryModalTitle").text("Summary of Logical Group")
-					$("#scheduleExecution").text("Create")	
-				}
+				// if(getItem(RUNTESTS_DATE) !=undefined && getItem(RUNTESTS_DATE) !=''){
+				// 	$("#summaryModalTitle").text("Summary of Schedule Execution")
+				// 	$("#scheduleExecution").text("Execute")
+				// }else{
+				// 	$("#summaryModalTitle").text("Summary of Schedule Execution")
+				// 	$("#scheduleExecution").text("Execute")	
+				// }
 
 				if($(this).prop("checked")==true){
-						$("#scheduleExecution").text("Create")	
+					$("#summaryModalTitle").text("Summary of Logical Group")
+					$("#scheduleExecution").text("Create")		
 					}else{
-						$("#scheduleExecution").text("Execute")
+						$("#summaryModalTitle").text("Summary of Schedule Execution")
+					$("#scheduleExecution").text("Execute")
 					}
 
 

@@ -88,7 +88,12 @@ $.ajax({
 		},
 		success: function (data) {
             console.log("Inside creatTestBucket")
-            createExecution(executionBucketPayload);
+            showSuccessToast("The Logical Group Created Successfully.");
+            console.log("Inside createExecution")
+            
+            setTimeout(function(){ window.location.href = "runtest.html"; }, 2500);
+
+            // createExecution(executionBucketPayload);
 		}
 	});
 }
@@ -104,9 +109,10 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
-                showSuccessToast("The Logical Group Created Successfully.");
+                showSuccessToast("The Logical Group Executed Successfully.");
                 console.log("Inside createExecution")
-                window.location.href = "runtest.html";
+
+                setTimeout(function(){ window.location.href = "runtest.html"; }, 2500);
             }
         });
 }

@@ -50,12 +50,12 @@ public interface ExecutionDetailsRepository extends CrudRepository<ExecutionDeta
 	
     @Modifying
 	@Transactional
-	@Query(value = "update execution_details set test_result='FAILED' where execution_id = :executionId", nativeQuery = true)
+	@Query(value = "update execution_details set test_result='FAILED' where execution_id = :executionId AND test_result != 'PASSED'", nativeQuery = true)
 	public void markForceFailed(Long executionId);
 
 	@Modifying
 	@Transactional
-	@Query(value = "update execution_details set test_result='QUEUED', schedule_date = CURDATE(), schedule_time = :time where execution_id = :executionId", nativeQuery = true)
+	@Query(value = "update execution_details set test_result='QUEUED', schedule_date = CURDATE(), schedule_time = :time where execution_id = :executionId AND test_result != 'PASSED'", nativeQuery = true)
 	public void markExecutionRetry(Long executionId, String time);
 
 }

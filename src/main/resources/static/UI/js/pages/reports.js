@@ -135,12 +135,12 @@ $(document).ready(function() {
 	// 		    $("#bucketList thead tr:last-child").toggle();
 	// 		});
 
-	// 		$(".mainCB input[type=checkbox]").click(function(){
-	// 			if($(this).prop("checked")==true)
-	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
-	// 			else
-	// 			{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
-	// 		});
+			// $(".mainCB input[type=checkbox]").click(function(){
+			// 	if($(this).prop("checked")==true)
+			// 	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", true);	}
+			// 	else
+			// 	{	$(this).closest(".selectdiv1").find(".subCB input[type=checkbox]").prop("checked", false);	}
+			// });
 
 	// 		/*---Jquery for delete row---*/
 
@@ -612,7 +612,7 @@ function fetchAllExecutions() {
 					<td>
 						<img data-value="`+value.execution_id+`"  src="img/visibility-24-px.png" alt="Imgtime" data-toggle="modal" data-target="#myModal" title="View" class="viewExecutionBucket">  
 						<img data-value="`+value.execution_id+`" src="img/refresh-24-px.png" alt="Imgrefresh" class="retry" title="Retry">  
-						<img hidden src="img/down-arrow.png" class="Imgdownload" alt="Imgdownload" title="Download">
+						<img data-value="`+value.execution_id+`" src="img/icon_pdf.png"   alt="Imgdownload" title="Download" class="downloadPDF">
 						<img data-value="`+value.execution_id+`" src="img/cancel.png" class="markFailed" alt="markFailed" title="Mark Failed">
 					<div class="showicons" style="display: none;">
 						<img src="img/pdf-1.png" alt="Imgpdf">
@@ -688,6 +688,14 @@ function postExecutionFetch(){
 			fetchAllExecutions();
 			}
 		});
+
+
+		$(".mainCB input[type=checkbox]").click(function(){
+			if($(this).prop("checked")==true)
+			{	$(this).find(".subCB input[type=checkbox]").prop("checked", true);	}
+			else
+			{	$(this).find(".subCB input[type=checkbox]").prop("checked", false);	}
+		});
 });
 
 	$(".retry").click(function(){
@@ -698,6 +706,76 @@ function postExecutionFetch(){
 	$("#forcedFailedModalyesbtn").unbind().click(function(){
 		markForcedFailed();
 	});
+
+	
+	$(".downloadPDF").click(function(){
+		$("#pie-chart").hide();
+		if(executionDetails.length > 0){
+			$("#myModal").modal();
+			var exeId = $(this).attr('data-value');
+			var popUpData = _.filter(executionDetails, 
+				{ 'execution_id': parseInt(exeId) }
+			);
+			var passed = _.filter(popUpData, 
+				{ 'test_result': 'PASSED' }
+			);
+
+			var failed = _.filter(popUpData, 
+				{ 'test_result': 'FAILED' }
+			);
+
+			var queued = _.filter(popUpData, 
+				{ 'test_result': 'QUEUED' }
+			);
+
+
+			$("#selectedExecutionName").html("<strong>Execution Result :"+popUpData[0].execution_name+"</strong>");
+			$("#totalExecution").text(popUpData.length)
+			$("#passedExecution").text(passed.length)
+			$("#failedExecution").text(failed.length)
+			$("#queuesExecution").text(queued.length);
+
+			$(".selectedExecutionModel tbody").html("");
+			var str = "" ;
+			popUpData.map((value,position) => {
+				var testStatusColor = value.test_result == "QUEUED" ? "queued" : (value.test_result == "FAILED" ? "failed" : "passed")
+					str += `<tr><td scope="col">`+(position+1)+`</td>
+							<td>`+value.test_method+`</td>
+							<td class="`+testStatusColor+`">`+value.test_result+`</td>
+							<td>-</td></tr>`;
+					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
+			});
+			$(".selectedExecutionModel  tbody").append(str);
+		}
+		setTimeout(function(){ CreatePDFfromHTML("#downloadPDFBody",popUpData[0].execution_name); }, 200);
+
+		
+	});
+
+	function CreatePDFfromHTML(id, pdfName) {
+		var HTML_Width = $(id).width();
+		var HTML_Height = $(id).height();
+		var top_left_margin = 15;
+		var PDF_Width = HTML_Width + (top_left_margin * 2);
+		var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+		var canvas_image_width = HTML_Width;
+		var canvas_image_height = HTML_Height;
+	
+		var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+	
+		html2canvas($(id)[0]).then(function (canvas) {
+			var imgData = canvas.toDataURL("image/png");
+			var pdf = new jsPDF("p", "mm", "a4");
+			pdf.addImage(imgData, 'PNG', 10, 10);
+			// for (var i = 1; i <= totalPDFPages; i++) { 
+			// 	pdf.addPage(PDF_Width, PDF_Height);
+			// 	pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+			// }
+			pdf.save(pdfName+".pdf");
+			$("#myModal").modal("hide");
+			$("#pie-chart").show();
+		});
+	}
 
 	$(".viewExecutionBucket").click(function(){
 		if(executionDetails.length > 0){
@@ -727,10 +805,12 @@ function postExecutionFetch(){
 
 			$(".selectedExecutionModel tbody").html("");
 			var str = "" ;
+			
 			popUpData.map((value,position) => {
+				var testStatusColor = value.test_result == "QUEUED" ? "queued" : (value.test_result == "FAILED" ? "failed" : "passed")
 					str += `<tr><td scope="col">`+(position+1)+`</td>
 							<td>`+value.test_method+`</td>
-							<td class="passed">`+value.test_result+`</td>
+							<td class="`+testStatusColor+`">`+value.test_result+`</td>
 							<td>-</td></tr>`;
 					//<img src="img/shape.svg" alt="1" class="deletedataBtn">
 			});

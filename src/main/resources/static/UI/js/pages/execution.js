@@ -47,6 +47,7 @@ function addApplicationId(obj,item){
 
 function attachClickListeners(){
 	$(".subCB input[type=checkbox]").click(function(e){
+		e.stopPropagation();
 		console.log("inside attachClickListeners");
 		if($(this).prop("checked")==true)
 		{	
@@ -123,10 +124,10 @@ function attachClickListeners(){
 	// 	$(this).find("i.showdet").toggleClass("caret-rev");
 	// });
 
-	$(".selectdiv").click(function(){
-		$(this).find(".submaindiv").slideToggle();
-		$(this).find("i.showdet").toggleClass("caret-rev");
-	});
+	// $(".selectdiv").click(function(){
+	// 	$(this).find(".submaindiv").slideToggle();
+	// 	$(this).find("i.showdet").toggleClass("caret-rev");
+	// });
 	
 	/*---Jquery for toggle section on click caret-down icon---*/
 

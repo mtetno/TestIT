@@ -43,6 +43,7 @@ public class ExecutionDetailsController {
         ExecutionQueues executionQueue = new ExecutionQueues();
         executionQueue.setExecutionName(executionDetailsRequest.getExecutionName());
         executionQueue.setUserRoleId(0);
+        executionQueue.setExecutionStatus("QUEUED");
         ExecutionQueues savedExecutionQueues = executionQueuesRepository.save(executionQueue);
 
         for(int i=0;i<executionDetailsRequest.getRunTestCases().size();i++){

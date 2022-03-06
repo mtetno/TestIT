@@ -724,6 +724,16 @@ label {
 	font-weight: 600;
 }
 
+.reportmodeltable tbody tr .queued {
+	color: #dbaf11;
+	font-weight: 600;
+}
+
+.reportmodeltable tbody tr .failed {
+	color: #bb2424;
+	font-weight: 600;
+}
+
 .reportmodeltable tbody tr .passed span {
 	padding: 5px 14px !important;
     background-color: #b7e6af !important;

@@ -102,8 +102,14 @@ function createExecution(payload){
                 xhr.setRequestHeader('Authorization', "Bearer " + readCookie("TAaccess"));
             },
             success: function (data) {
-				showSuccessToast("Logical Group scheduled Successfully.")
-				setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 2500);
+				if(payload.scheduleDate == ''){
+					showSuccessToast("Logical Group executed Successfully.")
+					setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 2500);
+				}else{
+					showSuccessToast("Logical Group scheduled Successfully.")
+					setTimeout(function(){ window.location.href = "testbucketenviroment.html"; }, 2500);
+				}
+				
 
  				
             }

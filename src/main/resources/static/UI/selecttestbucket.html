@@ -211,7 +211,7 @@
 		      
 		        <!-- Modal Header -->
 		        <div class="modal-header">
-		          <h4 class="modal-title">Summary of Logical Group</h4>
+		          <h4 id="summaryModalTitle" class="modal-title">Summary of Logical Group</h4>
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		        </div>
 		        
@@ -383,6 +383,13 @@
 				$("#executeSummary .bucketListTable tbody").html(summaryStr);
 				$("#executeSummary input[type=checkbox]").prop("checked", true);
 				
+				if(getItem(TESTBUCKET_SCHEDULE_DATE) !=undefined &&  getItem(TESTBUCKET_SCHEDULE_DATE) !='' ){
+					$("#summaryModalTitle").text("Summary of Schedule Execution")
+				}else{
+					$("#summaryModalTitle").text("Summary of Logical Group")
+				}
+
+				
 				$("#myModal2").modal("show");
 				$("#summaryLabel1").text(getItem(TESTBUCKET_EXECUTION_NAME));
 				$("#summaryLabel2").text(getItem(TESTBUCKET_TESTING_ENVIRONMENT_NAME));
@@ -433,6 +440,12 @@
 				if($("#executeSummary table tbody .subCB input:checked").length == 0 ){
 					showWarningToast("Please select testbuckets");
 					return false;
+				}
+
+				if(getItem(TESTBUCKET_SCHEDULE_DATE) !=undefined &&  getItem(TESTBUCKET_SCHEDULE_DATE) !='' ){
+					$("#confirmationModel").find(".modal-title").text("Summary of Schedule Execution")
+				}else{
+					$("#confirmationModel").find(".modal-title").text("Summary of Logical Group")
 				}
 
 				$("#confirmationModel").modal("show");
